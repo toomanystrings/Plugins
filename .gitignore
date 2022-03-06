@@ -3,3 +3,12 @@
 /Bass Division/VST
 /Modules/dRowAudio
 /Modules/DivisionVoid_GUI
+
+cmake-build-debug
+cmake-build-release
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+CMakeScripts
+
+.idea
