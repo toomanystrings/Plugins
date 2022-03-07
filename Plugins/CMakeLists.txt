@@ -1,1 +1,1 @@
-add_subdirectory("Bass Division")
+add_subdirectory("TemplatePlugin")

@@ -11,17 +11,14 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "BDMainPanel.h"
-
-
 //==============================================================================
 /**
 */
-class BassDivisionAudioProcessorEditor  : public juce::AudioProcessorEditor
+class NewProjectAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    BassDivisionAudioProcessorEditor (BassDivisionAudioProcessor&);
-    ~BassDivisionAudioProcessorEditor() override;
+    NewProjectAudioProcessorEditor (NewProjectAudioProcessor&);
+    ~NewProjectAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -30,9 +27,7 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    BDMainPanel mMainPanel;
-    
-    BassDivisionAudioProcessor& audioProcessor;
+    NewProjectAudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BassDivisionAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessorEditor)
 };
