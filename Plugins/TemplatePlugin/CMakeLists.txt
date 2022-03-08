@@ -32,9 +32,10 @@ target_compile_definitions(${BaseTargetName}
         JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=0)
 
 target_link_libraries(${BaseTargetName} PRIVATE
-        shared_resources
+        #shared_resources
         juce::juce_audio_utils
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
-        coalescent_sounds)
+        DivisionVoid_GUI)
+        #coalescent_sounds)

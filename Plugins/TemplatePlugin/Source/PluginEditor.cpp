@@ -16,11 +16,11 @@ NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioP
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+    addAndMakeVisible(button);
+    addAndMakeVisible(slider);
 }
 
-NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor()
-{
-}
+NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor() = default;
 
 //==============================================================================
 void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
@@ -37,4 +37,6 @@ void NewProjectAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    button.setBounds(20, 20, 30, 50);
+    slider.setBounds(350, 200, 50, 50);
 }
