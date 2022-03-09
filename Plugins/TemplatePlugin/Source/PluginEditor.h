@@ -26,8 +26,10 @@ public:
 
 private:
 
-    DivisionVoid::Button button;
-    DivisionVoid::Slider slider;
+    //DivisionVoid::Button button;
+    //DivisionVoid::Slider slider;
+
+    DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     NewProjectAudioProcessor& audioProcessor;
