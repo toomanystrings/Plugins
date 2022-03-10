@@ -33,3 +33,4 @@ BEGIN_JUCE_MODULE_DECLARATION
 
 // We will need to include files from source here
 #include "Source/DivisionVoidLookAndFeel/DivisionVoidFonts.h"
+#include "Source/DivisionVoidLookAndFeel/DivisionVoidColours.h"
