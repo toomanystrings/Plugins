@@ -32,8 +32,6 @@ inline double getScaledValueFromNormalizedValue(double input, double lowerBound,
 
 inline double getNormalizedValueFromScaledRange(double input, double lowerBound, double upperBound, double skew = 1.0)
 {
-//     jassert(input >= lowerBound && input <= upperBound);
-
     double output = (input - lowerBound) / (upperBound - lowerBound);
 
     return pow(output, 1.0 / skew);
