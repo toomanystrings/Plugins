@@ -27,7 +27,6 @@ void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setColour (juce::Colours::white);
-    //auto font = fonts.getFont(DivisionVoidFonts::FontType::bold, 15.0f);
     g.setFont (fonts.getFont(DivisionVoidFonts::FontType::bold, 15.0f));
     g.drawFittedText ("Template Plugin", getLocalBounds(), juce::Justification::centred, 1);
 }
