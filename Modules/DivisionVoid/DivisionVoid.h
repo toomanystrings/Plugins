@@ -36,3 +36,5 @@ BEGIN_JUCE_MODULE_DECLARATION
 
 #include "Source/DivisionVoidLookAndFeel/DivisionVoidFonts.h"
 #include "Source/DivisionVoidLookAndFeel/DivisionVoidColours.h"
+
+#include "Source/DivisionVoidLookAndFeel/AudioMeter.h"
