@@ -246,7 +246,9 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     buffer.applyGain(compInputGain);
 
     for (int channel = 0; channel < numChannels; ++channel)
+    {
         compressor.processChannel(buffer.getWritePointer(channel), channel, bufferSize);
+    }
     
     buffer.applyGain(compOutputGain);
     
@@ -255,22 +257,30 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     subBuffer.applyGain(subInputGainLin);
 
     for (int channel = 0; channel < numChannels; ++channel)
+    {
         subCompressor.processChannel(subBuffer.getWritePointer(channel), channel, bufferSize);
+    }
 
     subBuffer.applyGain(subOutputGainLin);
 
     lowBuffer.applyGain(lowInputGainLin);
 
     for (int channel = 0; channel < numChannels; ++channel)
+    {
         lowCompressor.processChannel(lowBuffer.getWritePointer(channel), channel, bufferSize);
+    }
 
     lowBuffer.applyGain(lowOutputGainLin);
 
     for (int channel = 0; channel < numChannels; ++channel)
+    {
         midDistortion.process(midBuffer.getWritePointer(channel), channel, bufferSize);
-    
+    }
+
     for (int channel = 0; channel < numChannels; ++channel)
+    {
         highDistortion.process(highBuffer.getWritePointer(channel), channel, bufferSize);
+    }
 
     for (int channel = 0; channel < numChannels; ++channel)
     {
@@ -285,15 +295,19 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         if (subSoloOn || lowSoloOn || midSoloOn || highSoloOn)
         {
             for (int sample = 0; sample < bufferSize; ++sample)
+            {
                 xOut[sample] = xSub[sample] * static_cast<int>(subSoloOn)
-                + xLow[sample] * static_cast<int>(lowSoloOn)
-                + xMid[sample] * static_cast<int>(midSoloOn)
-                + xHigh[sample] * static_cast<int>(highSoloOn);
+                               + xLow[sample] * static_cast<int>(lowSoloOn)
+                               + xMid[sample] * static_cast<int>(midSoloOn)
+                               + xHigh[sample] * static_cast<int>(highSoloOn);
+            }
         }
         else
         {
             for (int sample = 0; sample < bufferSize; ++sample)
+            {
                 xOut[sample] = xSub[sample] + xLow[sample] + xMid[sample] + xHigh[sample];
+            }
         }
     }
     
@@ -318,10 +332,7 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
     
     buffer.applyGain(outputGain);
-    
-    //leftChannelFifo.update(buffer);
-    //rightChannelFifo.update(buffer);
-    
+
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         auto channelData = buffer.getReadPointer(channel);
@@ -331,21 +342,6 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             spectrumProcessor.copySamples(channelData, bufferSize);
         }
     }
-            
-    
-    //juce::AudioPlayHead* playHead = getPlayHead();
-
-    //juce::AudioPlayHead::CurrentPositionInfo pos;
-    //playHead->getCurrentPosition(pos);
-    
-    //auto isPlaying = pos.isPlaying;
-    //if (getActiveEditor() != nullptr)
-    //{
-        // This is where code was being passed from processor to interface, but only when the interface was open.
-        // Perhaps not as good a move as I believed?
-        
-        // Have found a way to by and large not have to pass from here. Might be useful to
-    //}
 }
 
 //==============================================================================
@@ -383,14 +379,6 @@ void BassDivisionAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
 
 void BassDivisionAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-
-    // Having issues here with loading the preset back up. When the preset name gets called, it overrides the
-    // actual last settings if the preset was moved in any way. Forcing the user to save the preset before closing is
-    // not a good idea. Maybe a flag can be made so that it knows not to assign a flag? Not sure how to handle this...
-
-    // Take the incoming data and turn it into an XmlElement
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     // If that xml data is valid, create a tree with it, and check if it has a PresetName propertry.
@@ -421,8 +409,7 @@ void BassDivisionAudioProcessor::setStateInformation (const void* data, int size
             {
                 const auto ir = juce::File(impulseResponseManager.getCurrentImpulseResponseDirectory() + directorySeperator
                     + newTree.getPropertyAsValue("IRName", nullptr).toString() + ".wav");
-                    
-                //impulseResponseManager.loadImpulseResponse(ir);
+
                 impulseResponseManager.setCurrentImpulseResponseName(newTree.getPropertyAsValue("IRName", nullptr).toString());
 
                 setImpulseResponse(impulseResponseManager.getCurrentImpulseResponse());
@@ -430,10 +417,7 @@ void BassDivisionAudioProcessor::setStateInformation (const void* data, int size
                 newTree.removeProperty(irID, nullptr);
             }
 
-            // Replace the current state with the loaded one
             treeState.replaceState(newTree);
-
-            //presetManager.setCurrentPresetName(presetString);
         }
     }
 }
@@ -502,6 +486,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout BassDivisionAudioProcessor::
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LOW_COMP_RELEASE", "Low Release", compReleaseRange, 250));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LOW_COMP_RATIO", "Low Ratio", 1.f, 10.f, 4.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LOW_COMP_THRESHOLD", "Low Threshold", -64.f, 0.f, -12.f));
+
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LOW_COMP_INPUT", "Low Input", ioCompNormRange, 0.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LOW_COMP_OUTPUT", "Low Output", ioCompNormRange, 0.f));
 
@@ -545,7 +530,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout BassDivisionAudioProcessor::
      *******************************************************************/
 
     auto ioNormRange = juce::NormalisableRange<float>(-24.f, 12.f, 0.01f);
-    //ioNormRange.setSkewForCentre(0);
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input", ioNormRange, 0.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output", ioNormRange, 0.f));
@@ -775,8 +759,6 @@ void BassDivisionAudioProcessor::setInitialParameters()
     setLowCrossover(lowCrossover);
     setMidCrossover(midCrossover);
     setHighCrossover(highCrossover);
-
-    // Create a method to set the ir crossover filters.
 
     /*******************************************************************
      * SUB COMPRESSOR VALUES
