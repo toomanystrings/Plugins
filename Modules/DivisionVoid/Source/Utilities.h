@@ -8,6 +8,20 @@
 #include <iomanip>
 #include <memory>
 
+#define ANIMATION_SPEED 0.1
+#define ANIMATION_FPS 60
+
+#define CORNER_RADIUS   14
+#define CORNER_CONFIG   CORNER_RADIUS, CORNER_RADIUS, false, true, true, false
+
+#define ROTARY_ANGLESTART ((7.0f * M_PI) / 6.0f)
+#define ROTARY_ANGLERANGE ((5.0f * M_PI) / 3.0f)
+
+#define DEFAULT_PIPMIN 6
+#define DEFAULT_PIPMAX 8
+
+#define MOUSEWHEEL_SENSITIVITY 128
+
 constexpr double pi    = 3.141592653589793238462643383279;
 constexpr double twoPi = 2.0 * pi;
 

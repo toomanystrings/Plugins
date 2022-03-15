@@ -4,6 +4,11 @@
 
 #pragma once
 
+inline float clip(float x)
+{
+    return std::max(0.0f, std::min(1.0f, x));
+}
+
 class AudioMeter : public juce::Component, private juce::Timer
 {
 public:
@@ -17,7 +22,8 @@ public:
     {
         Peak,
         RMS,
-        VU
+        VU,
+        Custom
     };
 
     AudioMeter()
@@ -62,6 +68,14 @@ public:
         repaint();
     }
 
+    void paint(juce::Graphics& g) override
+    {
+        auto area = getBounds();
+
+        g.setColour(DivisionVoidColours::black);
+        g.fillRect(area);
+    }
+
     void clearSource(int channel)
     {
         meterSources.remove(channel);
@@ -82,14 +96,92 @@ public:
 
 private:
 
-    void timerCallback() override {}
+    void timerCallback() override
+    {
+        if (meterSources.size() == 0)
+        {
+            stopTimer();
+        }
 
-    void paint(juce::Graphics& g) override {}
+        float rise = (float)meterRise / 1000.0f;
+        float fall = (float)meterFall / 1000.0f;
+
+        for (int i = 0; i < meterSources.size(); ++i)
+        {
+            float in   = std::abs(*meterSources[i]);
+            float last = meterBuffers[i];
+            float peak = meterPeaks[i];
+            float out;
+
+            float ga = exp(-1.0f / (float)(ANIMATION_FPS * 0.01f));
+            float gr = exp(-1.0f / (float)(ANIMATION_FPS * 1.5f));
+
+            float g;
+
+            if (peak < in)
+            {
+                g = ga;
+            }
+            else
+            {
+                g = gr;
+            }
+
+            peak = (1.0f - g) * in + g * peak;
+            meterPeaks.set(i, clip(peak));
+
+            if (meterCalibration == Peak || meterCalibration == Custom)
+            {
+                in   = std::abs(*meterSources[i]);
+                last = meterBuffers[i];
+
+                ga = exp(-1.0f / (float)(ANIMATION_FPS * rise));
+                gr = exp(-1.0f / (float)(ANIMATION_FPS * fall));
+
+                if (last < in)
+                {
+                    g = ga;
+                }
+                else
+                {
+                    g = gr;
+                }
+
+                out = (1.0f - g) * in + g * last;
+            }
+            else if (meterCalibration == VU)
+            {
+                in   = fmax(0.0f, *meterSources[i]);
+                last = meterBuffers[i];
+                g = exp(-1.0f / (float)(ANIMATION_FPS * rise));
+
+                out = (1.0f - g) * in + g * last;
+            }
+            else if (meterCalibration == RMS)
+            {
+                in   = (*meterSources[i]) * (*meterSources[i]);
+                last = meterBuffers[i];
+                g = exp(-1.0f / (float)(ANIMATION_FPS * rise));
+
+                out = (1.0f - g) * in + g * last;
+            }
+
+            meterBuffers.set(i, clip(out));
+            repaint(indicatorArea);
+        }
+    }
+
     void resized() override {}
 
     juce::Array<float*> meterSources;
     juce::Array<float>  meterBuffers;
     juce::Array<float>  meterPeaks;
+
+    juce::Rectangle<int> indicatorArea;
+
+    int   meterRise;
+    float meterOvershoot;
+    int   meterFall;
 
     MeterCalibration meterCalibration;
     MeterStyle meterStyle;
