@@ -70,10 +70,115 @@ public:
 
     void paint(juce::Graphics& g) override
     {
-        auto area = getBounds();
+        int width  = getWidth();
+        int height = getHeight();
 
-        g.setColour(DivisionVoidColours::black);
-        g.fillRect(area);
+        juce::Path b;
+        b.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);
+        g.setColour(findColour(DivisionVoid::midgroundColourId));
+        g.fillPath(b);
+
+        g.setColour(findColour(DivisionVoid::backgroundColourId));
+        g.fillRect(indicatorArea);
+
+        if (meterSources.size())
+        {
+            if (meterStyle == Vertical)
+            {
+                int channelWidth = indicatorArea.getWidth() / meterSources.size();
+
+                for (int channel = 0; channel < meterSources.size(); ++channel)
+                {
+                    float output = meterBuffers[channel];
+                    float peak   = meterPeaks[channel];
+
+                    g.setColour(findColour(DivisionVoid::highlightColourId));
+
+                    g.fillRect
+                            (
+                                    indicatorArea.getX() + channelWidth * channel,
+                                    indicatorArea.getBottom() - (int)(indicatorArea.getHeight() * output),
+                                    channelWidth,
+                                    (int)(indicatorArea.getHeight() * output)
+                            );
+
+                    if (meterPeakStatus)
+                    {
+                        g.setColour(findColour(DivisionVoid::foregroundColourId));
+
+                        g.drawLine
+                                (
+                                        indicatorArea.getX() + channelWidth * channel,
+                                        indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
+                                        (indicatorArea.getX() + (channelWidth * channel)) + channelWidth,
+                                        indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
+                                        2
+                                );
+                    }
+
+                    g.setColour(findColour(DivisionVoid::backgroundColourId));
+                    g.drawLine
+                            (
+                                    (indicatorArea.getX() + channelWidth * channel) + channelWidth,
+                                    indicatorArea.getY(),
+                                    (indicatorArea.getX() + channelWidth * channel) + channelWidth,
+                                    indicatorArea.getBottom(),
+                                    1
+                            );
+                }
+            }
+            else if (meterStyle == Horizontal)
+            {
+                int channelHeight = indicatorArea.getHeight() / meterSources.size();
+
+                for (int channel = 0; channel < meterSources.size(); ++channel)
+                {
+                    float output = meterBuffers[channel];
+                    float peak   = meterPeaks[channel];
+
+                    g.setColour(findColour(DivisionVoid::highlightColourId));
+
+                    g.fillRect
+                            (
+                                    indicatorArea.getX(),
+                                    indicatorArea.getY() + channelHeight * channel,
+                                    (int)(indicatorArea.getWidth() * output),
+                                    channelHeight
+                            );
+
+                    if (meterPeakStatus)
+                    {
+                        g.setColour(findColour(DivisionVoid::foregroundColourId));
+
+                        g.drawLine(indicatorArea.getX() + indicatorArea.getWidth() * peak,
+                                   indicatorArea.getY() + channelHeight * channel,
+                                   indicatorArea.getX() + indicatorArea.getWidth() * peak,
+                                   (indicatorArea.getY() + channelHeight * channel) + channelHeight,
+                                   2);
+                    }
+
+                    g.setColour(findColour(DivisionVoid::backgroundColourId));
+                    g.drawLine(
+                            indicatorArea.getX(),
+                            (indicatorArea.getY() + channelHeight * channel) + channelHeight,
+                            indicatorArea.getRight(),
+                            (indicatorArea.getY() + channelHeight * channel) + channelHeight,
+                            1);
+                }
+            }
+        }
+
+//        g.setColour(findColour(DivisionVoid::midgroundColourId));
+//        for (int i = 0; i < pipLocations.size(); ++i)
+//        {
+//            juce::Point<int>& pip = pipLocations.getReference(i);
+//            g.fillEllipse(pip.x - pipSize/2, pip.y - pipSize/2, pipSize, pipSize);
+//        }
+
+        juce::Path p;
+        p.addRoundedRectangle(4, 4, width - 8, height - 8, CORNER_CONFIG);
+        g.setColour(findColour(DivisionVoid::midgroundColourId));
+        g.strokePath(p, juce::PathStrokeType(8));
     }
 
     void clearSource(int channel)
