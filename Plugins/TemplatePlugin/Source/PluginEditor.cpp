@@ -16,6 +16,8 @@ NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioP
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+
+    addAndMakeVisible(audioMeter);
 }
 
 NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor() = default;
@@ -35,4 +37,6 @@ void NewProjectAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+
+    audioMeter.setBounds(200, 50, 25, 150);
 }

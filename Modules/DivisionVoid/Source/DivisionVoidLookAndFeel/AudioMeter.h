@@ -73,12 +73,16 @@ public:
         int width  = getWidth();
         int height = getHeight();
 
+        auto backgroundColour = DivisionVoidColours::black;
+        auto highlightColour = DivisionVoidColours::white;
+        auto foregroundColour = DivisionVoidColours::red;
+
         juce::Path b;
         b.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);
-        g.setColour(findColour(DivisionVoid::midgroundColourId));
+        g.setColour(backgroundColour);
         g.fillPath(b);
 
-        g.setColour(findColour(DivisionVoid::backgroundColourId));
+        g.setColour(backgroundColour);
         g.fillRect(indicatorArea);
 
         if (meterSources.size())
@@ -92,7 +96,7 @@ public:
                     float output = meterBuffers[channel];
                     float peak   = meterPeaks[channel];
 
-                    g.setColour(findColour(DivisionVoid::highlightColourId));
+                    g.setColour(highlightColour);
 
                     g.fillRect
                             (
@@ -104,7 +108,7 @@ public:
 
                     if (meterPeakStatus)
                     {
-                        g.setColour(findColour(DivisionVoid::foregroundColourId));
+                        g.setColour(foregroundColour);
 
                         g.drawLine
                                 (
@@ -116,7 +120,7 @@ public:
                                 );
                     }
 
-                    g.setColour(findColour(DivisionVoid::backgroundColourId));
+                    g.setColour(backgroundColour);
                     g.drawLine
                             (
                                     (indicatorArea.getX() + channelWidth * channel) + channelWidth,
@@ -136,7 +140,7 @@ public:
                     float output = meterBuffers[channel];
                     float peak   = meterPeaks[channel];
 
-                    g.setColour(findColour(DivisionVoid::highlightColourId));
+                    g.setColour(highlightColour);
 
                     g.fillRect
                             (
@@ -148,7 +152,7 @@ public:
 
                     if (meterPeakStatus)
                     {
-                        g.setColour(findColour(DivisionVoid::foregroundColourId));
+                        g.setColour(foregroundColour);
 
                         g.drawLine(indicatorArea.getX() + indicatorArea.getWidth() * peak,
                                    indicatorArea.getY() + channelHeight * channel,
@@ -157,7 +161,7 @@ public:
                                    2);
                     }
 
-                    g.setColour(findColour(DivisionVoid::backgroundColourId));
+                    g.setColour(backgroundColour);
                     g.drawLine(
                             indicatorArea.getX(),
                             (indicatorArea.getY() + channelHeight * channel) + channelHeight,
@@ -177,7 +181,7 @@ public:
 
         juce::Path p;
         p.addRoundedRectangle(4, 4, width - 8, height - 8, CORNER_CONFIG);
-        g.setColour(findColour(DivisionVoid::midgroundColourId));
+        g.setColour(foregroundColour);
         g.strokePath(p, juce::PathStrokeType(8));
     }
 
@@ -283,6 +287,9 @@ private:
     juce::Array<float>  meterPeaks;
 
     juce::Rectangle<int> indicatorArea;
+
+    bool meterPeakStatus;
+    double currentPeakPos;
 
     int   meterRise;
     float meterOvershoot;

@@ -29,6 +29,8 @@ private:
     //DivisionVoid::Button button;
     //DivisionVoid::Slider slider;
 
+    AudioMeter audioMeter;
+
     DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
