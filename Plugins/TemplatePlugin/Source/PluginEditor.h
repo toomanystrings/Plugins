@@ -29,7 +29,8 @@ private:
     //DivisionVoid::Button button;
     //DivisionVoid::Slider slider;
 
-    AudioMeter audioMeter;
+    DivisionVoid::AudioMeter audioMeter;
+    DivisionVoid::Button button;
 
     DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to
