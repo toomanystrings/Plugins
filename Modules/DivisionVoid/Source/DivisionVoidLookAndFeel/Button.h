@@ -132,7 +132,117 @@ private:
 
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override
     {
+        int width  = getWidth();
+        int height = getHeight();
 
+        if (buttonStyle != ButtonStyle::SlidingToggle)
+        {
+            int cutoff = static_cast<int>(std::min(width, height) * scaleFactor);
+
+            juce::Path p;
+            //p.addRoundedRectangle(0, 0, width, height, CORNER_RADIUS, CORNER_RADIUS, false, !(isConnectedOnTop() || isConnectedOnRight()), !(isConnectedOnBottom() || isConnectedOnLeft()), false);
+            p.startNewSubPath(0, 0);
+            p.lineTo(width - cutoff, 0);
+            p.lineTo(width, cutoff);
+            p.lineTo(width, height);
+            p.lineTo(cutoff, height);
+            p.lineTo(0, height - cutoff);
+            p.closeSubPath();
+
+            juce::Colour background;
+            juce::Colour foreground;
+            juce::Colour text;
+
+            if (buttonStyle != ButtonStyle::Bar)
+            {
+                if (getToggleState())
+                {
+                    background = findColour(DivisionVoid::highlightColourId);
+
+                    if (hasKeyboardFocus(true) && wasFocusedByTab)
+                    {
+                        foreground = findColour(DivisionVoid::foregroundColourId);
+                        text = juce::Colours::antiquewhite;
+                    }
+                    else
+                    {
+                        foreground = findColour(DivisionVoid::backgroundColourId);
+                        text = juce::Colours::antiquewhite;
+                    }
+                }
+                else
+                {
+                    background = findColour(DivisionVoid::foregroundColourId);
+
+                    if (hasKeyboardFocus(true) && wasFocusedByTab)
+                    {
+                        foreground = findColour(DivisionVoid::highlightColourId);
+                        text = juce::Colours::antiquewhite;
+                    }
+                    else
+                    {
+                        foreground = findColour(DivisionVoid::backgroundColourId);
+                        text = juce::Colours::antiquewhite;
+                    }
+                }
+            }
+            else
+            {
+                background = findColour(DivisionVoid::foregroundColourId);
+
+                if (hasKeyboardFocus(true) && wasFocusedByTab)
+                {
+                    foreground = findColour(DivisionVoid::highlightColourId);
+                    text = juce::Colours::antiquewhite;
+                }
+                else
+                {
+                    foreground = findColour(DivisionVoid::backgroundColourId);
+                    text = juce::Colours::antiquewhite;
+                }
+            }
+
+            g.setColour(background.interpolatedWith(findColour(DivisionVoid::midgroundColourId), colourInterpolation.getNextValue()));
+            g.fillPath(p);
+
+            g.setColour(findColour(DivisionVoid::Colours::Black.getARGB()));
+            float strokeWidth = 2.f;
+            g.strokePath(p, juce::PathStrokeType(strokeWidth, juce::PathStrokeType::JointStyle::mitered));
+
+            g.setColour(text);
+            g.setFont(buttonFont);
+            g.drawFittedText(getButtonText(), CORNER_RADIUS / 2, CORNER_RADIUS / 2, width - CORNER_RADIUS, height - CORNER_RADIUS, juce::Justification::centred, 1, 1.0f);
+        }
+        else
+        {
+            juce::Path p;
+            p.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);
+            g.setColour(findColour(DivisionVoid::midgroundColourId));
+            g.fillPath(p);
+
+            p.clear();
+
+            p.addRoundedRectangle(trackArea.getX(), trackArea.getY(), trackArea.getWidth(), trackArea.getHeight(), 8, 8, false, true, true, false);
+            g.setColour(findColour(DivisionVoid::backgroundColourId));
+            g.fillPath(p);
+
+            p.clear();
+
+            p.addRoundedRectangle(indicatorArea.getX(), indicatorArea.getY(), indicatorArea.getWidth(), indicatorArea.getHeight(), 8, 8, false, true, true, false);
+            g.setColour(findColour(DivisionVoid::highlightColourId));
+            g.fillPath(p);
+
+            p.clear();
+
+            p.addRoundedRectangle(thumbArea.getX(), thumbArea.getY(), thumbArea.getWidth(), thumbArea.getHeight(), 8, 8, false, true, true, false);
+            g.setColour(findColour(DivisionVoid::foregroundColourId));
+            g.fillPath(p);
+
+            g.setColour(findColour(DivisionVoid::midgroundColourId));
+            int strokeWidth = std::min(thumbArea.getWidth(), thumbArea.getHeight()) / 4;
+            g.strokePath(p, (juce::PathStrokeType) strokeWidth);
+            //juce::PathStrokeType::PathStrokeType(strokeWidth));
+        }
     }
 
     void resized() override
