@@ -21,8 +21,8 @@ juce_add_plugin("${BaseTargetName}"
 juce_generate_juce_header(${BaseTargetName})
 
 target_sources(${BaseTargetName} PRIVATE
-        ../BassDivision/Source/PluginProcessor.cpp
-        ../BassDivision/Source/PluginEditor.cpp)
+        Source/PluginProcessor.cpp
+        Source/PluginEditor.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC

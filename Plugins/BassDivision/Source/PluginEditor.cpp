@@ -33,5 +33,5 @@ void BassDivisionAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
     
-    mMainPanel.setBounds(area);
+    //mMainPanel.setBounds(area);
 }

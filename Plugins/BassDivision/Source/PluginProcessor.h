@@ -9,14 +9,14 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Effects/Compressor.h"
-#include "Effects/BDDistortion.h"
+//#include "../../Bass Division/Source/Effects/Compressor.h"
+//#include "../../Bass Division/Source/Effects/BDDistortion.h"
 
-#include "GUI/MeterAnalysis.h"
-#include "Managers/PresetManager.h"
-#include "Managers/IrManager.h"
+//#include "../../Bass Division/Source/GUI/MeterAnalysis.h"
+//#include "../../Bass Division/Source/Managers/PresetManager.h"
+//#include "../../Bass Division/Source/Managers/IrManager.h"
 
-#include "FFT/SpectrumProcessor.h"
+//#include "../../Bass Division/Source/FFT/SpectrumProcessor.h"
 
 #include <array>
 template<typename T>
@@ -240,11 +240,11 @@ public:
     SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
 
 private:
-    juce::TimeSliceThread renderThread;
-    SpectrumProcessor spectrumProcessor;
+    //juce::TimeSliceThread renderThread;
+    //SpectrumProcessor spectrumProcessor;
     
-    PresetManager presetManager;
-    ImpulseResponseManager impulseResponseManager;
+    //PresetManager presetManager;
+    //ImpulseResponseManager impulseResponseManager;
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;
@@ -266,28 +266,28 @@ private:
     void processIrLowpass(juce::dsp::ProcessContextReplacing<float> context);
 
     // Compressor
-    Compressor compressor;
+    //Compressor compressor;
 
     float compInputGain = 1.0f;
     float compOutputGain = 1.0f;
 
     //Sub bass processing
-    Compressor subCompressor;
+    //Compressor subCompressor;
     
     float subInputGainLin = 1.0f;
     float subOutputGainLin = 1.0f;
 
     // Low Processing
-    Compressor lowCompressor;
+    //Compressor lowCompressor;
 
     float lowInputGainLin = 1.0f;
     float lowOutputGainLin = 1.0f;
 
     // Mid Processing
-    DivisionVoid::Distortion midDistortion;
+    //DivisionVoid::Distortion midDistortion;
 
     // High Processing
-    DivisionVoid::Distortion highDistortion;
+    //DivisionVoid::Distortion highDistortion;
 
     // Impulse Response
     juce::dsp::Convolution impulseResponse;

@@ -172,40 +172,40 @@ private:
                 }
                 else
                 {
-                    background = findColour(DivisionVoid::foregroundColourId);
+                    //background = findColour(DivisionVoid::foregroundColourId);
 
-                    if (hasKeyboardFocus(true) && wasFocusedByTab)
+                    if (hasKeyboardFocus(true))
                     {
-                        foreground = findColour(DivisionVoid::highlightColourId);
+                        //foreground = findColour(DivisionVoid::highlightColourId);
                         text = juce::Colours::antiquewhite;
                     }
                     else
                     {
-                        foreground = findColour(DivisionVoid::backgroundColourId);
+                        //foreground = findColour(DivisionVoid::backgroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                 }
             }
             else
             {
-                background = findColour(DivisionVoid::foregroundColourId);
+                //background = findColour(DivisionVoid::foregroundColourId);
 
-                if (hasKeyboardFocus(true) && wasFocusedByTab)
-                {
-                    foreground = findColour(DivisionVoid::highlightColourId);
-                    text = juce::Colours::antiquewhite;
-                }
-                else
-                {
-                    foreground = findColour(DivisionVoid::backgroundColourId);
-                    text = juce::Colours::antiquewhite;
-                }
+//                if (hasKeyboardFocus(true) && wasFocusedByTab)
+//                {
+//                    //foreground = findColour(DivisionVoid::highlightColourId);
+//                    text = juce::Colours::antiquewhite;
+//                }
+//                else
+//                {
+//                    //foreground = findColour(DivisionVoid::backgroundColourId);
+//                    text = juce::Colours::antiquewhite;
+//                }
             }
 
-            g.setColour(background.interpolatedWith(findColour(DivisionVoid::midgroundColourId), colourInterpolation.getNextValue()));
+            //g.setColour(background.interpolatedWith(findColour(DivisionVoid::midgroundColourId), colourInterpolation.getNextValue()));
             g.fillPath(p);
 
-            g.setColour(findColour(DivisionVoid::Colours::Black.getARGB()));
+            //g.setColour(findColour(DivisionVoid::Colours::Black.getARGB()));
             float strokeWidth = 2.f;
             g.strokePath(p, juce::PathStrokeType(strokeWidth, juce::PathStrokeType::JointStyle::mitered));
 
