@@ -9,7 +9,7 @@
 */
 
 #pragma once
-
+template <typename T>
 class TSClipper
 {
 public:
@@ -17,9 +17,9 @@ public:
 	~TSClipper(){};
 
 	// Callback Functions
-	float processSample(float Vi, int channel);
+	float processSample(T Vi, int channel);
 
-    void processBuffer(float* Vi, const int& channel, const int& bufferSize);
+    void processBuffer(T* Vi, const int& channel, const int& bufferSize);
 
 	void prepare(float sampleRate);
 

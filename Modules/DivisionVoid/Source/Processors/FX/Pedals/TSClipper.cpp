@@ -9,9 +9,10 @@
 */
 
 #include "TSClipper.h"
-#include <JuceHeader.h>
+#include "JuceHeader.h"
 
-float TSClipper::processSample(float Vi, int channel)
+template <typename T>
+float TSClipper<T>::processSample(T Vi, int channel)
 {
     float p = -Vi / (G4 * R4) + R1 / (G4 * R4) * x1[channel] - x2[channel];
 
@@ -39,7 +40,8 @@ float TSClipper::processSample(float Vi, int channel)
     return Vo * 2 / 3;
 }
 
-void TSClipper::processBuffer(float* Vi, const int& channel, const int& bufferSize)
+template <typename T>
+void TSClipper<T>::processBuffer(T* Vi, const int& channel, const int& bufferSize)
 {
 	for (int i = 0; i < bufferSize; ++i)
 	{
@@ -70,7 +72,8 @@ void TSClipper::processBuffer(float* Vi, const int& channel, const int& bufferSi
 	}
 }
 
-void TSClipper::prepare(float sampleRate)
+template <typename T>
+void TSClipper<T>::prepare(float sampleRate)
 {
 	if (this->sampleRate != sampleRate)
 	{
@@ -79,7 +82,8 @@ void TSClipper::prepare(float sampleRate)
 	}
 }
 
-void TSClipper::prepare(float sampleRate, int factor)
+template <typename T>
+void TSClipper<T>::prepare(float sampleRate, int factor)
 {
     if (this->sampleRate != sampleRate * factor)
     {
@@ -88,7 +92,8 @@ void TSClipper::prepare(float sampleRate, int factor)
     }
 }
 
-void TSClipper::setKnob(float drive)
+template <typename T>
+void TSClipper<T>::setKnob(float drive)
 {
 	if (this->drivePot != drive)
 	{
@@ -97,7 +102,8 @@ void TSClipper::setKnob(float drive)
 	}
 }
 
-void TSClipper::updateCoefficients()
+template <typename T>
+void TSClipper<T>::updateCoefficients()
 {
 	
     Ts = 1.0f / sampleRate;

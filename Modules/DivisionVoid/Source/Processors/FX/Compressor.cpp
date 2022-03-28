@@ -10,7 +10,8 @@
 
 #include "Compressor.h"
 
-float Compressor::processSample(float x, int channel)
+template <typename T>
+float DivisionVoid::Compressor<T>::processSample(T x, int channel)
 {
 	// Initalise y
 	float y = 0.0f;
@@ -67,7 +68,7 @@ float Compressor::processSample(float x, int channel)
 
 	gLin = powf(10.0f, gainChangeSmooth / 20.0f);
 
-	gainReductionValues.addValueToFifo(gLin);
+	//gainReductionValues.addValueToFifo(gLin);
 
 	prevGainChange[channel] = gainChangeSmooth;
 
@@ -76,7 +77,8 @@ float Compressor::processSample(float x, int channel)
 	return y;
 }
 
-void Compressor::processChannel(float* x, int channel, const int& bufferSize)
+template <typename T>
+void DivisionVoid::Compressor<T>::processChannel(T* x, int channel, const int& bufferSize)
 {
 	for (auto i = 0; i < bufferSize; ++i)
 	{
@@ -138,7 +140,7 @@ void Compressor::processChannel(float* x, int channel, const int& bufferSize)
 
 		gLin = powf(10.0f, gainChangeSmooth / 20.0f);
 
-		gainReductionValues.addValueToFifo(gLin);
+		//gainReductionValues.addValueToFifo(gLin);
 
 		prevGainChange[channel] = gainChangeSmooth;
 
@@ -151,7 +153,8 @@ void Compressor::processChannel(float* x, int channel, const int& bufferSize)
 	}
 }
 
-void Compressor::processStereo(float* xLeft, float* xRight, const int& bufferSize)
+template <typename T>
+void DivisionVoid::Compressor<T>::processStereo(float* xLeft, float* xRight, const int& bufferSize)
 {
 	for (auto i = 0; i < bufferSize; ++i)
 	{
@@ -272,48 +275,59 @@ void Compressor::processStereo(float* xLeft, float* xRight, const int& bufferSiz
 	
 }
 
-float Compressor::getGainReduction()
+template <typename T>
+float DivisionVoid::Compressor<T>::getGainReduction()
 {
 	return gLin;
 }
 
-void Compressor::setThreshold(float threshold)
+template <typename T>
+void DivisionVoid::Compressor<T>::setThreshold(float threshold)
 {
 	if (threshold <= 0.0f && threshold >= -64.0f)
 	{
 		this->threshold = threshold;
 	}
 }
-float Compressor::getThreshold()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getThreshold()
 {
 	return threshold;
 }
 
-void Compressor::setRatio(float ratio)
+template <typename T>
+void DivisionVoid::Compressor<T>::setRatio(float ratio)
 {
 	if (ratio <= 10.0f && ratio >= 1.0f)
 	{
 		this->ratio = ratio;
 	}
 }
-float Compressor::getRatio()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getRatio()
 {
 	return ratio;
 }
 
-void Compressor::setKnee(float knee)
+template <typename T>
+void DivisionVoid::Compressor<T>::setKnee(float knee)
 {
 	if (knee <= 10.0f && knee >= 0.0f)
 	{
 		this->knee = knee;
 	}
 }
-float Compressor::getKnee()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getKnee()
 {
 	return knee;
 }
 
-void Compressor::setAttack(float attack)
+template <typename T>
+void DivisionVoid::Compressor<T>::setAttack(float attack)
 {
 	if (attack <= 0.5f && attack >= 0.001f)
 	{
@@ -322,12 +336,15 @@ void Compressor::setAttack(float attack)
 		alphaA = expf(-logf(9.0f) / (Fs * attack));
 	}
 }
-float Compressor::getAttack()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getAttack()
 {
 	return attack;
 }
 
-void Compressor::setRelease(float release)
+template <typename T>
+void DivisionVoid::Compressor<T>::setRelease(float release)
 {
 	if (release <= 1.0f && release >= 0.01f)
 	{
@@ -336,12 +353,15 @@ void Compressor::setRelease(float release)
 		alphaR = expf(-logf(9.0f) / (Fs * release));
 	}
 }
-float Compressor::getRelease()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getRelease()
 {
 	return release;
 }
 
-void Compressor::setHPFFreq(float hpfFreq)
+template <typename T>
+void DivisionVoid::Compressor<T>::setHPFFreq(float hpfFreq)
 {
 	if (hpfFreq <= 500.0f && hpfFreq >= 0.1f)
 	{
@@ -350,22 +370,27 @@ void Compressor::setHPFFreq(float hpfFreq)
 		hpf[1].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
 	}
 }
-float Compressor::getHPFFreq()
+
+template <typename T>
+float DivisionVoid::Compressor<T>::getHPFFreq()
 {
 	return hpfFreq;
 }
 
-void Compressor::engageHPF(bool isEngaged)
+template <typename T>
+void DivisionVoid::Compressor<T>::engageHPF(bool isEngaged)
 {
 	hpfOn = isEngaged;
 }
 
-void Compressor::engageHarmonicContent(bool isEngaged)
+template <typename T>
+void DivisionVoid::Compressor<T>::engageHarmonicContent(bool isEngaged)
 {
 	harmonicContentOn = isEngaged;
 }
 
-void Compressor::setSampleRate(float Fs)
+template <typename T>
+void DivisionVoid::Compressor<T>::setSampleRate(float Fs)
 {
 	if (Fs == 44100 || Fs == 48000 || Fs == 88200 || Fs == 96000 || Fs == 192000)
 	{
@@ -375,32 +400,39 @@ void Compressor::setSampleRate(float Fs)
 	}
 }
 
-float Compressor::getSampleRate()
+template <typename T>
+float DivisionVoid::Compressor<T>::getSampleRate()
 {
 	return Fs;
 }
 
-void Compressor::setProgDependOn(bool progDependOn)
+template <typename T>
+void DivisionVoid::Compressor<T>::setProgDependOn(bool progDependOn)
 {
 	this->progDependOn = progDependOn;
 }
-bool Compressor::getProgDependOn()
+
+template <typename T>
+bool DivisionVoid::Compressor<T>::getProgDependOn()
 {
 	return progDependOn;
 }
 
-float Compressor::harmonicContent(float input)
+template <typename T>
+float DivisionVoid::Compressor<T>::harmonicContent(float input)
 {
 	return input - (drive * (1 / 2) * powf(input, 2)) - (drive * (1/3) * powf(input, 3));
 }
 
-void Compressor::setDrive(float drive)
+template <typename T>
+void DivisionVoid::Compressor<T>::setDrive(float drive)
 {
 	if (drive >= 0.0f && drive <= 1.0f)
 		this->drive = drive;
 }
 
-const float* Compressor::getGainReductionValues()
-{
-	return gainReductionValues.getFifoData();
-}
+
+//const float* Compressor::getGainReductionValues()
+//{
+//	return gainReductionValues.getFifoData();
+//}

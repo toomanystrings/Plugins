@@ -7,17 +7,19 @@
 
   ==============================================================================
 */
-#include <JuceHeader.h>
+#include "JuceHeader.h"
 
 #pragma once
+
+template <typename T>
 class MXRClipper
 {
 public:
     MXRClipper(){}
 	~MXRClipper(){}
 
-    float processSample(float sample, const int& channel);
-    void processBuffer(float* Vi, const int& channel, const int& bufferSize);
+    float processSample(T sample, const int& channel);
+    void processBuffer(T* Vi, const int& channel, const int& bufferSize);
 
     void prepare(double sampleRate);
 

@@ -10,7 +10,8 @@
 
 #include "MXRClipper.h"
 
-float MXRClipper::processSample(float sample, const int& channel)
+template <typename T>
+float MXRClipper<T>::processSample(T sample, const int& channel)
 {
 	// First, apply the gain stage
     float Vy = b0 * sample - x3[channel];
@@ -47,7 +48,8 @@ float MXRClipper::processSample(float sample, const int& channel)
     return Vo;
 }
 
-void MXRClipper::processBuffer(float* Vi, const int& channel, const int& bufferSize)
+template <typename T>
+void MXRClipper<T>::processBuffer(T* Vi, const int& channel, const int& bufferSize)
 {
     for (int i = 0; i < bufferSize; ++i)
     {
@@ -87,14 +89,16 @@ void MXRClipper::processBuffer(float* Vi, const int& channel, const int& bufferS
     }
 }
 
-void MXRClipper::prepare(double sampleRate)
+template <typename T>
+void MXRClipper<T>::prepare(double sampleRate)
 {
     this->sampleRate = sampleRate;
     Ts = 1.0f / sampleRate;
     updateCoefficients();
 }
 
-void MXRClipper::setDrive(float drive)
+template <typename T>
+void MXRClipper<T>::setDrive(float drive)
 {
     if (drive > 0.95)
         this->drive = drive;
@@ -106,13 +110,15 @@ void MXRClipper::setDrive(float drive)
     
 }
 
-void MXRClipper::setOutput(float output)
+template <typename T>
+void MXRClipper<T>::setOutput(float output)
 {
     this->output = output;
     G = (output * Rout) / (((1 - output) * Rout) + (output * Rout));
 }
 
-void MXRClipper::updateCoefficients()
+template <typename T>
+void MXRClipper<T>::updateCoefficients()
 {
     float R1 = Ts / (2.0f * C1);
     float R3 = Ts / (2.0f * C3);

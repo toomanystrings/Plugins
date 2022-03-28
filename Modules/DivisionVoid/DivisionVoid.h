@@ -34,8 +34,14 @@ BEGIN_JUCE_MODULE_DECLARATION
 // We will need to include files from source here
 #include "Source/Utilities.h"
 
+// Stylings
 #include "Source/DivisionVoidLookAndFeel/DivisionVoidFonts.h"
 #include "Source/DivisionVoidLookAndFeel/DivisionVoidColours.h"
 
+// Components
 #include "Source/DivisionVoidLookAndFeel/AudioMeter.h"
 //#include "Source/DivisionVoidLookAndFeel/Button.h"
+
+// FX processors
+#include "Source/Processors/FX/Compressor.h"
+#include "Source/Processors/FX/Distortion.h"
