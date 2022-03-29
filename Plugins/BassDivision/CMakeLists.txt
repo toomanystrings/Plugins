@@ -32,15 +32,14 @@ target_compile_definitions(${BaseTargetName}
         JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=0)
 
 target_link_libraries(${BaseTargetName} PRIVATE
-        DivisionVoid_GUI
-        dRowAudio
+        shared_resources
         juce::juce_audio_utils
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
         juce::juce_opengl
         juce::juce_dsp
-        )
+        DivisionVoid)
 
 if(APPLE)
     add_custom_command(TARGET ${BaseTargetName}_AU

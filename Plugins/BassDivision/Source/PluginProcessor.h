@@ -221,8 +221,8 @@ public:
     
     void updateFilters(const ChainSettings& chainSettings);
     
-    PresetManager* getPresetManager();
-    ImpulseResponseManager* getImpulseResponseManager();
+    //PresetManager* getPresetManager();
+    //ImpulseResponseManager* getImpulseResponseManager();
     
     void setImpulseResponseIsEngaged(bool impulseResponseEngaged) { this->isImpulseResponseEngaged = impulseResponseEngaged; }
     
@@ -237,7 +237,7 @@ public:
     
     juce::Value sampleRate;
 
-    SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
+    //SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
 
 private:
     //juce::TimeSliceThread renderThread;
@@ -266,28 +266,28 @@ private:
     void processIrLowpass(juce::dsp::ProcessContextReplacing<float> context);
 
     // Compressor
-    //Compressor compressor;
+    DivisionVoid::Compressor<float> compressor;
 
     float compInputGain = 1.0f;
     float compOutputGain = 1.0f;
 
     //Sub bass processing
-    //Compressor subCompressor;
+    DivisionVoid::Compressor<float> subCompressor;
     
     float subInputGainLin = 1.0f;
     float subOutputGainLin = 1.0f;
 
     // Low Processing
-    //Compressor lowCompressor;
+    DivisionVoid::Compressor<float> lowCompressor;
 
     float lowInputGainLin = 1.0f;
     float lowOutputGainLin = 1.0f;
 
     // Mid Processing
-    //DivisionVoid::Distortion midDistortion;
+    DivisionVoid::Distortion<float> midDistortion;
 
     // High Processing
-    //DivisionVoid::Distortion highDistortion;
+    DivisionVoid::Distortion<float> highDistortion;
 
     // Impulse Response
     juce::dsp::Convolution impulseResponse;

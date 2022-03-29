@@ -21,26 +21,89 @@ namespace DivisionVoid
 		Distortion() = default;
 		~Distortion() = default;
 
-		void prepare(double sampleRate, const int& bufferSize);
+		void prepare(double sampleRate, const int& bufferSize)
+        {
+            this->sampleRate = sampleRate;
 
-		void process(T* x, const int& channel, const int& bufferSize);
+            tubeScreamer.prepare(sampleRate);
+            mxrDistiortion.prepare(sampleRate);
+        }
 
-		void setInputGain(float inputGaindB);
+		void process(T* x, const int& channel, const int& bufferSize)
+        {
+            for (int sample = 0; sample < bufferSize; ++sample)
+                x[sample] *= inputGainLin;
 
+
+            switch (distortionSetting)
+            {
+                case 0:
+                    for (int i = 0; i < bufferSize; ++i)
+                        x[i] = (1 - mix) * x[i] + mix * tubeScreamer.processSample(x[i], channel);
+                    break;
+
+                case 1:
+                    for (int i = 0; i < bufferSize; ++i)
+                        x[i] = (1 - mix) * x[i] + mix * mxrDistiortion.processSample(x[i], channel);
+                    break;
+
+                    // Confirm the two pedals work, then bring in half rec and maybe something else, just need to confirm the
+                    // indexing of the knob
+                case 2:
+                    break;
+                default:
+                    for (int i = 0; i < bufferSize; ++i)
+                        x[i] = (1 - mix) * x[i] + mix * tubeScreamer.processSample(x[i], channel);
+                    break;
+
+            }
+
+            for (int sample = 0; sample < bufferSize; ++sample)
+                x[sample] *= outputGainLin;
+        }
+
+		void setInputGain(float inputGaindB)
+        {
+            this->inputGainLin = juce::Decibels::decibelsToGain(inputGaindB);
+            this->outputGainLin = juce::Decibels::decibelsToGain(-inputGaindB);
+        }
 
 		// Returns the gain value in dB.
-		float getInputGaindB();
+		float getInputGaindB()
+        {
+            return juce::Decibels::gainToDecibels(inputGainLin);
+        }
 
-		void setEdge(float edge);
+		void setEdge(float edge)
+        {
+            this->edge = edge;
+            tubeScreamer.setKnob(edge / 10);
+            mxrDistiortion.setDrive(edge / 10);
+        }
 
-		float getEdge();
+		float getEdge()
+        {
+            return edge;
+        }
 
-		void setType(int distortionType);
+		void setType(int distortionType)
+        {
+            distortionSetting = distortionType;
+        }
 
-		int getType();
+		int getType()
+        {
+            return distortionSetting;
+        }
 
-		void setMix(float mix);
-        float getMix();
+		void setMix(float mix)
+        {
+            this->mix = mix / 100;
+        }
+        float getMix()
+        {
+            return mix;
+        }
 
 	private:
 		double sampleRate = 44100;
