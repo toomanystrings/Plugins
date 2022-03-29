@@ -10,16 +10,16 @@
 
 #pragma once
 
-#include "../../../BassDivision/Source/GUI/PanelBase.h"
-#include "BDEqPanel.h"
-#include "BDCompPanel.h"
+#include "../PanelBase.h"
+//#include "../../../../Bass Division/Source/GUI/BDEqPanel.h"
+//#include "../../../../Bass Division/Source/GUI/BDCompPanel.h"
 
 
-class BDProcessPanel : public BDPanelBase
+class ProcessPanel : public PanelBase
 {
 public:
-    BDProcessPanel(BassDivisionAudioProcessor& inProcessor);
-    ~BDProcessPanel();
+    ProcessPanel(BassDivisionAudioProcessor& inProcessor);
+    ~ProcessPanel();
 
     void paint(juce::Graphics& g) override;
 
@@ -28,8 +28,8 @@ public:
 
 private:
 
-    BDEqPanel mEqPanel;
-    BDCompPanel mCompPanel;
+    //BDEqPanel mEqPanel;
+    //BDCompPanel mCompPanel;
 
     
     

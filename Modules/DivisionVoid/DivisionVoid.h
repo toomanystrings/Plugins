@@ -40,7 +40,7 @@ BEGIN_JUCE_MODULE_DECLARATION
 
 // Components
 #include "Source/DivisionVoidLookAndFeel/AudioMeter.h"
-//#include "Source/DivisionVoidLookAndFeel/Button.h"
+#include "Source/DivisionVoidLookAndFeel/Button.h"
 
 // FX processors
 #include "Source/Processors/FX/Compressor.h"

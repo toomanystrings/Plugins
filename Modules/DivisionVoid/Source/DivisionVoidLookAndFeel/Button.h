@@ -9,7 +9,28 @@ namespace DivisionVoid
 class Button : public juce::Button, private juce::Timer
 {
 public:
-    Button() = default;
+    Button() : juce::Button("")
+    {
+        setColour(DivisionVoidColours::backgroundColourId, DivisionVoidColours::black);
+        setColour(DivisionVoidColours::midgroundColourId, DivisionVoidColours::grey);
+        setColour(DivisionVoidColours::foregroundColourId, DivisionVoidColours::black);
+        setColour(DivisionVoidColours::highlightColourId, DivisionVoidColours::red);
+
+        //setFont(DivisionVoid::Fonts::NowRegular.withHeight(DivisionVoid::FontHeights::Medium));
+
+        setButtonText("");
+
+        setClickingTogglesState(true);
+        setTriggeredOnMouseDown(false);
+        setRepaintsOnMouseActivity(false);
+
+        resizeGuard = false;
+
+        wasFocusedByTab = false;
+
+        colourInterpolation.reset(50, 0.35);
+    }
+
     ~Button() = default;
 
     enum ButtonStyle
@@ -19,9 +40,11 @@ public:
         SlidingToggle
     };
 
-    void setButtonText(const String& newText)
+    void setButtonText(const char *newText)
     {
-        juce::Button::setButtonText(newText);
+        juce::String charPtr = (juce::CharPointer_UTF8) newText;
+        //juce::String::CharPointerType::CharPointer_UTF8(newText);
+        juce::Button::setButtonText(charPtr);
     }
 
     void setButtonStyle(ButtonStyle style)
@@ -65,7 +88,7 @@ private:
     void mouseDown(const juce::MouseEvent& e) override
     {
         if(!isEnabled()) { return; }
-        colourInterpolator.setCurrentAndTargetValue(1.0f);
+        colourInterpolation.setCurrentAndTargetValue(1.0f);
 
         if (buttonStyle == ButtonStyle::Bar)
         {
@@ -127,7 +150,75 @@ private:
 
     void timerCallback() override
     {
+        if (buttonStyle != ButtonStyle::SlidingToggle)
+        {
+            if (colourInterpolation.isSmoothing())
+            {
+                repaint();
 
+                if (std::abs(colourInterpolation.getTargetValue() - colourInterpolation.getNextValue()) < 0.0001)
+                {
+                    colourInterpolation.setValue(colourInterpolation.getTargetValue());
+                }
+            }
+            else
+            {
+                if (colourInterpolation.getTargetValue() == 1.0f && !juce::Component::isMouseButtonDownAnywhere())
+                {
+                    colourInterpolation.setValue(0.0f);
+                }
+                else if (colourInterpolation.getTargetValue() == 1.0f)
+                {
+                    colourInterpolation.setValue(1.0f);
+                }
+                else
+                {
+                    if (colourInterpolation.getNextValue() == 0.0f)
+                    {
+                        colourInterpolation.setValue(0.0f);
+                        stopTimer();
+                    }
+                    return;
+                }
+            }
+        }
+        else
+        {
+            if (thumbArea.getX() <= (animationStart.getX() + animationEnd.getX()) / 2)
+            {
+                animationAcc += ANIMATION_SPEED;
+            }
+            else
+            {
+                animationAcc -= ANIMATION_SPEED;
+            }
+
+            if (std::abs(animationVel) < 4)
+            {
+                animationVel += animationAcc;
+            }
+
+            thumbArea.translate(animationVel, 0);
+            indicatorArea.setWidth((thumbArea.getX() - indicatorArea.getX()) + thumbArea.getWidth()/2);
+
+            if (indicatorArea.getWidth() < 0)
+            {
+                indicatorArea.setWidth(0);
+            }
+
+            if (thumbArea.getPosition().getDistanceFrom(animationEnd) <= 4 || thumbArea.getX() < getWidth() / 4 || thumbArea.getX() > getWidth() / 2)
+            {
+                animationAcc = 0;
+                animationVel = 0;
+
+                thumbArea.setPosition(animationEnd);
+                indicatorArea.setWidth((thumbArea.getX() - indicatorArea.getX()) + thumbArea.getWidth()/2);
+
+                stopTimer();
+                repaint();
+            }
+        }
+        repaint();
     }
 
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override
@@ -157,31 +248,31 @@ private:
             {
                 if (getToggleState())
                 {
-                    background = findColour(DivisionVoid::highlightColourId);
+                    background = findColour(DivisionVoidColours::highlightColourId);
 
                     if (hasKeyboardFocus(true) && wasFocusedByTab)
                     {
-                        foreground = findColour(DivisionVoid::foregroundColourId);
+                        foreground = findColour(DivisionVoidColours::foregroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                     else
                     {
-                        foreground = findColour(DivisionVoid::backgroundColourId);
+                        foreground = findColour(DivisionVoidColours::backgroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                 }
                 else
                 {
-                    //background = findColour(DivisionVoid::foregroundColourId);
+                    background = findColour(DivisionVoidColours::foregroundColourId);
 
                     if (hasKeyboardFocus(true))
                     {
-                        //foreground = findColour(DivisionVoid::highlightColourId);
+                        foreground = findColour(DivisionVoidColours::highlightColourId);
                         text = juce::Colours::antiquewhite;
                     }
                     else
                     {
-                        //foreground = findColour(DivisionVoid::backgroundColourId);
+                        foreground = findColour(DivisionVoidColours::backgroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                 }
@@ -202,7 +293,7 @@ private:
 //                }
             }
 
-            //g.setColour(background.interpolatedWith(findColour(DivisionVoid::midgroundColourId), colourInterpolation.getNextValue()));
+            g.setColour(background.interpolatedWith(findColour(DivisionVoidColours::midgroundColourId), colourInterpolation.getNextValue()));
             g.fillPath(p);
 
             //g.setColour(findColour(DivisionVoid::Colours::Black.getARGB()));
@@ -217,28 +308,28 @@ private:
         {
             juce::Path p;
             p.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);
-            g.setColour(findColour(DivisionVoid::midgroundColourId));
+            g.setColour(findColour(DivisionVoidColours::midgroundColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(trackArea.getX(), trackArea.getY(), trackArea.getWidth(), trackArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoid::backgroundColourId));
+            g.setColour(findColour(DivisionVoidColours::backgroundColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(indicatorArea.getX(), indicatorArea.getY(), indicatorArea.getWidth(), indicatorArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoid::highlightColourId));
+            g.setColour(findColour(DivisionVoidColours::highlightColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(thumbArea.getX(), thumbArea.getY(), thumbArea.getWidth(), thumbArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoid::foregroundColourId));
+            g.setColour(findColour(DivisionVoidColours::foregroundColourId));
             g.fillPath(p);
 
-            g.setColour(findColour(DivisionVoid::midgroundColourId));
+            g.setColour(findColour(DivisionVoidColours::midgroundColourId));
             int strokeWidth = std::min(thumbArea.getWidth(), thumbArea.getHeight()) / 4;
             g.strokePath(p, (juce::PathStrokeType) strokeWidth);
             //juce::PathStrokeType::PathStrokeType(strokeWidth));
@@ -250,12 +341,28 @@ private:
 
     }
 
-    juce::LinearSmoothedValue<float> colourInterpolator;
+    float animationAcc;
+    float animationVel;
+    juce::Point<int> animationStart;
+    juce::Point<int> animationEnd;
 
-    ButtonStyle buttonStyle;
-    float cornerCutoff = 0.33f;
+    juce::LinearSmoothedValue<float> colourInterpolation;
+
+    bool resizeGuard;
+    juce::Rectangle<int> thumbArea;
+    juce::Rectangle<int> trackArea;
+    juce::Rectangle<int> indicatorArea;
+
+    bool isDraggable;
+    bool wasFocusedByTab;
 
     juce::Font buttonFont;
+
+    ButtonStyle buttonStyle;
+
+    float scaleFactor = 0.33f;
+
+    float cornerCutoff = 0.3f;
 
 
 };

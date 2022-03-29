@@ -12,7 +12,7 @@
 
 #include "PanelBase.h"
 //#include "../../../Bass Division/Source/GUI/BDTopPanel.h"
-//#include "../../../Bass Division/Source/GUI/BDBottomPanel.h"
+#include "Panels/BottomPanel.h"
 
 
 //#include "../../../Bass Division/Source/GUI/BDAnalyserPanel.h"
@@ -31,8 +31,5 @@ private:
 
     //BDTopPanel mTopPanel;
     //BDAnalyserPanel mAnalyserPanel;
-    //BDBottomPanel mBottomPanel;
-    
-
-    
+    BottomPanel mBottomPanel;
 };

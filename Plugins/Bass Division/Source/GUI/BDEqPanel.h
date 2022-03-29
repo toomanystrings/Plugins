@@ -64,14 +64,7 @@ private:
 	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> band5SliderAttachment;
 	std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> highShelfSliderAttachment;
 
-	/****************************************************************************
-	 * CROSSOVER
-	 ****************************************************************************/
 
-	
-
-	//Utilities utils;
-	//juce::Font norse = utils.getNorseBoldFont();
 
 	Runes runes[2];
 
