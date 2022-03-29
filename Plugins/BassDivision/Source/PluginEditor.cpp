@@ -15,8 +15,8 @@ BassDivisionAudioProcessorEditor::BassDivisionAudioProcessorEditor (BassDivision
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    //setSize (MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT - 100);
-    setSize(800, 600);
+    setSize (MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT - 100);
+    //setSize(800, 600);
     //addAndMakeVisible (mMainPanel);
 }
 

@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include "../../../BassDivision/Source/PluginProcessor.h"
-#include "InterfaceDefines.h"
+#include "../../../BassDivision/Source/GUI/InterfaceDefines.h"
 
 class BDPanelBase : public juce::Component
 {
