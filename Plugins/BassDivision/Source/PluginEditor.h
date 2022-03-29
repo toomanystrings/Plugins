@@ -11,7 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-//#include "../../Bass Division/Source/GUI/BDMainPanel.h"
+#include "GUI/MainPanel.h"
 
 
 //==============================================================================
@@ -29,7 +29,7 @@ public:
 
 private:
 
-    //BDMainPanel mMainPanel;
+    MainPanel mMainPanel;
     
     BassDivisionAudioProcessor& audioProcessor;
 

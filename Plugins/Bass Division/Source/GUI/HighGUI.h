@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "BDPanelBase.h"
+#include "../../../BassDivision/Source/GUI/PanelBase.h"
 
 #include "CentreKnobLAF.h"
 #include "NormalKnobLAF.h"

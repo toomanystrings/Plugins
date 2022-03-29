@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "BDPanelBase.h"
+#include "../../../BassDivision/Source/GUI/PanelBase.h"
 
 BDPanelBase::BDPanelBase(BassDivisionAudioProcessor& inProcessor) : mProcessor(inProcessor)
 {

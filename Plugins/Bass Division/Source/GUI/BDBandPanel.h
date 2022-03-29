@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "BDPanelBase.h"
+#include "../../../BassDivision/Source/GUI/PanelBase.h"
 #include "SubGUI.h"
 #include "LowGUI.h"
 #include "MidGUI.h"

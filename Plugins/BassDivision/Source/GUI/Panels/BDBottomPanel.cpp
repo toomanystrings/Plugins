@@ -10,62 +10,58 @@
 
 #include "BDBottomPanel.h"
 
-BDBottomPanel::BDBottomPanel(BassDivisionAudioProcessor& inProcessor) : BDPanelBase(inProcessor), mProcessPanel(inProcessor), mBandPanel(inProcessor)
+BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor)//, mProcessPanel(inProcessor), mBandPanel(inProcessor)
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
 
     //mProcessPanel = new BDProcessPanel(inProcessor);
-    addAndMakeVisible(mProcessPanel);
+    //addAndMakeVisible(mProcessPanel);
 	
 
     //mBandPanel = new BDBandPanel(inProcessor);
-    addAndMakeVisible(mBandPanel);
-    mBandPanel.setVisible(false);
-
-	/// TODO: Add in the band processor, and add in button code to switch between the views {BIG FUCKING TICK}
+    //addAndMakeVisible(mBandPanel);
+    //mBandPanel.setVisible(false);
 	
     //norse.setBold(true);
 
-    processButton.addListener(this);
-    //processButton.setFont(norse);
+    /*processButton.addListener(this);
     processButton.setButtonStyle(DivisionVoid::Button::BarToggle);
     processButton.setButtonText("Process");
     processButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     addAndMakeVisible(processButton);
 
     bandButton.addListener(this);
-    //bandButton.setFont(norse);
     bandButton.setButtonStyle(DivisionVoid::Button::BarToggle);
     bandButton.setButtonText("Band");
-    addAndMakeVisible(bandButton);
+    addAndMakeVisible(bandButton);*/
 }
 
-BDBottomPanel::~BDBottomPanel()
+BottomPanel::~BottomPanel()
 {
 }
 
-void BDBottomPanel::paint(juce::Graphics& g)
+void BottomPanel::paint(juce::Graphics& g)
 {
 	
 }
 
-void BDBottomPanel::resized()
+void BottomPanel::resized()
 {
     auto xPivot = 10;
 	
-    processButton.setBounds(xPivot, getHeight() / 2 - 25, 120, 25);
+    /*processButton.setBounds(xPivot, getHeight() / 2 - 25, 120, 25);
     processButton.setTransform(juce::AffineTransform::rotation(M_PI_2 * 3, xPivot, getHeight() / 2 - 25));
 
     bandButton.setBounds(xPivot, getHeight() - 55, 120, 25);
     bandButton.setTransform(juce::AffineTransform::rotation(M_PI_2 * 3, xPivot, getHeight() - 55));
 
 	processButton.setFont(DVFonts::getBoldNorse(17));
-	bandButton.setFont(DVFonts::getBoldNorse(17));
+	bandButton.setFont(DVFonts::getBoldNorse(17));*/
 }
 
-void BDBottomPanel::buttonClicked(juce::Button* b)
+void BottomPanel::buttonClicked(juce::Button* b)
 {
-	if (b == &processButton)
+	/*if (b == &processButton)
 	{
         if (processButton.getToggleState() == true)
         {
@@ -95,7 +91,7 @@ void BDBottomPanel::buttonClicked(juce::Button* b)
         {
             bandButton.setToggleState(true, juce::NotificationType::dontSendNotification);
         }
-	}
+	}*/
 }
 
 

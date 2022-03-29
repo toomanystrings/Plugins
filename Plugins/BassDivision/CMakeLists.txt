@@ -22,7 +22,8 @@ juce_generate_juce_header(${BaseTargetName})
 
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
-        Source/PluginEditor.cpp)
+        Source/PluginEditor.cpp
+        Source/GUI/MainPanel.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC

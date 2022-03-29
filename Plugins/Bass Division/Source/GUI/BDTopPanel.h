@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "BDPanelBase.h"
+#include "../../../BassDivision/Source/GUI/PanelBase.h"
 
 #include "PresetPanel.h"
 #include "IrPanel.h"
