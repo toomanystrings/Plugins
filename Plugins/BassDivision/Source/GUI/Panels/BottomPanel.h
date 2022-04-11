@@ -46,6 +46,13 @@ private:
 
     private:
 
+        juce::Slider sliders[8];
+        juce::Label labels[8];
+        UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> attachments[8];
+        juce::String names[8] = {"ATTACK", "RELEASE", "RATIO", "THRESHOLD",
+                                 "KNEE", "HPF", "INPUT", "OUTPUT"};
+
+
         DivisionVoidFonts fonts;
     };
 
