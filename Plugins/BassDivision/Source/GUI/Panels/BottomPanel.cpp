@@ -266,6 +266,8 @@ void ProcessPanel::CompressorPanel::resized()
 BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor), subPanel(inProcessor, "sub"),
                                                                 lowPanel(inProcessor, "low")
 {
+    setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
+
     addAndMakeVisible(subPanel);
     addAndMakeVisible(lowPanel);
 }
@@ -290,8 +292,10 @@ void BandPanel::resized()
 }
 
 BandPanel::BandCompPanel::BandCompPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
-PanelBase(inProcessor), band(bandName.toUpperCase())
+PanelBase(inProcessor)
 {
+    band = bandName;
+
     // "ATTACK", "RELEASE", "RATIO", "THRESHOLD", "INPUT", "OUTPUT"
     for (int i = 0; i < 6; ++i)
     {
