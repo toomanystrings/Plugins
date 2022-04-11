@@ -12,7 +12,8 @@
 
 // Bottom Panel
 
-BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor), mProcessPanel(inProcessor), mBandPanel(inProcessor)
+BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
+mProcessPanel(inProcessor), mBandPanel(inProcessor)
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
 
@@ -111,7 +112,24 @@ void ProcessPanel::resized()
 
 ProcessPanel::EqPanel::EqPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
 {
+    // "Low Shelf", "200 Hz", "500 Hz", "1 KHz", "1.5 KHz",
+    // "2.5 KHz", "High Shelf"
+    for (int i = 0; i < 7; ++i)
+    {
+        sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
+        sliders[i].setTextValueSuffix("dB");
+        //sliders[i].setLookAndFeel(&centreLAF);
+        addAndMakeVisible(&sliders[i]);
 
+        labels[i].setText(freqs[i], juce::dontSendNotification);
+        labels[i].attachToComponent(&sliders[i], false);
+        labels[i].setJustificationType(juce::Justification::centred);
+        labels[i].setColour(0x1000281, juce::Colours::black);
+        addAndMakeVisible(labels[i]);
+
+        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(inProcessor.treeState, names[i], sliders[i]);
+    }
 }
 
 void ProcessPanel::EqPanel::paint(juce::Graphics &g)
@@ -122,7 +140,32 @@ void ProcessPanel::EqPanel::paint(juce::Graphics &g)
 
 void ProcessPanel::EqPanel::resized()
 {
+    const auto width = getWidth();
+    const auto height = getHeight();
 
+    const auto centreY = height / 2;
+
+    const auto knobDiameter = height / 4;
+
+    const auto border = 20;
+    const auto yOffset = 30;
+
+    sliders[0].setBounds((width / 6 * 1), border + yOffset, knobDiameter, knobDiameter);
+    sliders[1].setBounds((width / 6 * 1.5), centreY + border, knobDiameter, knobDiameter);
+    sliders[2].setBounds((width / 6 * 2), border + yOffset, knobDiameter, knobDiameter);
+    sliders[3].setBounds((width / 6 * 2.5), centreY + border, knobDiameter, knobDiameter);
+    sliders[4].setBounds((width / 6 * 3), border + yOffset, knobDiameter, knobDiameter);
+    sliders[5].setBounds((width / 6 * 3.5), centreY + border, knobDiameter, knobDiameter);
+    sliders[6].setBounds((width / 6 * 4), border + yOffset, knobDiameter, knobDiameter);
+
+
+    //runes[0].setBounds(40, centreY - 10, 20, 20);
+    //runes[1].setBounds(width - 60, centreY - 10, 20, 20);
+
+    for (auto& label : labels)
+    {
+        label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
+    }
 }
 
 ProcessPanel::CompressorPanel::CompressorPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
@@ -220,9 +263,11 @@ void ProcessPanel::CompressorPanel::resized()
 
 // Band Panel
 
-BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
+BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor), subPanel(inProcessor, "sub"),
+                                                                lowPanel(inProcessor, "low")
 {
-
+    addAndMakeVisible(subPanel);
+    addAndMakeVisible(lowPanel);
 }
 
 void BandPanel::paint(juce::Graphics& g)
@@ -232,5 +277,97 @@ void BandPanel::paint(juce::Graphics& g)
 
 void BandPanel::resized()
 {
+    auto area = getBounds();
 
+    area.removeFromRight(20);
+    //mHighGui.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
+    //mHighCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    //mMidGui.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
+    //mMidCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    lowPanel.setBounds(area.removeFromRight(COMP_PANEL_WIDTH)));
+    //mLowCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    subPanel.setBounds(area.removeFromRight(COMP_PANEL_WIDTH)));
+}
+
+BandPanel::BandCompPanel::BandCompPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
+PanelBase(inProcessor), band(bandName.toUpperCase())
+{
+    // "ATTACK", "RELEASE", "RATIO", "THRESHOLD", "INPUT", "OUTPUT"
+    for (int i = 0; i < 6; ++i)
+    {
+        sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
+
+        labels[i].setText(names[i], juce::dontSendNotification);
+        labels[i].attachToComponent(&sliders[i], false);
+        labels[i].setJustificationType(juce::Justification::centred);
+        labels[i].setColour(0x1000281, juce::Colours::black);
+
+        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                inProcessor.treeState, band + "_COMP_" + names[i], sliders[i]
+        );
+    }
+
+    for (auto &slider : sliders)
+    {
+        addAndMakeVisible(slider);
+    }
+
+    for (auto &label : labels)
+    {
+        addAndMakeVisible(label);
+    }
+
+    soloButton.setToggleState(false, juce::dontSendNotification);
+    soloButton.setButtonStyle(DivisionVoid::Button::ButtonStyle::BarToggle);
+    soloButton.setButtonText("S");
+
+    addAndMakeVisible(soloButton);
+
+    soloButtonAttachment = MakeUnique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+            inProcessor.treeState, band + "_SOLO", soloButton
+            );
+}
+
+void BandPanel::BandCompPanel::paint(juce::Graphics &g)
+{
+    g.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 25.0f));
+    g.drawText(band, 0, 0, getWidth(), getHeight() - 15, juce::Justification::centredBottom);
+}
+
+void BandPanel::BandCompPanel::resized()
+{
+    auto area = getBounds();
+
+    const auto width = getWidth();
+    const auto height = getHeight();
+
+    const auto centreX = width / 2 + 20;
+    const auto centreY = height / 2;
+
+    const auto gainKnobSize = height / 5.5;
+
+    const auto border = 0;
+
+    auto row1 = 35;
+    auto row2 = 125;
+    auto row3 = 215;
+
+    // "ATTACK", "RELEASE", "RATIO", "THRESHOLD", "INPUT", "OUTPUT"
+    sliders[0].setBounds(centreX - gainKnobSize, row1, gainKnobSize, gainKnobSize);
+    sliders[1].setBounds(centreX, row1, gainKnobSize, gainKnobSize);
+    sliders[2].setBounds(centreX, row2, gainKnobSize, gainKnobSize);
+    sliders[3].setBounds(centreX - gainKnobSize, row2, gainKnobSize, gainKnobSize);
+    sliders[4].setBounds(centreX - gainKnobSize, row3, gainKnobSize, gainKnobSize);
+    sliders[5].setBounds(centreX, row3, gainKnobSize, gainKnobSize);
+
+    for (auto& label : labels) {
+        label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
+    }
+
+    const auto buttonWidth = 25;
+    const auto buttonOffset = 10;
+
+    soloButton.setBounds(buttonOffset + buttonWidth + 15, height - buttonOffset - buttonWidth, buttonWidth, buttonWidth);
+    soloButton.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
 }

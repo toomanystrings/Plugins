@@ -173,8 +173,4 @@ void BDEqPanel::resized()
 	band4Label.setFont(DVFonts::getBoldNorse(17));
 	band5Label.setFont(DVFonts::getBoldNorse(17));
 	highShelfLabel.setFont(DVFonts::getBoldNorse(17));
-
-	
-
-	//lowShelfSlider.
 }
