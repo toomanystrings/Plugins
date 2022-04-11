@@ -335,6 +335,23 @@ BandPanel::BandCompPanel::BandCompPanel(BassDivisionAudioProcessor &inProcessor,
         addAndMakeVisible(label);
     }
 
+    sliders[0].setTextValueSuffix("ms");
+    sliders[0].setLookAndFeel(&LAF);
+
+    sliders[1].setTextValueSuffix("ms");
+    sliders[1].setLookAndFeel(&LAF);
+
+    sliders[2].setLookAndFeel(&LAF);
+
+    sliders[3].setTextValueSuffix("dB");
+    sliders[3].setLookAndFeel(&LAF);
+
+    sliders[4].setTextValueSuffix("dB");
+    sliders[4].setLookAndFeel(&centreLAF);
+
+    sliders[5].setTextValueSuffix("dB");
+    sliders[5].setLookAndFeel(&centreLAF);
+
     soloButton.setToggleState(false, juce::dontSendNotification);
     soloButton.setButtonStyle(DivisionVoid::Button::ButtonStyle::BarToggle);
     soloButton.setButtonText("S");
@@ -418,6 +435,16 @@ BandPanel::BandDistortionPanel::BandDistortionPanel(BassDivisionAudioProcessor &
         addAndMakeVisible(label);
     }
 
+    sliders[0].setTextValueSuffix("dB");
+    sliders[0].setLookAndFeel(&centreLAF);
+
+    sliders[1].setTextValueSuffix("%");
+    sliders[1].setLookAndFeel(&LAF);
+
+    sliders[2].setLookAndFeel(&centreLAF);
+
+    sliders[3].setLookAndFeel(&LAF);
+
     soloButton.setToggleState(false, juce::dontSendNotification);
     soloButton.setButtonStyle(DivisionVoid::Button::ButtonStyle::BarToggle);
     soloButton.setButtonText("S");
@@ -427,16 +454,6 @@ BandPanel::BandDistortionPanel::BandDistortionPanel(BassDivisionAudioProcessor &
     soloButtonAttachment = MakeUnique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
             inProcessor.treeState, band + "_SOLO", soloButton
     );
-
-    //gainSlider.setTextValueSuffix("dB");
-    //gainSlider.setLookAndFeel(&centreLAF);
-
-    //wetDrySlider.setTextValueSuffix("%");
-    //wetDrySlider.setLookAndFeel(&LAF);
-
-    //typeSlider.setLookAndFeel(&centreLAF);
-
-    //edgeSlider.setLookAndFeel(&LAF);
 
     /*for (auto i = 0; i < 2; ++i)
     {
@@ -490,7 +507,7 @@ BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &in
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
     slider.setTextValueSuffix("Hz");
-    //highXoverSlider.setLookAndFeel(&centreLAF);
+    slider.setLookAndFeel(&centreLAF);
     addAndMakeVisible(&slider);
 
     label.setText(band + " X-over", juce::dontSendNotification);

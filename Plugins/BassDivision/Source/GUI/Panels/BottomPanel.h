@@ -108,6 +108,9 @@ private:
         juce::String band;
 
         DivisionVoidFonts fonts;
+
+        DivisionVoid::CentreKnobLAF centreLAF;
+        DivisionVoid::NormalKnobLAF LAF;
     };
 
     struct BandDistortionPanel : public PanelBase
@@ -131,6 +134,9 @@ private:
         juce::String band;
 
         DivisionVoidFonts fonts;
+
+        DivisionVoid::CentreKnobLAF centreLAF;
+        DivisionVoid::NormalKnobLAF LAF;
     };
 
     struct BandCrossoverPanel : public PanelBase
@@ -152,6 +158,8 @@ private:
         Runes runes[2];
 
         DivisionVoidFonts fonts;
+
+        DivisionVoid::CentreKnobLAF centreLAF;
     };
 
     BandCompPanel subPanel, lowPanel;
