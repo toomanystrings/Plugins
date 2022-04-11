@@ -12,7 +12,7 @@
 
 #include "../../../BassDivision/Source/GUI/PanelBase.h"
 
-#include "Runes.h"
+#include "DivisionVoid/Source/DivisionVoidLookAndFeel/Runes.h"
 
 #include "CentreKnobLAF.h"
 #include "NormalKnobLAF.h"

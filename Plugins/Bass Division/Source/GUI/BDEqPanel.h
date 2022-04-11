@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../../../BassDivision/Source/GUI/PanelBase.h"
-#include "Runes.h"
+#include "DivisionVoid/Source/DivisionVoidLookAndFeel/Runes.h"
 #include "CentreKnobLAF.h"
 
 class BDEqPanel : public BDPanelBase

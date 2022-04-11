@@ -16,7 +16,7 @@
 
 #include "CentreKnobLAF.h"
 #include "NormalKnobLAF.h"
-#include "Runes.h"
+#include "DivisionVoid/Source/DivisionVoidLookAndFeel/Runes.h"
 
 //==============================================================================
 /*

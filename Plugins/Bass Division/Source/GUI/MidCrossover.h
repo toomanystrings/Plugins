@@ -12,7 +12,7 @@
 
 #include "../../../BassDivision/Source/GUI/PanelBase.h"
 #include "CentreKnobLAF.h"
-#include "Runes.h"
+#include "DivisionVoid/Source/DivisionVoidLookAndFeel/Runes.h"
 
 class MidCrossover : public BDPanelBase
 {

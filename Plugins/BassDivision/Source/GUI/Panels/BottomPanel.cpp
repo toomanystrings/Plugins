@@ -119,7 +119,7 @@ ProcessPanel::EqPanel::EqPanel(BassDivisionAudioProcessor &inProcessor) : PanelB
         sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
         sliders[i].setTextValueSuffix("dB");
-        //sliders[i].setLookAndFeel(&centreLAF);
+        sliders[i].setLookAndFeel(&centreLAF);
         addAndMakeVisible(&sliders[i]);
 
         labels[i].setText(freqs[i], juce::dontSendNotification);
@@ -128,7 +128,15 @@ ProcessPanel::EqPanel::EqPanel(BassDivisionAudioProcessor &inProcessor) : PanelB
         labels[i].setColour(0x1000281, juce::Colours::black);
         addAndMakeVisible(labels[i]);
 
-        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(inProcessor.treeState, names[i], sliders[i]);
+        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                inProcessor.treeState, names[i], sliders[i]
+                );
+
+        for (auto i = 0; i < 2; ++i)
+        {
+            runes[i].setRune(i);
+            addAndMakeVisible(runes[i]);
+        }
     }
 }
 
@@ -159,8 +167,8 @@ void ProcessPanel::EqPanel::resized()
     sliders[6].setBounds((width / 6 * 4), border + yOffset, knobDiameter, knobDiameter);
 
 
-    //runes[0].setBounds(40, centreY - 10, 20, 20);
-    //runes[1].setBounds(width - 60, centreY - 10, 20, 20);
+    runes[0].setBounds(40, centreY - 10, 20, 20);
+    runes[1].setBounds(width - 60, centreY - 10, 20, 20);
 
     for (auto& label : labels)
     {
@@ -197,28 +205,27 @@ ProcessPanel::CompressorPanel::CompressorPanel(BassDivisionAudioProcessor &inPro
         addAndMakeVisible(label);
     }
 
+    sliders[0].setTextValueSuffix("ms");
+    sliders[0].setLookAndFeel(&LAF);
 
-//    sliders[0].setTextValueSuffix("ms");
-//    sliders[0].setLookAndFeel(&LAF);
+    sliders[1].setTextValueSuffix("ms");
+    sliders[1].setLookAndFeel(&LAF);
 
-//    sliders[1].setTextValueSuffix("ms");
-//    sliders[1].setLookAndFeel(&LAF);
+    sliders[2].setLookAndFeel(&LAF);
 
-//    sliders[2].setLookAndFeel(&LAF);
+    sliders[3].setTextValueSuffix("dB");
+    sliders[3].setLookAndFeel(&LAF);
 
-//    sliders[3].setTextValueSuffix("dB");
-//    sliders[3].setLookAndFeel(&LAF);
+    sliders[4].setLookAndFeel(&LAF);
 
-//    sliders[4].setLookAndFeel(&LAF);
+    sliders[5].setTextValueSuffix("Hz");
+    sliders[5].setLookAndFeel(&LAF);
 
-//    sliders[5].setTextValueSuffix("Hz");
-//    sliders[5].setLookAndFeel(&LAF);
+    sliders[6].setTextValueSuffix("dB");
+    sliders[6].setLookAndFeel(&centreLAF);
 
-//    sliders[6].setTextValueSuffix("dB");
-//    sliders[6].setLookAndFeel(&centreLAF);
-
-//    sliders[7].setTextValueSuffix("dB");
-//    sliders[7].setLookAndFeel(&centreLAF);
+    sliders[7].setTextValueSuffix("dB");
+    sliders[7].setLookAndFeel(&centreLAF);
 }
 
 void ProcessPanel::CompressorPanel::paint(juce::Graphics &g)
@@ -497,11 +504,16 @@ BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &in
             inProcessor.treeState, band + "_XOVER", slider
             );
 
-    /*for (auto i = 0; i < 2; ++i)
+    int index = 0;
+
+    if (band == "mid") index = 2;
+    if (band == "high") index = 4;
+
+    for (auto i = 0; i < 2; ++i)
     {
-        runes[i].setRune(i + 4);
+        runes[i].setRune(i + index);
         addAndMakeVisible(runes[i]);
-    }*/
+    }
 }
 
 void BandPanel::BandCrossoverPanel::paint(juce::Graphics &g)

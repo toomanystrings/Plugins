@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-
 //==============================================================================
 /*
 */
@@ -32,13 +30,6 @@ public:
 
     void paint (juce::Graphics& g) override
     {
-        /* This demo code just fills the component's background and
-           draws some placeholder text to get you started.
-
-           You should replace everything in this method with your own
-           drawing code..
-        */
-
 		g.fillAll(juce::Colour::fromRGB(0.0f, 0.0f, 0.0f).withAlpha(0.0f));   // clear the background
 
 		// Basic measurements
@@ -196,8 +187,6 @@ public:
 
 			break;
         }
-		
-		
 
 		auto pathWidth = 2.0f;
 		g.setColour(juce::Colour::fromRGB(74, 0, 0).withAlpha(0.7f));
@@ -207,12 +196,9 @@ public:
 
     void resized() override
     {
-        // This method is where you should set the bounds of any child
-        // components that your component contains..
-
     }
 
-	void setRune(int runeIndex) { this->runeIndex = runeIndex; }
+	void setRune(int index) { runeIndex = index; }
 
 	int getRune() { return runeIndex; }
 

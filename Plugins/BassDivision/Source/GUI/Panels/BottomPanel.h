@@ -42,6 +42,10 @@ private:
                                  "2.5 KHz", "High Shelf"};
 
         DivisionVoidFonts fonts;
+
+        DivisionVoid::CentreKnobLAF centreLAF;
+
+        Runes runes[2];
     };
 
     struct CompressorPanel : public PanelBase
@@ -61,6 +65,9 @@ private:
                                  "KNEE", "HPF", "INPUT", "OUTPUT"};
 
         DivisionVoidFonts fonts;
+
+        DivisionVoid::CentreKnobLAF centreLAF;
+        DivisionVoid::NormalKnobLAF LAF;
     };
 
     EqPanel eqPanel;
@@ -141,6 +148,8 @@ private:
         UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> attachment;
 
         juce::String band;
+
+        Runes runes[2];
 
         DivisionVoidFonts fonts;
     };
