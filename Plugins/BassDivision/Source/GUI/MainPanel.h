@@ -11,11 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
-//#include "../../../Bass Division/Source/GUI/BDTopPanel.h"
 #include "Panels/BottomPanel.h"
-
-
-//#include "../../../Bass Division/Source/GUI/BDAnalyserPanel.h"
 
 class MainPanel : public PanelBase
 {
@@ -31,5 +27,5 @@ private:
 
     //BDTopPanel mTopPanel;
     //BDAnalyserPanel mAnalyserPanel;
-    BottomPanel mBottomPanel;
+    BottomPanel bottomPanel;
 };

@@ -393,7 +393,6 @@ BandPanel::BandDistortionPanel::BandDistortionPanel(BassDivisionAudioProcessor &
         PanelBase(inProcessor), band(bandName.toUpperCase())
 {
     // "GAIN", "MIX", "TYPE", "EDGE"
-
     for (int i = 0; i < 4; ++i)
     {
         sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -518,7 +517,6 @@ BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &in
 
 void BandPanel::BandCrossoverPanel::paint(juce::Graphics &g)
 {
-
 }
 
 void BandPanel::BandCrossoverPanel::resized()
@@ -532,7 +530,7 @@ void BandPanel::BandCrossoverPanel::resized()
 
     label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 15));
 
-    /*auto runeSize = 25;
+    auto runeSize = 25;
     runes[0].setBounds(width / 2 - runeSize / 2, height / 4 * 1 - runeSize / 2, runeSize, runeSize);
-    runes[1].setBounds(width / 2 - runeSize / 2, height / 4 * 3 - runeSize / 2, runeSize, runeSize);*/
+    runes[1].setBounds(width / 2 - runeSize / 2, height / 4 * 3 - runeSize / 2, runeSize, runeSize);
 }

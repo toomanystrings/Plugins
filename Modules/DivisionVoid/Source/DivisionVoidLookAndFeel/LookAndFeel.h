@@ -449,7 +449,7 @@ namespace DivisionVoid
 
 
             g.setColour(juce::Colours::whitesmoke);
-            g.setFont(DVFonts::getBoldNorse(15));
+            g.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 15.0f));
 
             g.drawText(text, 10, 0, width - 10, height, juce::Justification::centredLeft);
         }
