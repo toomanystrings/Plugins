@@ -170,8 +170,8 @@ public:
 	void resized() override;
 
 private:
-	ProcessPanel mProcessPanel;
-	BandPanel mBandPanel;
+	ProcessPanel processPanel;
+	BandPanel bandPanel;
 	
 	DivisionVoid::Button processButton;
 	DivisionVoid::Button bandButton;

@@ -13,13 +13,13 @@
 // Bottom Panel
 
 BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
-mProcessPanel(inProcessor), mBandPanel(inProcessor)
+processPanel(inProcessor), bandPanel(inProcessor)
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
 
-    addAndMakeVisible(mProcessPanel);
-    addAndMakeVisible(mBandPanel);
-    mBandPanel.setVisible(false);
+    addAndMakeVisible(processPanel);
+    addAndMakeVisible(bandPanel);
+    bandPanel.setVisible(false);
 
     processButton.setButtonStyle(DivisionVoid::Button::BarToggle);
     processButton.setButtonText("Process");
@@ -30,8 +30,8 @@ mProcessPanel(inProcessor), mBandPanel(inProcessor)
         {
             processButton.setToggleState(true, juce::NotificationType::dontSendNotification);
             bandButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-            mProcessPanel.setVisible(true);
-            mBandPanel.setVisible(false);
+            processPanel.setVisible(true);
+            bandPanel.setVisible(false);
         }
 
 		if (processButton.getToggleState() == false)
@@ -49,8 +49,8 @@ mProcessPanel(inProcessor), mBandPanel(inProcessor)
         {
             bandButton.setToggleState(true, juce::NotificationType::dontSendNotification);
             processButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-            mProcessPanel.setVisible(false);
-            mBandPanel.setVisible(true);
+            processPanel.setVisible(false);
+            bandPanel.setVisible(true);
         }
 
         if (bandButton.getToggleState() == false)
@@ -505,8 +505,8 @@ BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &in
 
     int index = 0;
 
-    if (band == "mid") index = 2;
-    if (band == "high") index = 4;
+    if (band == "MID") index = 2;
+    if (band == "HIGH") index = 4;
 
     for (auto i = 0; i < 2; ++i)
     {
