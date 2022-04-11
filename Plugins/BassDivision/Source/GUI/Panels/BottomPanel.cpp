@@ -474,7 +474,7 @@ void BandPanel::BandDistortionPanel::resized()
     const auto buttonWidth = 25;
     const auto buttonOffset = 10;
 
-    soloButton.setBounds(buttonOffset + buttonWidth + 15, height - buttonOffset - buttonWidth, buttonWidth, buttonWidth);
+    soloButton.setBounds(buttonOffset, height - buttonOffset - buttonWidth, buttonWidth, buttonWidth);
     soloButton.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
 }
 
