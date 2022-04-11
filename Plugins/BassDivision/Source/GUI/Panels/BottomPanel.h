@@ -103,7 +103,51 @@ private:
         DivisionVoidFonts fonts;
     };
 
+    struct BandDistortionPanel : public PanelBase
+    {
+        BandDistortionPanel(BassDivisionAudioProcessor& inProcessor, juce::String bandName);
+        ~BandDistortionPanel() = default;
+
+        void paint(juce::Graphics& g) override;
+        void resized() override;
+
+    private:
+
+        juce::Slider sliders[4];
+        juce::Label labels[4];
+        UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> attachments[4];
+        juce::String names[4] = {"GAIN", "MIX", "TYPE", "EDGE"};
+
+        DivisionVoid::Button soloButton;
+        UniquePtr<juce::AudioProcessorValueTreeState::ButtonAttachment> soloButtonAttachment;
+
+        juce::String band;
+
+        DivisionVoidFonts fonts;
+    };
+
+    struct BandCrossoverPanel : public PanelBase
+    {
+        BandCrossoverPanel(BassDivisionAudioProcessor& inProcessor, juce::String bandName);
+        ~BandCrossoverPanel() = default;
+
+        void paint(juce::Graphics& g) override;
+        void resized() override;
+
+    private:
+
+        juce::Slider slider;
+        juce::Label label;
+        UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> attachment;
+
+        juce::String band;
+
+        DivisionVoidFonts fonts;
+    };
+
     BandCompPanel subPanel, lowPanel;
+    BandDistortionPanel midPanel, highPanel;
+    BandCrossoverPanel lowCrossoverPanel, midCrossoverPanel, highCrossoverPanel;
 };
 
 class BottomPanel : public PanelBase

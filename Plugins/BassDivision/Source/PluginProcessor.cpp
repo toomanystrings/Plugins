@@ -502,7 +502,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout BassDivisionAudioProcessor::
     types.add("Hard Square");
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MID_DISTORTION_GAIN", "Mid Gain", distGainNormRange, 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("MID_DISTORTION_WETDRY", "Mid Wet/Dry", 0, 100, 50));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("MID_DISTORTION_MIX", "Mid Wet/Dry", 0, 100, 50));
     params.push_back(std::make_unique<juce::AudioParameterChoice>("MID_DISTORTION_TYPE", "Mid Type", types, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("MID_DISTORTION_EDGE", "Mid Edge", 1.f, 10.f, 1.f));
 
@@ -511,7 +511,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout BassDivisionAudioProcessor::
      *******************************************************************/
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>("HIGH_DISTORTION_GAIN", "High Gain", distGainNormRange, 0.f));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("HIGH_DISTORTION_WETDRY", "High Wet/Dry", 0, 100, 50));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("HIGH_DISTORTION_MIX", "High Wet/Dry", 0, 100, 50));
     params.push_back(std::make_unique<juce::AudioParameterChoice>("HIGH_DISTORTION_TYPE", "High Type", types, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("HIGH_DISTORTION_EDGE", "High Edge", 1.f, 10.f, 1.f));
 
@@ -611,7 +611,7 @@ void BassDivisionAudioProcessor::parameterChanged(const juce::String& parameterI
     if (parameterID == "MID_DISTORTION_GAIN")
         midDistortion.setInputGain(newValue);
 
-    if (parameterID == "MID_DISTORTION_WETDRY")
+    if (parameterID == "MID_DISTORTION_MIX")
         midDistortion.setMix(newValue);
 
     if (parameterID == "MID_DISTORTION_TYPE")
@@ -627,7 +627,7 @@ void BassDivisionAudioProcessor::parameterChanged(const juce::String& parameterI
     if (parameterID == "HIGH_DISTORTION_GAIN")
         highDistortion.setInputGain(newValue);
 
-    if (parameterID == "HIGH_DISTORTION_WETDRY")
+    if (parameterID == "HIGH_DISTORTION_MIX")
         highDistortion.setMix(newValue);
 
     if (parameterID == "HIGH_DISTORTION_TYPE")
@@ -793,7 +793,7 @@ void BassDivisionAudioProcessor::setInitialParameters()
     auto midGain = treeState.getRawParameterValue("MID_DISTORTION_GAIN")->load();
     auto midType = treeState.getRawParameterValue("MID_DISTORTION_TYPE")->load();
     auto midEdge = treeState.getRawParameterValue("MID_DISTORTION_EDGE")->load();
-    auto midMix = treeState.getRawParameterValue("MID_DISTORTION_WETDRY")->load();
+    auto midMix = treeState.getRawParameterValue("MID_DISTORTION_MIX")->load();
 
     midDistortion.setEdge(midEdge);
     midDistortion.setType(midType);
@@ -807,7 +807,7 @@ void BassDivisionAudioProcessor::setInitialParameters()
     auto highGain = treeState.getRawParameterValue("HIGH_DISTORTION_GAIN")->load();
     auto highType = treeState.getRawParameterValue("HIGH_DISTORTION_TYPE")->load();
     auto highEdge = treeState.getRawParameterValue("HIGH_DISTORTION_EDGE")->load();
-    auto highMix = treeState.getRawParameterValue("HIGH_DISTORTION_WETDRY")->load();
+    auto highMix = treeState.getRawParameterValue("HIGH_DISTORTION_MIX")->load();
 
     highDistortion.setEdge(highEdge);
     highDistortion.setType(highType);

@@ -262,14 +262,22 @@ void ProcessPanel::CompressorPanel::resized()
 
 
 // Band Panel
-
 BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor), subPanel(inProcessor, "sub"),
-                                                                lowPanel(inProcessor, "low")
+                                                                lowPanel(inProcessor, "low"), midPanel(inProcessor, "mid"),
+                                                                highPanel(inProcessor, "high"),
+                                                                lowCrossoverPanel(inProcessor, "low"),
+                                                                midCrossoverPanel(inProcessor, "mid"),
+                                                                highCrossoverPanel(inProcessor, "high")
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
 
     addAndMakeVisible(subPanel);
     addAndMakeVisible(lowPanel);
+    addAndMakeVisible(midPanel);
+    addAndMakeVisible(highPanel);
+    addAndMakeVisible(lowCrossoverPanel);
+    addAndMakeVisible(midCrossoverPanel);
+    addAndMakeVisible(highCrossoverPanel);
 }
 
 void BandPanel::paint(juce::Graphics& g)
@@ -282,20 +290,18 @@ void BandPanel::resized()
     auto area = getBounds();
 
     area.removeFromRight(20);
-    //mHighGui.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
-    //mHighCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
-    //mMidGui.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
-    //mMidCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    highPanel.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
+    highCrossoverPanel.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    midPanel.setBounds(area.removeFromRight(DIST_PANEL_WIDTH)));
+    midCrossoverPanel.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
     lowPanel.setBounds(area.removeFromRight(COMP_PANEL_WIDTH)));
-    //mLowCrossover.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
+    lowCrossoverPanel.setBounds(area.removeFromRight(XOVER_PANEL_WIDTH));
     subPanel.setBounds(area.removeFromRight(COMP_PANEL_WIDTH)));
 }
 
 BandPanel::BandCompPanel::BandCompPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
-PanelBase(inProcessor)
+        PanelBase(inProcessor), band(bandName.toUpperCase())
 {
-    band = bandName;
-
     // "ATTACK", "RELEASE", "RATIO", "THRESHOLD", "INPUT", "OUTPUT"
     for (int i = 0; i < 6; ++i)
     {
@@ -374,4 +380,147 @@ void BandPanel::BandCompPanel::resized()
 
     soloButton.setBounds(buttonOffset + buttonWidth + 15, height - buttonOffset - buttonWidth, buttonWidth, buttonWidth);
     soloButton.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
+}
+
+BandPanel::BandDistortionPanel::BandDistortionPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
+        PanelBase(inProcessor), band(bandName.toUpperCase())
+{
+    // "GAIN", "MIX", "TYPE", "EDGE"
+
+    for (int i = 0; i < 4; ++i)
+    {
+        sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+        sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
+
+        labels[i].setText(names[i], juce::dontSendNotification);
+        labels[i].attachToComponent(&sliders[i], false);
+        labels[i].setJustificationType(juce::Justification::centred);
+        labels[i].setColour(0x1000281, juce::Colours::black);
+
+        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                inProcessor.treeState, band + "_DISTORTION_" + names[i], sliders[i]
+        );
+    }
+
+    for (auto &slider : sliders)
+    {
+        addAndMakeVisible(slider);
+    }
+
+    for (auto &label : labels)
+    {
+        addAndMakeVisible(label);
+    }
+
+    soloButton.setToggleState(false, juce::dontSendNotification);
+    soloButton.setButtonStyle(DivisionVoid::Button::ButtonStyle::BarToggle);
+    soloButton.setButtonText("S");
+
+    addAndMakeVisible(soloButton);
+
+    soloButtonAttachment = MakeUnique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+            inProcessor.treeState, band + "_SOLO", soloButton
+    );
+
+    //gainSlider.setTextValueSuffix("dB");
+    //gainSlider.setLookAndFeel(&centreLAF);
+
+    //wetDrySlider.setTextValueSuffix("%");
+    //wetDrySlider.setLookAndFeel(&LAF);
+
+    //typeSlider.setLookAndFeel(&centreLAF);
+
+    //edgeSlider.setLookAndFeel(&LAF);
+
+    /*for (auto i = 0; i < 2; ++i)
+    {
+        runes[i].setRune(i + 3);
+        //addAndMakeVisible(runes[i]);
+    }*/
+
+}
+
+void BandPanel::BandDistortionPanel::paint(juce::Graphics &g)
+{
+    g.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 25.0f));
+    g.drawText(band, 0, 0, getWidth(), getHeight() - 15, juce::Justification::centredBottom);
+}
+
+void BandPanel::BandDistortionPanel::resized()
+{
+    // "GAIN", "MIX", "TYPE", "EDGE"
+    auto bounds = getLocalBounds();
+
+    const auto width = getWidth();
+    const auto height = getHeight();
+
+    const auto centreY = height / 2;
+
+    const auto paramKnobSize = height / 5;
+
+    const auto borderX = 10;
+    const auto borderY = 20;
+    const auto yOffset = 30;
+
+    sliders[0].setBounds(borderX, borderY + yOffset, paramKnobSize, paramKnobSize);
+    sliders[3].setBounds(width - borderX - paramKnobSize, borderY + yOffset, paramKnobSize, paramKnobSize);
+    sliders[1].setBounds(borderX, borderY + centreY, paramKnobSize, paramKnobSize);
+    sliders[2].setBounds(width - borderX - paramKnobSize, borderY + centreY, paramKnobSize, paramKnobSize);
+
+    for (auto& label : labels) {
+        label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
+    }
+
+    const auto buttonWidth = 25;
+    const auto buttonOffset = 10;
+
+    soloButton.setBounds(buttonOffset + buttonWidth + 15, height - buttonOffset - buttonWidth, buttonWidth, buttonWidth);
+    soloButton.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
+}
+
+BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
+        PanelBase(inProcessor), band(bandName.toUpperCase())
+{
+    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
+    slider.setTextValueSuffix("Hz");
+    //highXoverSlider.setLookAndFeel(&centreLAF);
+    addAndMakeVisible(&slider);
+
+    label.setText(band + " X-over", juce::dontSendNotification);
+    label.attachToComponent(&slider, true);
+    label.setJustificationType(juce::Justification::centred);
+    label.setColour(0x1000281, juce::Colours::black);
+    addAndMakeVisible(label);
+
+    attachment = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+            inProcessor.treeState, band + "_XOVER", slider
+            );
+
+    /*for (auto i = 0; i < 2; ++i)
+    {
+        runes[i].setRune(i + 4);
+        addAndMakeVisible(runes[i]);
+    }*/
+}
+
+void BandPanel::BandCrossoverPanel::paint(juce::Graphics &g)
+{
+
+}
+
+void BandPanel::BandCrossoverPanel::resized()
+{
+    auto height = getHeight();
+    auto width = getWidth();
+
+    auto knobSize = 40;
+
+    slider.setBounds(width / 2 - knobSize / 2, height / 2 - knobSize / 2, knobSize, knobSize);
+
+    label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 15));
+
+    /*auto runeSize = 25;
+    runes[0].setBounds(width / 2 - runeSize / 2, height / 4 * 1 - runeSize / 2, runeSize, runeSize);
+    runes[1].setBounds(width / 2 - runeSize / 2, height / 4 * 3 - runeSize / 2, runeSize, runeSize);*/
 }
