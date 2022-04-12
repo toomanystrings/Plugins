@@ -279,18 +279,18 @@ private:
             }
             else
             {
-                //background = findColour(DivisionVoid::foregroundColourId);
+                background = findColour(DivisionVoidColours::foregroundColourId);
 
-//                if (hasKeyboardFocus(true) && wasFocusedByTab)
-//                {
-//                    //foreground = findColour(DivisionVoid::highlightColourId);
-//                    text = juce::Colours::antiquewhite;
-//                }
-//                else
-//                {
-//                    //foreground = findColour(DivisionVoid::backgroundColourId);
-//                    text = juce::Colours::antiquewhite;
-//                }
+                if (hasKeyboardFocus(true) && wasFocusedByTab)
+                {
+                    foreground = findColour(DivisionVoidColours::highlightColourId);
+                    text = juce::Colours::antiquewhite;
+                }
+                else
+                {
+                    foreground = findColour(DivisionVoidColours::backgroundColourId);
+                    text = juce::Colours::antiquewhite;
+                }
             }
 
             g.setColour(background.interpolatedWith(findColour(DivisionVoidColours::midgroundColourId), colourInterpolation.getNextValue()));

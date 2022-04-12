@@ -21,7 +21,7 @@ BassDivisionAudioProcessor::BassDivisionAudioProcessor()
                      #endif
                        ), treeState (*this, nullptr, "PARAMETERS", createParameterLayout()), sampleRate(44100),
                        renderThread("FFT Render Thread"), spectrumProcessor(11)
-                       //, presetManager(this), impulseResponseManager(this)
+                       , presetManager(this), impulseResponseManager(this)
 #endif
 {
     for (auto p : getParameters())
@@ -228,7 +228,7 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
     onLoad.compareAndSetBool(false, true);
 
-    //setImpulseResponse(impulseResponseManager.getCurrentImpulseResponse());
+    setImpulseResponse(impulseResponseManager.getCurrentImpulseResponse());
     
     buffer.applyGain(inputGain);
     
@@ -362,15 +362,15 @@ void BassDivisionAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
     auto state = treeState.copyState();
 
     // Get the current preset name from preset manager
-    //const auto currentPresetName = presetManager.getCurrentPresetName();
-    //const auto currentImpulseResponseName = impulseResponseManager.getCurrentImpulseResponseName();
+    const auto currentPresetName = presetManager.getCurrentPresetName();
+    const auto currentImpulseResponseName = impulseResponseManager.getCurrentImpulseResponseName();
 
     // If that preset name is valid, add it to the tree before turning it into an xml element and copying it to binary
-    //if (currentPresetName.isNotEmpty())
-        //state.setProperty(juce::Identifier("PresetName"), currentPresetName, nullptr);
+    if (currentPresetName.isNotEmpty())
+        state.setProperty(juce::Identifier("PresetName"), currentPresetName, nullptr);
 
-    //if (currentImpulseResponseName.isNotEmpty())
-        //state.setProperty(juce::Identifier("IRName"), currentImpulseResponseName, nullptr);
+    if (currentImpulseResponseName.isNotEmpty())
+        state.setProperty(juce::Identifier("IRName"), currentImpulseResponseName, nullptr);
 
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
 
@@ -398,7 +398,7 @@ void BassDivisionAudioProcessor::setStateInformation (const void* data, int size
                 
             if(newTree.hasProperty(presetID))
             {
-                //presetManager.setCurrentPresetName(newTree.getPropertyAsValue("PresetName", nullptr).toString());
+                presetManager.setCurrentPresetName(newTree.getPropertyAsValue("PresetName", nullptr).toString());
                 newTree.removeProperty(presetID, nullptr);
 
                 onLoad.compareAndSetBool(true, false);
@@ -406,12 +406,12 @@ void BassDivisionAudioProcessor::setStateInformation (const void* data, int size
 
             if(newTree.hasProperty(irID))
             {
-                //const auto ir = juce::File(impulseResponseManager.getCurrentImpulseResponseDirectory() + directorySeperator
-                    //+ newTree.getPropertyAsValue("IRName", nullptr).toString() + ".wav");
+                const auto ir = juce::File(impulseResponseManager.getCurrentImpulseResponseDirectory() + directorySeperator
+                    + newTree.getPropertyAsValue("IRName", nullptr).toString() + ".wav");
 
-                //impulseResponseManager.setCurrentImpulseResponseName(newTree.getPropertyAsValue("IRName", nullptr).toString());
+                impulseResponseManager.setCurrentImpulseResponseName(newTree.getPropertyAsValue("IRName", nullptr).toString());
 
-                //setImpulseResponse(impulseResponseManager.getCurrentImpulseResponse());
+                setImpulseResponse(impulseResponseManager.getCurrentImpulseResponse());
                     
                 newTree.removeProperty(irID, nullptr);
             }
@@ -421,15 +421,15 @@ void BassDivisionAudioProcessor::setStateInformation (const void* data, int size
     }
 }
 
-//PresetManager* BassDivisionAudioProcessor::getPresetManager()
-//{
-//    return &presetManager;
-//}
+PresetManager* BassDivisionAudioProcessor::getPresetManager()
+{
+    return &presetManager;
+}
 
-//ImpulseResponseManager* BassDivisionAudioProcessor::getImpulseResponseManager()
-//{
-//    return &impulseResponseManager;
-//}
+ImpulseResponseManager* BassDivisionAudioProcessor::getImpulseResponseManager()
+{
+    return &impulseResponseManager;
+}
 
 //==============================================================================
 // This creates new instances of the plugin..

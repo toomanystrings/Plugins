@@ -11,12 +11,13 @@
 #include "MainPanel.h"
 
 MainPanel::MainPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
-/*mTopPanel(inProcessor),*/ middlePanel(inProcessor), bottomPanel(inProcessor)
+topPanel(inProcessor), middlePanel(inProcessor), bottomPanel(inProcessor)
 {
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
 
     addAndMakeVisible(middlePanel);
     addAndMakeVisible(bottomPanel);
+    addAndMakeVisible(topPanel);
 }
 
 MainPanel::~MainPanel()
@@ -37,7 +38,7 @@ void MainPanel::resized()
     //auto analyserPanelRatio = area.removeFromTop(ANALYSER_PANEL_HEIGHT);
 
     
-    //mTopPanel.setBounds(area.removeFromTop(TOP_PANEL_HEIGHT));
+    topPanel.setBounds(area.removeFromTop(TOP_PANEL_HEIGHT));
    
     //auto bottomArea = area.removeFromBottom(PROCESS_PANEL_HEIGHT);
 	
@@ -46,5 +47,5 @@ void MainPanel::resized()
     //mAnalyserPanel.setBounds(area);
 
     bottomPanel.setBounds(area.removeFromBottom(PROCESS_PANEL_HEIGHT));
-    middlePanel.setBounds(area.removeFromBottom(ANALYSER_PANEL_HEIGHT));
+    middlePanel.setBounds(area);
 }

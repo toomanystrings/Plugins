@@ -37,7 +37,8 @@ target_compile_definitions(${BaseTargetName}
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0
-        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=0)
+        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=0
+        JUCE_MODAL_LOOPS_PERMITTED=1)
 
 target_link_libraries(${BaseTargetName} PRIVATE
         shared_resources

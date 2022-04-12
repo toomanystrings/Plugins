@@ -13,6 +13,7 @@
 #include "PanelBase.h"
 #include "Panels/BottomPanel.h"
 #include "Panels/MiddlePanel.h"
+#include "Panels/TopPanel.h"
 
 class MainPanel : public PanelBase
 {
@@ -26,7 +27,7 @@ public:
 	
 private:
 
-    //BDTopPanel mTopPanel;
+    TopPanel topPanel;
     MiddlePanel middlePanel;
     BottomPanel bottomPanel;
 };

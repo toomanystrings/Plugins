@@ -10,8 +10,8 @@
 
 #include <JuceHeader.h>
 
-//#include "../../Bass Division/Source/Managers/PresetManager.h"
-//#include "../../Bass Division/Source/Managers/IrManager.h"
+#include "Managers/PresetManager.h"
+#include "Managers/IrManager.h"
 
 #include "FFT/SpectrumProcessor.h"
 
@@ -218,8 +218,8 @@ public:
     
     void updateFilters(const ChainSettings& chainSettings);
     
-    //PresetManager* getPresetManager();
-    //ImpulseResponseManager* getImpulseResponseManager();
+    PresetManager* getPresetManager();
+    ImpulseResponseManager* getImpulseResponseManager();
     
     void setImpulseResponseIsEngaged(bool impulseResponseEngaged) { this->isImpulseResponseEngaged = impulseResponseEngaged; }
     
@@ -240,8 +240,8 @@ private:
     juce::TimeSliceThread renderThread;
     SpectrumProcessor spectrumProcessor;
     
-    //PresetManager presetManager;
-    //ImpulseResponseManager impulseResponseManager;
+    PresetManager presetManager;
+    ImpulseResponseManager impulseResponseManager;
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;
