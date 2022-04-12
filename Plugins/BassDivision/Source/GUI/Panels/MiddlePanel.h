@@ -17,7 +17,6 @@ struct IoPanel : public PanelBase
     void resized() override;
 
 private:
-
     // For meters, when they are sorted out
     //void timerCallback() override;
 
@@ -33,7 +32,6 @@ private:
 
 struct FftPanel : public PanelBase
 {
-public:
     FftPanel (BassDivisionAudioProcessor& inProcessor,
             juce::Value& repaintSpectrumViewer,
             drow::Buffer& spectrumMagnitudeBuffer,
@@ -44,7 +42,6 @@ public:
     void resized() override;
 
 private:
-
     // Values needed for the spectrum viewer, plus the component itself
     SpectrumViewer spectrumViewer;
     juce::Value sampleRate;
@@ -64,8 +61,6 @@ public:
     void resized() override;
 
 private:
-
     IoPanel ioPanel;
     FftPanel fftPanel;
-
 };
