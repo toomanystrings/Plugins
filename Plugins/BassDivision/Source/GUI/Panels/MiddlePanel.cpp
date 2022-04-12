@@ -4,18 +4,28 @@
 
 #include "MiddlePanel.h"
 
-MiddlePanel::MiddlePanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
+MiddlePanel::MiddlePanel(BassDivisionAudioProcessor &inProcessor) :
+        PanelBase(inProcessor),
+        ioPanel(inProcessor),
+        fftPanel(inProcessor, inProcessor.getSpectrumProcessor()->getRepaintViewerValue(),
+                 inProcessor.getSpectrumProcessor()->getMagnitudesBuffer(),
+                 inProcessor.getSpectrumProcessor()->getDetectedFrequency())
 {
-
+    addAndMakeVisible(ioPanel);
+    addAndMakeVisible(fftPanel);
 }
 
 void MiddlePanel::paint(juce::Graphics &g)
 {
+
 }
 
 void MiddlePanel::resized()
 {
+    auto area = getLocalBounds();
 
+    ioPanel.setBounds(area.removeFromRight(IO_PANEL_WIDTH));
+    fftPanel.setBounds(area);
 }
 
 IoPanel::IoPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
@@ -35,7 +45,9 @@ IoPanel::IoPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcesso
         labels[i].setColour(0x1000281, juce::Colours::black);
         addAndMakeVisible(labels[i]);
 
-        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(inProcessor.treeState, names[i], sliders[i]);
+        attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                inProcessor.treeState, names[i], sliders[i]
+                );
     }
 }
 
@@ -65,4 +77,21 @@ void IoPanel::resized()
     for (auto& label : labels) {
         label.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 17));
     }
+}
+
+FftPanel::FftPanel(BassDivisionAudioProcessor &inProcessor, juce::Value &repaintSpectrumViewer,
+                   drow::Buffer &spectrumMagnitudeBuffer, juce::Value &detectedFrequency) :
+                   PanelBase(inProcessor),
+                   spectrumViewer(repaintSpectrumViewer, spectrumMagnitudeBuffer, detectedFrequency)
+{
+    addAndMakeVisible(spectrumViewer);
+}
+
+void FftPanel::paint(juce::Graphics &g)
+{
+}
+
+void FftPanel::resized()
+{
+    spectrumViewer.setBounds(getLocalBounds());
 }

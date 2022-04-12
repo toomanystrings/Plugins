@@ -10,9 +10,6 @@
 
 #include "PresetManager.h"
 
-
-
-
 PresetManager::PresetManager (juce::AudioProcessor* p) : audioProcessor(p)
 {
     // create the presetDirectory root file

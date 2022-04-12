@@ -12,7 +12,7 @@
 
 #include "SpectrumViewer.h"
 
-#include "../../../Bass Division/Source/Utilities.h"
+//#include "../../../Bass Division/Source/Utilities.h"
 
 #if JUCE_MAC || JUCE_IOS || DROWAUDIO_USE_FFTREAL
 
@@ -438,7 +438,7 @@ SpectrumViewer::FrequencyCaption::FrequencyCaption()
         frequencyLabel->setText(frequencyString, juce::dontSendNotification);
         
         // Figuring out the width and height of the text and setting the Label accordingly.
-        juce::Font labelFont = DVFonts::getBoldNorse(12);
+        juce::Font labelFont = fonts.getFont(DivisionVoidFonts::FontType::bold, 12);
         frequencyLabel->setFont(labelFont);
         frequencyLabel->setColour (juce::Label::textColourId, juce::Colours::whitesmoke);
         const int textWidth = labelFont.getStringWidth (frequencyLabel->getText());

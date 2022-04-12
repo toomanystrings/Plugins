@@ -9,14 +9,11 @@
 #pragma once
 
 #include <JuceHeader.h>
-//#include "../../Bass Division/Source/Effects/Compressor.h"
-//#include "../../Bass Division/Source/Effects/BDDistortion.h"
 
-//#include "../../Bass Division/Source/GUI/MeterAnalysis.h"
 //#include "../../Bass Division/Source/Managers/PresetManager.h"
 //#include "../../Bass Division/Source/Managers/IrManager.h"
 
-//#include "../../Bass Division/Source/FFT/SpectrumProcessor.h"
+#include "FFT/SpectrumProcessor.h"
 
 #include <array>
 template<typename T>
@@ -237,11 +234,11 @@ public:
     
     juce::Value sampleRate;
 
-    //SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
+    SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
 
 private:
-    //juce::TimeSliceThread renderThread;
-    //SpectrumProcessor spectrumProcessor;
+    juce::TimeSliceThread renderThread;
+    SpectrumProcessor spectrumProcessor;
     
     //PresetManager presetManager;
     //ImpulseResponseManager impulseResponseManager;

@@ -10,14 +10,12 @@
 
 #include "MainPanel.h"
 
-MainPanel::MainPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor), /*mTopPanel(inProcessor), mAnalyserPanel(inProcessor),*/ bottomPanel(inProcessor)
+MainPanel::MainPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
+/*mTopPanel(inProcessor),*/ middlePanel(inProcessor), bottomPanel(inProcessor)
 {
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
 
-    //addAndMakeVisible(mTopPanel);
-
-    //addAndMakeVisible(mAnalyserPanel);
-
+    addAndMakeVisible(middlePanel);
     addAndMakeVisible(bottomPanel);
 }
 
@@ -48,4 +46,5 @@ void MainPanel::resized()
     //mAnalyserPanel.setBounds(area);
 
     bottomPanel.setBounds(area.removeFromBottom(PROCESS_PANEL_HEIGHT));
+    middlePanel.setBounds(area.removeFromBottom(ANALYSER_PANEL_HEIGHT));
 }

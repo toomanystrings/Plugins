@@ -25,7 +25,12 @@ target_sources(${BaseTargetName} PRIVATE
         Source/PluginEditor.cpp
         Source/GUI/MainPanel.cpp
         Source/GUI/Panels/BottomPanel.cpp
-        Source/GUI/Panels/MiddlePanel.cpp)
+        Source/GUI/Panels/MiddlePanel.cpp
+        Source/GUI/Panels/TopPanel.cpp
+        Source/FFT/SpectrumViewer.cpp
+        Source/FFT/SpectrumProcessor.cpp
+        Source/Managers/IrManager.cpp
+        Source/Managers/PresetManager.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC
@@ -42,7 +47,8 @@ target_link_libraries(${BaseTargetName} PRIVATE
         juce::juce_recommended_warning_flags
         juce::juce_opengl
         juce::juce_dsp
-        DivisionVoid)
+        DivisionVoid
+        dRowAudio)
 
 if(APPLE)
     add_custom_command(TARGET ${BaseTargetName}_AU

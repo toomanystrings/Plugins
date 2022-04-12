@@ -109,6 +109,7 @@ private:
         juce::OwnedArray<juce::Label> frequencyLabels;
         
         double sampleRate;
+        DivisionVoidFonts fonts;
     };
     //==============================================================================
     

@@ -10,10 +10,7 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "../Utilities.h"
-
-
+#include "JuceHeader.h"
 
 class ImpulseResponseManager
 {

@@ -19,8 +19,9 @@ BassDivisionAudioProcessor::BassDivisionAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), treeState (*this, nullptr, "PARAMETERS", createParameterLayout()), sampleRate(44100)//,
-                       //renderThread("FFT Render Thread"), spectrumProcessor(11), presetManager(this), impulseResponseManager(this)
+                       ), treeState (*this, nullptr, "PARAMETERS", createParameterLayout()), sampleRate(44100),
+                       renderThread("FFT Render Thread"), spectrumProcessor(11)
+                       //, presetManager(this), impulseResponseManager(this)
 #endif
 {
     for (auto p : getParameters())
@@ -32,8 +33,8 @@ BassDivisionAudioProcessor::BassDivisionAudioProcessor()
     lowCompressor.engageHarmonicContent(true);
     lowCompressor.setHPFFreq(200);
     
-    //renderThread.addTimeSliceClient(&spectrumProcessor);
-    //renderThread.startThread(3);
+    renderThread.addTimeSliceClient(&spectrumProcessor);
+    renderThread.startThread(3);
 }
 
 BassDivisionAudioProcessor::~BassDivisionAudioProcessor()
@@ -41,8 +42,8 @@ BassDivisionAudioProcessor::~BassDivisionAudioProcessor()
     for (auto p : getParameters())
         treeState.removeParameterListener(static_cast<juce::AudioProcessorParameterWithID*>(p)->paramID, this);
     
-    //renderThread.removeTimeSliceClient(&spectrumProcessor);
-    //renderThread.stopThread(500);
+    renderThread.removeTimeSliceClient(&spectrumProcessor);
+    renderThread.stopThread(500);
 }
 
 //==============================================================================
@@ -178,7 +179,7 @@ void BassDivisionAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     leftChannelFifo.prepare(samplesPerBlock);
     rightChannelFifo.prepare(samplesPerBlock);
     
-    //spectrumProcessor.setSampleRate(sampleRate);
+    spectrumProcessor.setSampleRate(sampleRate);
 }
 
 void BassDivisionAudioProcessor::releaseResources()
@@ -338,7 +339,7 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         if (getActiveEditor() != nullptr
             && channel == 0)
         {
-            //spectrumProcessor.copySamples(channelData, bufferSize);
+            spectrumProcessor.copySamples(channelData, bufferSize);
         }
     }
 }

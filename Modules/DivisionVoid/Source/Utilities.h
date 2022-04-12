@@ -8,6 +8,13 @@
 #include <iomanip>
 #include <memory>
 
+#if JUCE_WINDOWS
+static const juce::String directorySeperator = "\\";
+
+#elif JUCE_MAC
+static const juce::String directorySeperator = "/";
+#endif
+
 #define ANIMATION_SPEED 0.1
 #define ANIMATION_FPS 60
 

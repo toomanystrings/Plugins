@@ -10,12 +10,11 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "../Utilities.h"
+#include "JuceHeader.h"
 
 // File extension is customisable. Can realistically be whatever you want
-static const juce::String presetFileExtension = ".tbp";
-static const juce::String presetFileExtensionWildcard = "*.tbp";
+static const juce::String presetFileExtension = ".bdp";
+static const juce::String presetFileExtensionWildcard = "*.bdp";
 
 class PresetManager
 {
