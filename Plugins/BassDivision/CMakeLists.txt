@@ -24,7 +24,8 @@ target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
         Source/PluginEditor.cpp
         Source/GUI/MainPanel.cpp
-        Source/GUI/Panels/BottomPanel.cpp)
+        Source/GUI/Panels/BottomPanel.cpp
+        Source/GUI/Panels/MiddlePanel.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC

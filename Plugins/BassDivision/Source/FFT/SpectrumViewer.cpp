@@ -12,7 +12,7 @@
 
 #include "SpectrumViewer.h"
 
-#include "../Utilities.h"
+#include "../../../Bass Division/Source/Utilities.h"
 
 #if JUCE_MAC || JUCE_IOS || DROWAUDIO_USE_FFTREAL
 
