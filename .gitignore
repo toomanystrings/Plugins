@@ -1,7 +1,7 @@
 /Bass Division/JuceLibraryCode
 /Bass Division/Builds
 /Bass Division/VST
-#/Modules/dRowAudio
+/Modules/dRowAudio
 /Modules/DivisionVoid_GUI
 
 cmake-build-debug
