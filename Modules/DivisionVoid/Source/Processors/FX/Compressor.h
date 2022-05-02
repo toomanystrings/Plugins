@@ -3,7 +3,7 @@
 
     Compressor.h
     Created: 12 Jan 2021 9:48:13pm
-    Author:  Olorin
+    Author:  Conor Foran
 
   ==============================================================================
 */
@@ -17,10 +17,11 @@
 
 #include "JuceHeader.h"
 
-//#include 
-namespace DivisionVoid {
+namespace DivisionVoid
+{
     template<typename T>
-    class Compressor {
+    class Compressor
+    {
     public:
         // Constructor
         Compressor() = default;
@@ -28,7 +29,7 @@ namespace DivisionVoid {
         // Destructor
         ~Compressor() = default;
 
-        float processSample(T x, int channel)
+        T processSample(T x, int channel)
         {
             // Initalise y
             float y = 0.0f;
@@ -98,24 +99,23 @@ namespace DivisionVoid {
         {
             for (auto i = 0; i < bufferSize; ++i)
             {
-                // Initalise y
-                float y = 0.0f;
+                T y = 0.0;
 
-                float xDetect = x[i];
+                T xDetect = x[i];
 
                 if (hpfOn)
                     xDetect = hpf[channel].processSingleSampleRaw(xDetect);
 
 
-                float x_Pos = fabs(xDetect); // fabs is abs for floats. Saves the conversion to double and back
-                float x_dB = juce::Decibels::gainToDecibels(x_Pos);
+                T x_Pos = fabs(xDetect);
+                T x_dB = juce::Decibels::gainToDecibels(x_Pos);
 
                 if (x_dB < -144.0f)
                 {
                     x_dB = -144.0f;
                 }
 
-                float xSC = 0;
+                T xSC = 0;
                 if (knee < 2 * (x_dB - threshold))
                 {
                     // Compression. Above the knee
@@ -133,16 +133,16 @@ namespace DivisionVoid {
                 }
 
                 // Compare desired amplitude to in
-                float gainChange = xSC - x_dB;
+                T gainChange = xSC - x_dB;
 
                 if (progDependOn == true)
                 {
-                    release = 1.0f / (-prevGainChange[channel] + 0.1f);
-                    alphaR = expf(-logf(9.0f) / (Fs * (release) * 0.001f));
+                    release = 1.0 / (-prevGainChange[channel] + 0.1);
+                    alphaR = expf(-logf(9.0) / (Fs * (release) * 0.001));
                 }
 
                 // Gain smoothing
-                float gainChangeSmooth;
+                T gainChangeSmooth;
                 if (gainChange < prevGainChange[channel])
                 {
                     // Attack
@@ -169,7 +169,7 @@ namespace DivisionVoid {
             }
         }
 
-        void processStereo(float *xLeft, float *xRight, const int &bufferSize)
+        /*void processStereo(float *xLeft, float *xRight, const int &bufferSize)
         {
             for (auto i = 0; i < bufferSize; ++i)
             {
@@ -287,10 +287,9 @@ namespace DivisionVoid {
 
                 xRight[i] = yR;
             }
+        }*/
 
-        }
-
-        float getGainReduction()
+        T getGainReduction()
         {
             return gLin;
         }
@@ -303,7 +302,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getThreshold()
+        T getThreshold()
         {
             return threshold;
         }
@@ -316,7 +315,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getRatio()
+        T getRatio()
         {
             return ratio;
         }
@@ -329,7 +328,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getKnee()
+        T getKnee()
         {
             return knee;
         }
@@ -344,7 +343,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getAttack()
+        T getAttack()
         {
             return attack;
         }
@@ -359,7 +358,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getRelease()
+        T getRelease()
         {
             return release;
         }
@@ -374,7 +373,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getHPFFreq()
+        T getHPFFreq()
         {
             return hpfFreq;
         }
@@ -399,7 +398,7 @@ namespace DivisionVoid {
             }
         }
 
-        float getSampleRate()
+        T getSampleRate()
         {
             return Fs;
         }
@@ -414,7 +413,7 @@ namespace DivisionVoid {
             return progDependOn;
         }
 
-        float harmonicContent(float input)
+        T harmonicContent(T input)
         {
             return input - (drive * (1 / 2) * powf(input, 2)) - (drive * (1/3) * powf(input, 3));
         }
@@ -430,31 +429,29 @@ namespace DivisionVoid {
         //const float* getGainReductionValues();
 
     private:
-        float Fs = 48000;
+        T Fs = 48000;
 
-        float threshold = 0.0f; // dB
-        float ratio = 1.0f;
-        float knee = 0.0f; // dB
-        float attack = 0.1f; // seconds
-        float release = 0.1f;
-        float hpfFreq = 0.1f; // Hz
+        T threshold = 0.0; // dB
+        T ratio = 1.0;
+        T knee = 0.0; // dB
+        T attack = 0.1; // seconds
+        T release = 0.1;
+        T hpfFreq = 0.1; // Hz
 
         bool progDependOn = false;
         bool hpfOn = false;
         bool harmonicContentOn = false;
 
-        float drive = 0.8f;
+        T drive = 0.8;
 
-        float alphaA = 0.9995f;    // Smoothing filter coefficients
-        float alphaR = 0.9995f;
+        T alphaA = 0.9995;    // Smoothing filter coefficients
+        T alphaR = 0.9995;
 
-        float prevGainChange[2] = {0.0f, 0.0f};
-
-        //Biquad* hpf;
+        T prevGainChange[2] = {0.0, 0.0};
 
         juce::IIRFilter hpf[2];
 
-        float gLin;
+        T gLin;
     };
 }
 
