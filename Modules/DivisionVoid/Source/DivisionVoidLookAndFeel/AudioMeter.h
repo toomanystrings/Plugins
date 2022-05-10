@@ -75,11 +75,14 @@ namespace DivisionVoid {
             g.setColour(backgroundColour);
             g.fillRect(indicatorArea);
 
-            if (meterSources.size()) {
-                if (meterStyle == Vertical) {
+            if (meterSources.size())
+            {
+                if (meterStyle == Vertical)
+                {
                     int channelWidth = indicatorArea.getWidth() / meterSources.size();
 
-                    for (int channel = 0; channel < meterSources.size(); ++channel) {
+                    for (int channel = 0; channel < meterSources.size(); ++channel)
+                    {
                         float output = meterBuffers[channel];
                         float peak = meterPeaks[channel];
 
@@ -93,47 +96,42 @@ namespace DivisionVoid {
                                         (int) (indicatorArea.getHeight() * output)
                                 );
 
-                        if (meterPeakStatus) {
+                        if (meterPeakStatus)
+                        {
                             g.setColour(foregroundColour);
 
-                            g.drawLine
-                                    (
-                                            indicatorArea.getX() + channelWidth * channel,
-                                            indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
-                                            (indicatorArea.getX() + (channelWidth * channel)) + channelWidth,
-                                            indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
-                                            2
-                                    );
+                            g.drawLine(indicatorArea.getX() + channelWidth * channel,
+                                       indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
+                                       (indicatorArea.getX() + (channelWidth * channel)) + channelWidth,
+                                       indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
+                                       2);
                         }
 
                         g.setColour(backgroundColour);
-                        g.drawLine
-                                (
-                                        (indicatorArea.getX() + channelWidth * channel) + channelWidth,
-                                        indicatorArea.getY(),
-                                        (indicatorArea.getX() + channelWidth * channel) + channelWidth,
-                                        indicatorArea.getBottom(),
-                                        1
-                                );
+                        g.drawLine((indicatorArea.getX() + channelWidth * channel) + channelWidth,
+                                   indicatorArea.getY(),
+                                   (indicatorArea.getX() + channelWidth * channel) + channelWidth,
+                                   indicatorArea.getBottom(),
+                                   1);
                     }
-                } else if (meterStyle == Horizontal) {
+                } else if (meterStyle == Horizontal)
+                {
                     int channelHeight = indicatorArea.getHeight() / meterSources.size();
 
-                    for (int channel = 0; channel < meterSources.size(); ++channel) {
+                    for (int channel = 0; channel < meterSources.size(); ++channel)
+                    {
                         float output = meterBuffers[channel];
                         float peak = meterPeaks[channel];
 
                         g.setColour(highlightColour);
 
-                        g.fillRect
-                                (
-                                        indicatorArea.getX(),
-                                        indicatorArea.getY() + channelHeight * channel,
-                                        (int) (indicatorArea.getWidth() * output),
-                                        channelHeight
-                                );
+                        g.fillRect(indicatorArea.getX(),
+                                   indicatorArea.getY() + channelHeight * channel,
+                                   (int) (indicatorArea.getWidth() * output),
+                                   channelHeight);
 
-                        if (meterPeakStatus) {
+                        if (meterPeakStatus)
+                        {
                             g.setColour(foregroundColour);
 
                             g.drawLine(indicatorArea.getX() + indicatorArea.getWidth() * peak,
@@ -144,8 +142,7 @@ namespace DivisionVoid {
                         }
 
                         g.setColour(backgroundColour);
-                        g.drawLine(
-                                indicatorArea.getX(),
+                        g.drawLine(indicatorArea.getX(),
                                 (indicatorArea.getY() + channelHeight * channel) + channelHeight,
                                 indicatorArea.getRight(),
                                 (indicatorArea.getY() + channelHeight * channel) + channelHeight,
@@ -185,15 +182,18 @@ namespace DivisionVoid {
 
     private:
 
-        void timerCallback() override {
-            if (meterSources.size() == 0) {
+        void timerCallback() override
+        {
+            if (meterSources.size() == 0)
+            {
                 stopTimer();
             }
 
             float rise = (float) meterRise / 1000.0f;
             float fall = (float) meterFall / 1000.0f;
 
-            for (int i = 0; i < meterSources.size(); ++i) {
+            for (int i = 0; i < meterSources.size(); ++i)
+            {
                 float in = std::abs(*meterSources[i]);
                 float last = meterBuffers[i];
                 float peak = meterPeaks[i];
@@ -204,36 +204,47 @@ namespace DivisionVoid {
 
                 float g;
 
-                if (peak < in) {
+                if (peak < in)
+                {
                     g = ga;
-                } else {
+                }
+                else
+                {
                     g = gr;
                 }
 
                 peak = (1.0f - g) * in + g * peak;
                 meterPeaks.set(i, clip(peak));
 
-                if (meterCalibration == Peak || meterCalibration == Custom) {
+                if (meterCalibration == Peak || meterCalibration == Custom)
+                {
                     in = std::abs(*meterSources[i]);
                     last = meterBuffers[i];
 
                     ga = exp(-1.0f / (float) (ANIMATION_FPS * rise));
                     gr = exp(-1.0f / (float) (ANIMATION_FPS * fall));
 
-                    if (last < in) {
+                    if (last < in)
+                    {
                         g = ga;
-                    } else {
+                    }
+                    else
+                    {
                         g = gr;
                     }
 
                     out = (1.0f - g) * in + g * last;
-                } else if (meterCalibration == VU) {
+                }
+                else if (meterCalibration == VU)
+                {
                     in = fmax(0.0f, *meterSources[i]);
                     last = meterBuffers[i];
                     g = exp(-1.0f / (float) (ANIMATION_FPS * rise));
 
                     out = (1.0f - g) * in + g * last;
-                } else if (meterCalibration == RMS) {
+                }
+                else if (meterCalibration == RMS)
+                {
                     in = (*meterSources[i]) * (*meterSources[i]);
                     last = meterBuffers[i];
                     g = exp(-1.0f / (float) (ANIMATION_FPS * rise));
