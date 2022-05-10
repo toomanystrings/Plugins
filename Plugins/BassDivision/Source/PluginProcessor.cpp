@@ -945,11 +945,11 @@ void BassDivisionAudioProcessor::setImpulseResponse(juce::File ir)
         irReference = temp;
         if (impulseResponse.getCurrentIRSize() == 0)
         {
-            impulseResponse.loadImpulseResponse(temp, juce::dsp::Convolution::Stereo::yes, juce::dsp::Convolution::Trim::yes, temp.getSize());
+            impulseResponse.loadImpulseResponse(temp, juce::dsp::Convolution::Stereo::no, juce::dsp::Convolution::Trim::yes, temp.getSize());
         }
         else if (impulseResponse.getCurrentIRSize() != 0)
         {
-            impulseResponse.loadImpulseResponse(temp, juce::dsp::Convolution::Stereo::yes, juce::dsp::Convolution::Trim::yes, temp.getSize());
+            impulseResponse.loadImpulseResponse(temp, juce::dsp::Convolution::Stereo::no, juce::dsp::Convolution::Trim::yes, temp.getSize());
         }
     }
 }
