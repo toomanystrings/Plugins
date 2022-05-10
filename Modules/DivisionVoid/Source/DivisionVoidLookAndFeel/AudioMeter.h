@@ -9,57 +9,69 @@ inline float clip(float x)
     return std::max(0.0f, std::min(1.0f, x));
 }
 namespace DivisionVoid {
-    class AudioMeter : public juce::Component, private juce::Timer {
+    class AudioMeter : public juce::Component, private juce::Timer
+    {
     public:
-        enum MeterStyle {
+        enum MeterStyle
+        {
             Vertical,
             Horizontal
         };
 
-        enum MeterCalibration {
+        enum MeterCalibration
+        {
             Peak,
             RMS,
             VU,
             Custom
         };
 
-        AudioMeter() {
+        AudioMeter()
+        {
             meterStyle = Vertical;
         }
 
         ~AudioMeter() = default;
 
-        void setMeterStyle(MeterStyle style) {
+        void setMeterStyle(MeterStyle style)
+        {
             meterStyle = style;
             resized();
             repaint();
         }
 
-        MeterStyle getMeterStyle() const {
+        MeterStyle getMeterStyle() const
+        {
             return meterStyle;
         }
 
-        void setMeterCalibration(MeterCalibration calibration) {
+        void setMeterCalibration(MeterCalibration calibration)
+        {
             meterCalibration = calibration;
 
             // There is a load of switchy things to do here, depending on rise and fall, stuff like that...
         }
 
-        MeterCalibration getMeterCalibration() const {
+        MeterCalibration getMeterCalibration() const
+        {
             return meterCalibration;
         }
 
-        void setMeterSource(int channel, float *const source) {
+        void setMeterSource(int channel, float *const source)
+        {
             meterSources.set(channel, source);
             meterBuffers.set(channel, 0.0f);
 
-            // Apparently we can set the old timer running here, instead of the constructor, but
-            // we shall see!
+            if (!isTimerRunning())
+            {
+                startTimerHz(ANIMATION_FPS);
+            }
 
             repaint();
         }
 
-        void paint(juce::Graphics &g) override {
+        void paint(juce::Graphics &g) override
+        {
             int width = getWidth();
             int height = getHeight();
 
@@ -88,18 +100,14 @@ namespace DivisionVoid {
 
                         g.setColour(highlightColour);
 
-                        g.fillRect
-                                (
-                                        indicatorArea.getX() + channelWidth * channel,
-                                        indicatorArea.getBottom() - (int) (indicatorArea.getHeight() * output),
-                                        channelWidth,
-                                        (int) (indicatorArea.getHeight() * output)
-                                );
+                        g.fillRect(indicatorArea.getX() + channelWidth * channel,
+                                   indicatorArea.getBottom() - (int) (indicatorArea.getHeight() * output),
+                                   channelWidth,
+                                   (int) (indicatorArea.getHeight() * output));
 
                         if (meterPeakStatus)
                         {
                             g.setColour(foregroundColour);
-
                             g.drawLine(indicatorArea.getX() + channelWidth * channel,
                                        indicatorArea.getBottom() - (indicatorArea.getHeight() * peak),
                                        (indicatorArea.getX() + (channelWidth * channel)) + channelWidth,
@@ -114,7 +122,8 @@ namespace DivisionVoid {
                                    indicatorArea.getBottom(),
                                    1);
                     }
-                } else if (meterStyle == Horizontal)
+                }
+                else if (meterStyle == Horizontal)
                 {
                     int channelHeight = indicatorArea.getHeight() / meterSources.size();
 
@@ -133,7 +142,6 @@ namespace DivisionVoid {
                         if (meterPeakStatus)
                         {
                             g.setColour(foregroundColour);
-
                             g.drawLine(indicatorArea.getX() + indicatorArea.getWidth() * peak,
                                        indicatorArea.getY() + channelHeight * channel,
                                        indicatorArea.getX() + indicatorArea.getWidth() * peak,
@@ -164,21 +172,22 @@ namespace DivisionVoid {
             g.strokePath(p, juce::PathStrokeType(8));
         }
 
-        void clearSource(int channel) {
+        void clearSource(int channel)
+        {
             meterSources.remove(channel);
             meterBuffers.remove(channel);
 
             repaint();
         }
 
-        void clearSources() {
+        void clearSources()
+        {
             meterSources.clear();
             meterBuffers.clear();
 
             // Apparently we can also stop the timer here, but I will have to look into how these interact
             // with the whole interface. Maybe within the parent component destructor?
         }
-
 
     private:
 
