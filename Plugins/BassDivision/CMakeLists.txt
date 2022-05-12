@@ -1,4 +1,4 @@
-project(BassDivision VERSION 0.0.1)
+project(BassDivision VERSION 0.0.4)
 
 set (BaseTargetName ${PROJECT_NAME})
 
@@ -50,13 +50,12 @@ target_link_libraries(${BaseTargetName} PRIVATE
         juce::juce_dsp
         DivisionVoid
         dRowAudio)
-
 if(APPLE)
     add_custom_command(TARGET ${BaseTargetName}_AU
             PRE_BUILD
-            COMMAND rm -rf $ENV{HOME}/Library/Audio/Plug-Ins/Components/LEVEL.component)
+            COMMAND rm -rf $ENV{HOME}/Library/Audio/Plug-Ins/Components/"Bass Division.component")
 
-    add_custom_command(TARGET ${PROJECT_NAME}_All
-            POST_BUILD
-            COMMAND python3 ~/PluginDevelopment/CoalescentSounds/CoalescentSoundsPlugins/Scripts/copy-binaries-to-gdrive.py)
+#    add_custom_command(TARGET ${PROJECT_NAME}_All
+#            POST_BUILD
+#            COMMAND python3 ~/PluginDevelopment/CoalescentSounds/CoalescentSoundsPlugins/Scripts/copy-binaries-to-gdrive.py)
 endif()

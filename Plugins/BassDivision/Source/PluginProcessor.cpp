@@ -240,8 +240,8 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
     juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
     
-    leftChain.process(leftContext);
-    rightChain.process(rightContext);
+    //leftChain.process(leftContext);
+    //rightChain.process(rightContext);
     
     buffer.applyGain(compInputGain);
 
@@ -314,9 +314,18 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     if (isImpulseResponseEngaged)
     {
         processIrCrossover(buffer);
-        
-        juce::dsp::AudioBlock<float> block(irBuffer);
-        processIr(block);
+
+        juce::dsp::AudioBlock<float> irBlock(irBuffer);
+
+        auto irLeftBlock = irBlock.getSingleChannelBlock(Channel::Left);
+        auto irRightBlock = irBlock.getSingleChannelBlock(Channel::Right);
+
+        juce::dsp::ProcessContextReplacing<float> leftContext(irLeftBlock);
+        juce::dsp::ProcessContextReplacing<float> rightContext(irRightBlock);
+
+        //juce::dsp::AudioBlock<float> block(irBuffer);
+        processIr(leftContext);
+        processIr(rightContext);
 
         for (int channel = 0; channel < numChannels; ++channel)
         {
