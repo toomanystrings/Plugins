@@ -245,45 +245,26 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
     buffer.applyGain(compInputGain);
 
-    for (int channel = 0; channel < numChannels; ++channel)
-    {
-        compressor.processChannel(buffer.getWritePointer(channel), channel, bufferSize);
-    }
-    
+    compressor.processChannel(buffer.getWritePointer(Channel::Left), Channel::Left, bufferSize);
+    compressor.processChannel(buffer.getWritePointer(Channel::Right), Channel::Right, bufferSize);
+
     buffer.applyGain(compOutputGain);
     
     processCrossover(buffer);
 
-    subBuffer.applyGain(subInputGainLin);
-
     for (int channel = 0; channel < numChannels; ++channel)
     {
+        subBuffer.applyGain(channel, 0, bufferSize, subInputGainLin);
+        lowBuffer.applyGain(channel, 0, bufferSize, lowInputGainLin);
+
         subCompressor.processChannel(subBuffer.getWritePointer(channel), channel, bufferSize);
-    }
-
-    subBuffer.applyGain(subOutputGainLin);
-
-    lowBuffer.applyGain(lowInputGainLin);
-
-    for (int channel = 0; channel < numChannels; ++channel)
-    {
         lowCompressor.processChannel(lowBuffer.getWritePointer(channel), channel, bufferSize);
-    }
-
-    lowBuffer.applyGain(lowOutputGainLin);
-
-    for (int channel = 0; channel < numChannels; ++channel)
-    {
         midDistortion.process(midBuffer.getWritePointer(channel), channel, bufferSize);
-    }
-
-    for (int channel = 0; channel < numChannels; ++channel)
-    {
         highDistortion.process(highBuffer.getWritePointer(channel), channel, bufferSize);
-    }
 
-    for (int channel = 0; channel < numChannels; ++channel)
-    {
+        subBuffer.applyGain(channel, 0, bufferSize, subOutputGainLin);
+        lowBuffer.applyGain(channel, 0, bufferSize, lowOutputGainLin);
+
         auto xSub = subBuffer.getWritePointer(channel);
         auto xLow = lowBuffer.getWritePointer(channel);
         auto xMid = midBuffer.getWritePointer(channel);
@@ -338,8 +319,7 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                 xOut[sample] = xIr[sample] + xClean[sample];
         }
     }
-    
-    
+
     buffer.applyGain(outputGain);
 
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
