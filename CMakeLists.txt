@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(JUCECMakeRepo)
+project(DivisionVoidPlugins)
 
 #including CPM.cmake, a package manager:
 #https://github.com/TheLartians/CPM.cmake
