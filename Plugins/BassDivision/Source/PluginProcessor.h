@@ -296,6 +296,9 @@ private:
 
     // Band Buffers
     juce::AudioBuffer<float> subBuffer, lowBuffer, midBuffer, highBuffer, irBuffer, cleanBuffer;
+
+    // Smoothed values for meters
+    juce::LinearSmoothedValue<float> dBLeftIn, dBRightIn;
     
     // Bools for processing
     bool subSoloOn = false;

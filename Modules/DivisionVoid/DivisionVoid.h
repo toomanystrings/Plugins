@@ -42,6 +42,7 @@ BEGIN_JUCE_MODULE_DECLARATION
 
 // Components
 #include "Source/DivisionVoidLookAndFeel/AudioMeter.h"
+#include "Source/DivisionVoidLookAndFeel/SegmentedDisplayMeter.h"
 #include "Source/DivisionVoidLookAndFeel/Button.h"
 
 // FX processors

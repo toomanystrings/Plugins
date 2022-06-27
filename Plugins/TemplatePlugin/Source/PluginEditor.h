@@ -29,7 +29,7 @@ private:
     //DivisionVoid::Button button;
     //DivisionVoid::Slider slider;
 
-    DivisionVoid::AudioMeter audioMeter;
+    DivisionVoid::SegmentedDisplayMeter audioMeter;
     //DivisionVoid::Button button;
 
     DivisionVoidFonts fonts;
