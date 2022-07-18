@@ -29,8 +29,10 @@ private:
     //DivisionVoid::Button button;
     //DivisionVoid::Slider slider;
 
-    DivisionVoid::SegmentedDisplayMeter audioMeter;
+    //DivisionVoid::SegmentedDisplayMeter audioMeter;
     //DivisionVoid::Button button;
+
+    DivisionVoid::EqVisualiser visualiser;
 
     DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to
