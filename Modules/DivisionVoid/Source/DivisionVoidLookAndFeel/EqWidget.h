@@ -29,6 +29,16 @@ public:
             dragger.startDraggingComponent(this, event);
         }
 
+        void mouseEnter(const juce::MouseEvent &event) override
+        {
+            repaint();
+        }
+
+        void mouseExit(const juce::MouseEvent &event) override
+        {
+            repaint();
+        }
+
         void mouseDrag(const juce::MouseEvent &event) override
         {
             dragger.dragComponent(this, event, &constrainer);
@@ -42,6 +52,10 @@ public:
         {
             g.setColour(juce::Colours::green);
             g.fillEllipse(getLocalBounds().toFloat());
+
+            g.setColour(juce::Colours::white);
+            if (isMouseOver())
+                g.drawEllipse(getLocalBounds().toFloat(), 3);
         }
 
     private:
