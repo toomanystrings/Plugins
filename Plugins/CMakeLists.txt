@@ -1,3 +1,4 @@
 add_subdirectory("TemplatePlugin")
 add_subdirectory("BassDivision")
 add_subdirectory("Kraken")
+add_subdirectory("ADT")

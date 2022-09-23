@@ -10,22 +10,18 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioProcessor& p)
+ADTAudioProcessorEditor::ADTAudioProcessorEditor (ADTAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (1000, 500);
-    addAndMakeVisible(visualiser);
-
-    //audioMeter.setOrientation(DivisionVoid::SegmentedDisplayMeter::Orientation::Horizontal);
-    //addAndMakeVisible(audioMeter);
 }
 
-NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor() = default;
+ADTAudioProcessorEditor::~ADTAudioProcessorEditor() = default;
 
 //==============================================================================
-void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
+void ADTAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     //g.fillAll (juce::Colours::white);
@@ -35,14 +31,8 @@ void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
     //g.drawFittedText ("Template Plugin", getLocalBounds(), juce::Justification::centred, 1);
 }
 
-void NewProjectAudioProcessorEditor::resized()
+void ADTAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-
-    //audioMeter.setOrientation(DivisionVoid::SegmentedDisplayMeter::Orientation::Horizontal);
-
-    //audioMeter.setBounds(50, 50, 400, 25);
-
-    visualiser.setBounds(getLocalBounds());
 }
