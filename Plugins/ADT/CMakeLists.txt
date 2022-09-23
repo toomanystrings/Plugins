@@ -1,4 +1,4 @@
-project(ADT VERSION 0.0.1)
+project(ADT VERSION 0.0.2)
 
 set (BaseTargetName ${PROJECT_NAME})
 
@@ -13,8 +13,8 @@ juce_add_plugin("${BaseTargetName}"
         IS_MIDI_EFFECT FALSE
         EDITOR_WANTS_KEYBOARD_FOCUS FALSE
         COPY_PLUGIN_AFTER_BUILD TRUE
-        PLUGIN_MANUFACTURER_CODE Amdt
-        PLUGIN_CODE Demo
+        PLUGIN_MANUFACTURER_CODE Divd
+        PLUGIN_CODE Adtr
         FORMATS AU VST3 Standalone
         PRODUCT_NAME "ADT")
 
