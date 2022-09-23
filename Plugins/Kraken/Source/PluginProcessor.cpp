@@ -24,7 +24,7 @@ KrakenAudioProcessor::KrakenAudioProcessor()
 {
 }
 
-KrakenAudioProcessor::~NewProjectAudioProcessor()
+KrakenAudioProcessor::~KrakenAudioProcessor()
 {
 
 
