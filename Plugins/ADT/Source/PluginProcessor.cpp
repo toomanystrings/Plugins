@@ -22,12 +22,14 @@ ADTAudioProcessor::ADTAudioProcessor()
                        ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
+    for (auto p : getParameters())
+        treeState.addParameterListener(static_cast<juce::AudioProcessorParameterWithID*>(p)->paramID, this);
 }
 
 ADTAudioProcessor::~ADTAudioProcessor()
 {
-
-
+    for (auto p : getParameters())
+        treeState.removeParameterListener(static_cast<juce::AudioProcessorParameterWithID*>(p)->paramID, this);
 }
 
 //==============================================================================
@@ -168,7 +170,8 @@ bool ADTAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* ADTAudioProcessor::createEditor()
 {
-    return new ADTAudioProcessorEditor (*this);
+    //return new ADTAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor (*this);
 }
 
 //==============================================================================
@@ -196,5 +199,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout ADTAudioProcessor::createPar
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
+    params.push_back(MakeUnique<juce::AudioParameterFloat>("DELAY_MODULATION", "Delay Modulation", 0, 10, 5));
+
     return {params.begin(), params.end()};
+}
+
+void ADTAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
+{
+
 }
