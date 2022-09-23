@@ -15,7 +15,7 @@ NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioP
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (500, 500);
+    setSize (1000, 500);
     addAndMakeVisible(visualiser);
 
     //audioMeter.setOrientation(DivisionVoid::SegmentedDisplayMeter::Orientation::Horizontal);
