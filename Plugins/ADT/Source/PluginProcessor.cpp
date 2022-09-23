@@ -19,7 +19,7 @@ ADTAudioProcessor::ADTAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
 }
@@ -190,4 +190,11 @@ void ADTAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new ADTAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout ADTAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    return {params.begin(), params.end()};
 }
