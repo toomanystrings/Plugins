@@ -199,7 +199,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout ADTAudioProcessor::createPar
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
-    params.push_back(MakeUnique<juce::AudioParameterFloat>("DELAY_MODULATION", "Delay Modulation", 0, 10, 5));
+    params.push_back(MakeUnique<juce::AudioParameterFloat>("DELAY", "Time Shift", 0, 10, 5));
+    params.push_back(MakeUnique<juce::AudioParameterFloat>("LEVEL", "Level Variation", 0, 10, 5));
+    params.push_back(MakeUnique<juce::AudioParameterFloat>("PITCH", "Pitch Shift", 0 ,10, 5));
 
     return {params.begin(), params.end()};
 }
