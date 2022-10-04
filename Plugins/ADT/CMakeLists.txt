@@ -1,4 +1,4 @@
-project(ADT VERSION 0.1.0)
+project(ADT VERSION 0.1.1)
 
 set (BaseTargetName ${PROJECT_NAME})
 

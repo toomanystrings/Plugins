@@ -97,8 +97,14 @@ void ADTAudioProcessor::changeProgramName (int index, const juce::String& newNam
 //==============================================================================
 void ADTAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    auto numChannels = getTotalNumOutputChannels();
+    
+    // wetBuffer might need to be a different size. At the very least, we will need to implement a read and write head
+    wetBuffer.setSize(numChannels, samplesPerBlock);
+    dryBuffer.setSize(numChannels, samplesPerBlock);
+  
+    wetBuffer.clear();
+    dryBuffer.clear();
 }
 
 void ADTAudioProcessor::releaseResources()
