@@ -54,7 +54,6 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
-
     juce::AudioProcessorValueTreeState treeState;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;
