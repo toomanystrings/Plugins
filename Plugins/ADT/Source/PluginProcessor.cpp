@@ -19,7 +19,7 @@ ADTAudioProcessor::ADTAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout())
+                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout()), delayLine(2000)
 #endif
 {
     for (auto p : getParameters())
@@ -98,6 +98,14 @@ void ADTAudioProcessor::changeProgramName (int index, const juce::String& newNam
 void ADTAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     auto numChannels = getTotalNumOutputChannels();
+
+    juce::dsp::ProcessSpec spec;
+
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = numChannels;
+
+    delayLine.prepare(spec);
     
     // wetBuffer might need to be a different size. At the very least, we will need to implement a read and write head
     wetBuffer.setSize(numChannels, samplesPerBlock);

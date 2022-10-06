@@ -60,6 +60,8 @@ private:
     void parameterChanged(const juce::String& parameterID, float newValue) override;
     
     juce::AudioBuffer<float> wetBuffer, dryBuffer;
+
+    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ADTAudioProcessor)
 };
