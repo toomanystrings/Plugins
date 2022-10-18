@@ -160,6 +160,9 @@ void ADTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
         buffer.clear (i, 0, buffer.getNumSamples());
 
     auto rms = buffer.getRMSLevel(0, 0, bufferSize);
+
+    delayLine.setDelay(2000);
+    delayLine.
 }
 
 //==============================================================================
