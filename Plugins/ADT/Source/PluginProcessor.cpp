@@ -19,7 +19,7 @@ ADTAudioProcessor::ADTAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout()), delayLine(2000)
+                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
     for (auto p : getParameters())
@@ -105,7 +105,14 @@ void ADTAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = numChannels;
 
+    delayLine.reset();
     delayLine.prepare(spec);
+
+    dryLine.reset();
+    dryLine.prepare(spec);
+
+    delayLine.setMaximumDelayInSamples(50000);
+    delayLine.setMaximumDelayInSamples(.07 * sampleRate);
     
     // wetBuffer might need to be a different size. At the very least, we will need to implement a read and write head
     wetBuffer.setSize(numChannels, samplesPerBlock);
@@ -161,8 +168,21 @@ void ADTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
 
     auto rms = buffer.getRMSLevel(0, 0, bufferSize);
 
-    delayLine.setDelay(2000);
-    delayLine.popSample(0);
+    auto dryDelay = 0.05 * Fs;
+
+    for (auto channel = 0; channel < numChannels; ++channel)
+    {
+        auto data = buffer.getWritePointer(channel);
+
+        for (auto sample = 0; sample < bufferSize; ++sample)
+        {
+            dryLine.pushSample(channel, data[sample]);
+            data[sample] = dryLine.popSample(channel, dryDelay);
+
+            delayLine.pushSample(channel, data[sample]);
+            data[sample] += delayLine.popSample(channel, dryDelay + (0.03 * Fs));
+        }
+    }
 }
 
 //==============================================================================
@@ -211,5 +231,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout ADTAudioProcessor::createPar
 
 void ADTAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 {
-
+    if (parameterID == "DELAY")
+    {
+        delayLine.setDelay(newValue * 5000);
+    }
 }

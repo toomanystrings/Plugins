@@ -45,7 +45,10 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/DivisionVoidLookAndFeel/SegmentedDisplayMeter.h"
 #include "Source/DivisionVoidLookAndFeel/Button.h"
 #include "Source/DivisionVoidLookAndFeel/EqWidget.h"
+#include "Source/DivisionVoidLookAndFeel/DoubleStackKnob.h"
 
 // FX processors
 #include "Source/Processors/FX/Compressor.h"
 #include "Source/Processors/FX/Distortion.h"
+#include "Source/Processors/LevelMeterProcessor.h"
+

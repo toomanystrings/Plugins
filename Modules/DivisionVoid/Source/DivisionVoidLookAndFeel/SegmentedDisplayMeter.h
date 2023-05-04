@@ -50,22 +50,28 @@ class SegmentedDisplayMeter : public juce::Component, juce::Timer
     public:
         enum class Orientation {Vertical, Horizontal};
 
-        SegmentedDisplayMeter(/*std::function<float()>&& valueFunction*/) /*: valueSupplier(std::move(valueFunction))*/
+        SegmentedDisplayMeter(/*std::function<float()>&& valueFunction*/) //: valueSupplier(std::move(valueFunction))
         {
             orientation = Orientation::Vertical;
+            startTimerHz(24);
+        }
+
+        ~SegmentedDisplayMeter()
+        {
+            stopTimer();
         }
 
         void paint(juce::Graphics& g) override
         {
-//            const auto value = juce::jmap(
-//                    valueSupplier(),
-//                    -60.0f,
-//                    6.0f,
-//                    0.0f,
-//                    1.0f);
+            const auto value = juce::jmap(
+                    level,
+                    -60.0f,
+                    6.0f,
+                    0.0f,
+                    1.0f);
 
             // Purely for testing at the minute
-            auto value = 1.0f;
+            //auto value = 1.0f;
 
             for (int i = 0; i < totalNumberOfSegments; ++i)
             {
@@ -118,10 +124,14 @@ class SegmentedDisplayMeter : public juce::Component, juce::Timer
         // Needs to be set in the resized() method.
         void setOrientation(Orientation orientation) { this->orientation = orientation; }
 
+        void setLevel(const float value) { level = value; }
+
     private:
         //std::function<float()> valueSupplier;
         std::vector<UniquePtr<Segment>> segments;
         int totalNumberOfSegments = 25;
+
+        float level = -60.0f;
 
         Orientation orientation;
     };

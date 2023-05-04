@@ -11,13 +11,13 @@ namespace DivisionVoid
                               float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override
         {
             // Determine the amount of area that the whole knob will take up
-            auto sizeCoefficient = 0.75f;
+            auto sizeCoefficient = 1.0f;
 
             // General maths stuff for determining the area and angles
             auto diameter = juce::jmin(width, height);
-            auto radius = diameter / 2 * sizeCoefficient;
-            auto centreX = x + width / 2;
-            auto centreY = (y + height / 2) + width * 0.045f;
+            auto radius = diameter / 2; //* sizeCoefficient;
+            auto centreX = x + (width / 2);
+            auto centreY = y + (height / 2);// + width * 0.045f;
             auto rx = centreX - radius;
             auto ry = centreY - radius;
             auto rw = radius * 2;
@@ -473,5 +473,82 @@ namespace DivisionVoid
         }
 
         DivisionVoidFonts fonts;
+    };
+
+    class DoubleStackLAF : public juce::LookAndFeel_V4
+    {
+        void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
+                              float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override
+        {
+            // Determine the amount of area that the whole knob will take up
+            auto sizeCoefficient = 0.75f;
+
+            // General maths stuff for determining the area and angles
+            auto diameter = juce::jmin(width, height);
+            auto radius = diameter / 2 * sizeCoefficient;
+            auto centreX = x + width / 2;
+            auto centreY = (y + height / 2) + width * 0.045f;
+            auto rx = centreX - radius;
+            auto ry = centreY - radius;
+            auto rw = radius * 2;
+
+            // Control how wide the range of movement is of the slider
+            float angleStartOffset = 0.3;
+
+            // Leave these alone, they're working out important angle-y business.
+            rotaryStartAngle = rotaryStartAngle + angleStartOffset;
+            rotaryEndAngle = rotaryEndAngle - angleStartOffset;
+            auto angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+
+            // :::: DRAW MAIN CIRCLE PART ::::
+            // Make some definitions for paths.
+            juce::Path innerCircle;
+            juce::Path hiddenInnerBorder;
+            juce::Path borderCircle;
+            juce::Path tick;
+
+            // Some helpful variables you can use to modify the sizes of different aspects of the slider.
+            float innerCircleSize = sizeCoefficient * 0.92f;
+            float hiddenInnerBorderSize = sizeCoefficient * 0.97f;
+            float borderCircleSize = sizeCoefficient * 1.0f;
+            float innerCircleDistanceFromCentre = 7 * sizeCoefficient;
+            float innerCircleDiameter = 35 * sizeCoefficient;
+
+            // MAIN BORDER (In the OG design this was the black/dark grey bit)
+            g.setColour(sliderFill);
+            borderCircle.addEllipse(centreX - diameter * (borderCircleSize / 2), centreY - diameter * (borderCircleSize / 2),
+                                    diameter * borderCircleSize, diameter * borderCircleSize);
+            g.fillPath(borderCircle);
+
+            // SUBTLE INNER BORER
+            g.setColour(sliderEdge);
+            hiddenInnerBorder.addEllipse(centreX - diameter * (hiddenInnerBorderSize / 2), centreY - diameter * (hiddenInnerBorderSize / 2),
+                                         diameter * hiddenInnerBorderSize, diameter * hiddenInnerBorderSize);
+            g.fillPath(hiddenInnerBorder);
+
+            // MAIN INNER CIRCLE OF THE KNOB.
+            g.setColour(sliderFill);
+            innerCircle.addEllipse(centreX - diameter * (innerCircleSize / 2), centreY - diameter * (innerCircleSize / 2),
+                                   diameter * innerCircleSize, diameter * innerCircleSize);
+            g.fillPath(innerCircle);
+
+            // TICK
+            float tickOuterOffset = 0.15 * radius;
+            float tickWidth = radius * 0.07;
+            float tickLength = 0.32 * radius;
+            //float tickRoundness = 3.5;
+            g.setColour(sliderEdge);
+            tick.addRectangle(0 - tickWidth / 2, -radius + tickOuterOffset, tickWidth, tickLength);
+            g.fillPath(tick, juce::AffineTransform::rotation(angle).translated(centreX, centreY));
+
+            slider.setColour(0x1001700, textBoxEdge);
+            slider.setColour(0x1001400, sliderFill);
+        }
+
+        DivisionVoidFonts fonts;
+
+        juce::Colour sliderFill = juce::Colours::black;
+        juce::Colour sliderEdge = juce::Colours::grey;
+        juce::Colour textBoxEdge = juce::Colour::fromRGBA(0, 0, 0, 0);
     };
 }

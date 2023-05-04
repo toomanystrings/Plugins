@@ -1,4 +1,4 @@
-project(ADT VERSION 0.1.2)
+project(ADT VERSION 0.1.4)
 
 set (BaseTargetName ${PROJECT_NAME})
 
@@ -22,7 +22,8 @@ juce_generate_juce_header(${BaseTargetName})
 
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
-        Source/PluginEditor.cpp)
+        Source/PluginEditor.cpp
+        Source/Analysis/DelayAnalysis.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC

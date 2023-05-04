@@ -14,7 +14,7 @@
 //==============================================================================
 /**
 */
-class NewProjectAudioProcessorEditor  : public juce::AudioProcessorEditor
+class NewProjectAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Timer
 {
 public:
     NewProjectAudioProcessorEditor (NewProjectAudioProcessor&);
@@ -24,15 +24,17 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void timerCallback() override;
+
 private:
 
-    //DivisionVoid::Button button;
-    //DivisionVoid::Slider slider;
-
     //DivisionVoid::SegmentedDisplayMeter audioMeter;
-    //DivisionVoid::Button button;
 
-    DivisionVoid::EqVisualiser visualiser;
+    float maxRmsLeft{}, maxRmsRight{};
+    int framesElapsed = 0;
+
+    DivisionVoid::DoubleStackKnob slider;
+    DivisionVoid::DoubleStackLAF laf;
 
     DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to

@@ -60,7 +60,9 @@ private:
     
     juce::AudioBuffer<float> wetBuffer, dryBuffer;
 
-    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine, dryLine;
+
+    float Fs = 44100;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ADTAudioProcessor)
 };

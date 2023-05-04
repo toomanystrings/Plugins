@@ -11,18 +11,23 @@
 
 //==============================================================================
 NewProjectAudioProcessorEditor::NewProjectAudioProcessorEditor (NewProjectAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+        : AudioProcessorEditor (&p), audioProcessor (p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (1000, 500);
-    addAndMakeVisible(visualiser);
+    setSize (500, 500);
+    //addAndMakeVisible(visualiser);
 
-    //audioMeter.setOrientation(DivisionVoid::SegmentedDisplayMeter::Orientation::Horizontal);
-    //addAndMakeVisible(audioMeter);
+
+    addAndMakeVisible(slider);
+
+    startTimerHz(24);
 }
 
-NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor() = default;
+NewProjectAudioProcessorEditor::~NewProjectAudioProcessorEditor()
+{
+    stopTimer();
+}
 
 //==============================================================================
 void NewProjectAudioProcessorEditor::paint (juce::Graphics& g)
@@ -40,9 +45,26 @@ void NewProjectAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 
-    //audioMeter.setOrientation(DivisionVoid::SegmentedDisplayMeter::Orientation::Horizontal);
+    slider.setBounds(getBounds().reduced(0.2));
+}
 
-    //audioMeter.setBounds(50, 50, 400, 25);
-
-    visualiser.setBounds(getLocalBounds());
+void NewProjectAudioProcessorEditor::timerCallback()
+{
+//    if (++framesElapsed > 100)
+//    {
+//        framesElapsed = 0;
+//        maxRmsLeft = -100.f;
+//        maxRmsRight = -100.f;
+//    }
+//
+//    const auto leftGain = audioProcessor.rmsProcessor.getRmsLevel(0);
+//    const auto rightGain = audioProcessor.rmsProcessor.getRmsLevel(1);
+//
+//    if (leftGain > maxRmsLeft)
+//        maxRmsLeft = leftGain;
+//    if (rightGain > maxRmsRight)
+//        maxRmsRight = rightGain;
+//
+//    audioMeter.setLevel(leftGain);
+//    repaint();
 }
