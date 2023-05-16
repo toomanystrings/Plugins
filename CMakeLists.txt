@@ -49,5 +49,5 @@ option(BUILD_UNIT_TESTS "Build JUCE prototype examples" OFF)
 
 if (BUILD_UNIT_TESTS)
     enable_testing()
-    #add_subdirectory(Tests)
+    add_subdirectory(Tests)
 endif()
