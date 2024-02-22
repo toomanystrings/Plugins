@@ -149,7 +149,7 @@ private:
     double normaliseValue (double scaledValue);
 
     //==============================================================================
-	JUCE_LEAK_DETECTOR (PluginParameter);
+	JUCE_LEAK_DETECTOR (PluginParameter)
 };
 
 #endif //__DROWAUDIO_PLUGINPARAMETER_H__

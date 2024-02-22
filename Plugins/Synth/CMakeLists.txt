@@ -1,4 +1,4 @@
-project(TemplatePlugin VERSION 0.0.1)
+project(Synth VERSION 0.0.1)
 
 set (BaseTargetName ${PROJECT_NAME})
 
@@ -6,9 +6,9 @@ juce_add_plugin("${BaseTargetName}"
         # VERSION ...                               # Set this if the plugin version is different to the project version
         # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
         # ICON_SMALL ...
-        COMPANY_NAME "Division Void"
-        IS_SYNTH FALSE
-        NEEDS_MIDI_INPUT FALSE
+        COMPANY_NAME "Division_Void"
+        IS_SYNTH TRUE
+        NEEDS_MIDI_INPUT TRUE
         NEEDS_MIDI_OUTPUT FALSE
         IS_MIDI_EFFECT FALSE
         EDITOR_WANTS_KEYBOARD_FOCUS FALSE
@@ -16,13 +16,14 @@ juce_add_plugin("${BaseTargetName}"
         PLUGIN_MANUFACTURER_CODE Devl
         PLUGIN_CODE Demo
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "TemplatePlugin")
+        PRODUCT_NAME "Synth")
 
 juce_generate_juce_header(${BaseTargetName})
 
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
-        Source/PluginEditor.cpp)
+        Source/PluginEditor.cpp
+        Source/SynthVoice.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC
@@ -37,5 +38,4 @@ target_link_libraries(${BaseTargetName} PRIVATE
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
-        juce::juce_dsp
-        DivisionVoid)
+        juce::juce_dsp)

@@ -57,6 +57,7 @@ SpectrumViewer::SpectrumViewer (juce::Value& repaintViewerValue,
 
 SpectrumViewer::~SpectrumViewer()
 {
+    stopTimer();
 }
 
 

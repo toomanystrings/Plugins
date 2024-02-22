@@ -23,7 +23,8 @@ juce_generate_juce_header(${BaseTargetName})
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
         Source/PluginEditor.cpp
-        Source/Analysis/DelayAnalysis.cpp)
+        Source/Processors/DelayProcessor.h
+        Source/Processors/VocoderProcessor.h)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC

@@ -23,7 +23,7 @@ namespace DivisionVoid
             auto rw = radius * 2;
 
             // Control how wide the range of movement is of the slider
-            float angleStartOffset = 0.3;
+            float angleStartOffset = 0.3f;
 
             // Leave these alone, they're working out important angle-y business.
             rotaryStartAngle = rotaryStartAngle + angleStartOffset;

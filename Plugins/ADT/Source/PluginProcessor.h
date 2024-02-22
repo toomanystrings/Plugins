@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Processors/DelayProcessor.h"
 
 //==============================================================================
 /**
@@ -60,7 +61,10 @@ private:
     
     juce::AudioBuffer<float> wetBuffer, dryBuffer;
 
-    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine, dryLine;
+    AdtDSP::DelayProcessor dryLine, delayLine;
+
+
+
 
     float Fs = 44100;
     //==============================================================================

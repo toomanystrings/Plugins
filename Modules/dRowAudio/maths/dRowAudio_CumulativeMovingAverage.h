@@ -84,7 +84,7 @@ private:
     double currentAverage;
     int numValues;
     
-    JUCE_LEAK_DETECTOR (CumulativeMovingAverage);
+    JUCE_LEAK_DETECTOR (CumulativeMovingAverage)
 };
 
 

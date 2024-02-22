@@ -9,17 +9,18 @@
 #pragma once
 
 #include <JuceHeader.h>
-//#include "juce_dsp/processors/juce_Oversampling.h"
+#include "SynthVoice.h"
 
 //==============================================================================
 /**
 */
-class NewProjectAudioProcessor  : public juce::AudioProcessor
+class SynthAudioProcessor  : public juce::AudioProcessor/*, public juce::AudioProcessorValueTreeState::Listener,
+                             public juce::ValueTree::Listener*/
 {
 public:
     //==============================================================================
-    NewProjectAudioProcessor();
-    ~NewProjectAudioProcessor() override;
+    SynthAudioProcessor();
+    ~SynthAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -54,12 +55,14 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-
+    juce::AudioProcessorValueTreeState treeState;
 
 private:
 
-    DivisionVoid::Compressor<float> compressor;
+    juce::Synthesiser synth;
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthAudioProcessor)
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout ();
 };

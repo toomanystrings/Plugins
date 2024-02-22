@@ -14,11 +14,11 @@
 //==============================================================================
 /**
 */
-class NewProjectAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Timer
+class SynthAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Timer
 {
 public:
-    NewProjectAudioProcessorEditor (NewProjectAudioProcessor&);
-    ~NewProjectAudioProcessorEditor() override;
+    SynthAudioProcessorEditor (SynthAudioProcessor&);
+    ~SynthAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -27,19 +27,9 @@ public:
     void timerCallback() override;
 
 private:
-
-    //DivisionVoid::SegmentedDisplayMeter audioMeter;
-
-    float maxRmsLeft{}, maxRmsRight{};
-    int framesElapsed = 0;
-
-    //DivisionVoid::DoubleStackKnob slider;
-    //DivisionVoid::DoubleStackLAF laf;
-
-    //DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    NewProjectAudioProcessor& audioProcessor;
+    SynthAudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthAudioProcessorEditor)
 };

@@ -6,7 +6,7 @@ juce_add_plugin("${BaseTargetName}"
         # VERSION ...                               # Set this if the plugin version is different to the project version
         #ICON_SMALL "../../Assets/LEVEL/LEVEL_app_icons/LEVEL_icon_32(28).png"
         #ICON_BIG   "../../Assets/LEVEL/LEVEL_app_icons/LEVEL_icon_64(52).png"
-        COMPANY_NAME "Division Void"
+        COMPANY_NAME "Division_Void"
         IS_SYNTH FALSE
         NEEDS_MIDI_INPUT FALSE
         NEEDS_MIDI_OUTPUT FALSE
@@ -16,7 +16,7 @@ juce_add_plugin("${BaseTargetName}"
         PLUGIN_MANUFACTURER_CODE Divv
         PLUGIN_CODE Bsdv
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "Bass Division")
+        PRODUCT_NAME "Bass_Division")
 
 juce_generate_juce_header(${BaseTargetName})
 

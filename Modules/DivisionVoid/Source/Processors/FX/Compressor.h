@@ -333,8 +333,9 @@ namespace DivisionVoid
             return knee;
         }
 
-        void setAttack(float attack)
+        void setAttack(float attackMs)
         {
+            attack = attackMs / 1000;
             if (attack <= 0.5f && attack >= 0.001f)
             {
                 this->attack = attack;
@@ -348,8 +349,9 @@ namespace DivisionVoid
             return attack;
         }
 
-        void setRelease(float release)
+        void setRelease(float releaseMs)
         {
+            release = releaseMs / 1000;
             if (release <= 1.0f && release >= 0.01f)
             {
                 this->release = release;
@@ -390,12 +392,9 @@ namespace DivisionVoid
 
         void setSampleRate(float Fs)
         {
-            if (Fs == 44100 || Fs == 48000 || Fs == 88200 || Fs == 96000 || Fs == 192000)
-            {
-                this->Fs = Fs;
-                hpf[0].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
-                hpf[1].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
-            }
+            this->Fs = Fs;
+            hpf[0].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
+            hpf[1].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
         }
 
         T getSampleRate()

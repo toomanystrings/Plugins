@@ -99,20 +99,10 @@ void ADTAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     auto numChannels = getTotalNumOutputChannels();
 
-    juce::dsp::ProcessSpec spec;
 
-    spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = samplesPerBlock;
-    spec.numChannels = numChannels;
 
-    delayLine.reset();
-    delayLine.prepare(spec);
-
-    dryLine.reset();
-    dryLine.prepare(spec);
-
-    delayLine.setMaximumDelayInSamples(50000);
-    delayLine.setMaximumDelayInSamples(.07 * sampleRate);
+    //delayLine.setMaximumDelayInSamples(50000);
+    //dryLine.setMaximumDelayInSamples(.07 * sampleRate);
     
     // wetBuffer might need to be a different size. At the very least, we will need to implement a read and write head
     wetBuffer.setSize(numChannels, samplesPerBlock);
@@ -166,10 +156,20 @@ void ADTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // Analysis of the signal
+
+    // Get the RMS value of the signal
     auto rms = buffer.getRMSLevel(0, 0, bufferSize);
+
+    // Effective range to be decided, but at the minute lets aim for -30ms to 30ms
+    // We need to bind the rms value to within those two limits
+    // RMS is never going to be more than 1, but will rarely actually get much above 0.5
+    auto delayInSamples = AdtDSP::msToSamples(getSampleRate(), 800);
+
 
     auto dryDelay = 0.05 * Fs;
 
+    // Might want to do more streamlined processing than sample by sample, but let's prove the concept.
     for (auto channel = 0; channel < numChannels; ++channel)
     {
         auto data = buffer.getWritePointer(channel);
@@ -180,7 +180,7 @@ void ADTAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
             data[sample] = dryLine.popSample(channel, dryDelay);
 
             delayLine.pushSample(channel, data[sample]);
-            data[sample] += delayLine.popSample(channel, dryDelay + (0.03 * Fs));
+            data[sample] += delayLine.popSample(channel, delayInSamples);
         }
     }
 }
