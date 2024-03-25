@@ -4,12 +4,12 @@
 
 #include "SynthVoice.h"
 
-bool SynthVoice::canPlaySound (SynthesiserSound* sound)
+bool SynthVoice::canPlaySound (juce::SynthesiserSound* sound)
 {
     return dynamic_cast<SynthSound*> (sound) != nullptr;
 }
 
-void SynthVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition)
+void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition)
 {
 
 }
@@ -29,7 +29,12 @@ void SynthVoice::controllerMoved (int controllerNumber, int newControllerValue)
 
 }
 
-void SynthVoice::renderNextBlock (AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
+void SynthVoice::renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
+{
+
+}
+
+void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels)
 {
 
 }
