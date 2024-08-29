@@ -19,15 +19,13 @@ NewProjectAudioProcessor::NewProjectAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), treeState(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
 }
 
 NewProjectAudioProcessor::~NewProjectAudioProcessor()
 {
-
-
 }
 
 //==============================================================================
@@ -151,11 +149,18 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         buffer.clear (i, 0, buffer.getNumSamples());
 
 
+}
 
-    compressor.setAttack(50.0f);
-    compressor.setRelease(100.0f);
-    compressor.setThreshold(-12.0f);
-    compressor.setRatio(4.0f);
+juce::AudioProcessorValueTreeState::ParameterLayout NewProjectAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    auto doubleStackRange = juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f);
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("INNER", "Inner", doubleStackRange, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OUTER", "Outer", doubleStackRange, 1.0f));
+
+    return { params.begin(), params.end() };
 }
 
 //==============================================================================

@@ -35,17 +35,17 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/Utilities.h"
 
 // Stylings
-#include "Source/DivisionVoidLookAndFeel/DivisionVoidFonts.h"
-#include "Source/DivisionVoidLookAndFeel/DivisionVoidColours.h"
-#include "Source/DivisionVoidLookAndFeel/Runes.h"
-//#include "Source/DivisionVoidLookAndFeel/LookAndFeel.h"
+#include "Source/UI Components/DivisionVoidFonts.h"
+#include "Source/UI Components/DivisionVoidColours.h"
+#include "Source/UI Components/DivisionVoidLookAndFeel/Runes.h"
+#include "Source/UI Components/DivisionVoidLookAndFeel/LookAndFeel.h"
 
 // Components
-#include "Source/DivisionVoidLookAndFeel/AudioMeter.h"
-#include "Source/DivisionVoidLookAndFeel/SegmentedDisplayMeter.h"
-#include "Source/DivisionVoidLookAndFeel/Button.h"
-#include "Source/DivisionVoidLookAndFeel/EqWidget.h"
-//#include "Source/DivisionVoidLookAndFeel/DoubleStackKnob.h"
+#include "Source/UI Components/AudioMeter.h"
+#include "Source/UI Components/SegmentedDisplayMeter.h"
+#include "Source/UI Components/DivisionVoidLookAndFeel/Button.h"
+#include "Source/UI Components/EqWidget.h"
+#include "DivisionVoid/Source/UI Components/DoubleStackKnob.h"
 
 // FX processors
 #include "Source/Processors/FX/Compressor.h"

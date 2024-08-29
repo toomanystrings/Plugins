@@ -20,7 +20,7 @@ BassDivisionAudioProcessor::BassDivisionAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ), treeState (*this, nullptr, "PARAMETERS", createParameterLayout()), sampleRate(44100),
-                       renderThread("FFT Render Thread"), spectrumProcessor(11)
+                       renderThread("FFT Render Thread")//, spectrumProcessor(11)
                        , presetManager(this), impulseResponseManager(this)
 #endif
 {
@@ -33,8 +33,8 @@ BassDivisionAudioProcessor::BassDivisionAudioProcessor()
     lowCompressor.engageHarmonicContent(true);
     lowCompressor.setHPFFreq(200);
     
-    renderThread.addTimeSliceClient(&spectrumProcessor);
-    renderThread.startThread(3);
+    //renderThread.addTimeSliceClient(&spectrumProcessor);
+    //renderThread.startThread(3);
 }
 
 BassDivisionAudioProcessor::~BassDivisionAudioProcessor()
@@ -42,8 +42,8 @@ BassDivisionAudioProcessor::~BassDivisionAudioProcessor()
     for (auto p : getParameters())
         treeState.removeParameterListener(static_cast<juce::AudioProcessorParameterWithID*>(p)->paramID, this);
     
-    renderThread.removeTimeSliceClient(&spectrumProcessor);
-    renderThread.stopThread(500);
+    //renderThread.removeTimeSliceClient(&spectrumProcessor);
+    //renderThread.stopThread(500);
 }
 
 //==============================================================================
@@ -176,10 +176,10 @@ void BassDivisionAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     
     setInitialParameters();
     
-    leftChannelFifo.prepare(samplesPerBlock);
-    rightChannelFifo.prepare(samplesPerBlock);
+    //leftChannelFifo.prepare(samplesPerBlock);
+    //rightChannelFifo.prepare(samplesPerBlock);
     
-    spectrumProcessor.setSampleRate(sampleRate);
+    //spectrumProcessor.setSampleRate(sampleRate);
 }
 
 void BassDivisionAudioProcessor::releaseResources()
@@ -240,8 +240,8 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
     juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
     
-    //leftChain.process(leftContext);
-    //rightChain.process(rightContext);
+    leftChain.process(leftContext);
+    rightChain.process(rightContext);
     
     buffer.applyGain(compInputGain);
 
@@ -322,7 +322,7 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     buffer.applyGain(outputGain);
 
-    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+    /*for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         auto channelData = buffer.getReadPointer(channel);
         if (getActiveEditor() != nullptr
@@ -330,7 +330,54 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         {
             spectrumProcessor.copySamples(channelData, bufferSize);
         }
+    }*/
+
+    /********************************************************************************
+     *
+     *      New Idea for Parallel Processing
+     *
+     *******************************************************************************/
+
+    // Decide whether the IR should go at the start or the end
+    if (isImpulseResponseEngaged)
+    {
+        processIrCrossover(buffer);
+
+        juce::dsp::AudioBlock<float> irBlock(irBuffer);
+
+        auto irLeftBlock = irBlock.getSingleChannelBlock(Channel::Left);
+        auto irRightBlock = irBlock.getSingleChannelBlock(Channel::Right);
+
+        juce::dsp::ProcessContextReplacing<float> leftContext(irLeftBlock);
+        juce::dsp::ProcessContextReplacing<float> rightContext(irRightBlock);
+
+        //juce::dsp::AudioBlock<float> block(irBuffer);
+        processIr(leftContext);
+        processIr(rightContext);
     }
+
+    // Copy the buffer into another path for separate processing
+    for (auto i = 0; i < numChannels; ++i)
+        cleanBuffer.copyFrom(i,0,buffer.getWritePointer(i), bufferSize);
+
+    // Process the multi-band components
+
+    // Process the parallel EQ and Comp
+
+    // Recombine the paths
+    for (int channel = 0; channel < numChannels; ++channel)
+    {
+        auto xIr = irBuffer.getWritePointer(channel);
+        auto xClean = cleanBuffer.getWritePointer(channel);
+
+        auto xOut = buffer.getWritePointer(channel);
+
+        for (int sample = 0; sample < bufferSize; ++sample)
+            xOut[sample] = xIr[sample] + xClean[sample];
+    }
+
+    // Profit
+
 }
 
 //==============================================================================

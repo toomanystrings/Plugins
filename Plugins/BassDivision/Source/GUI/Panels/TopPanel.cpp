@@ -4,26 +4,6 @@
 
 #include "TopPanel.h"
 
-TopPanel::TopPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor),
-                                                              presetPanel(inProcessor),
-                                                              irPanel(inProcessor)
-{
-    addAndMakeVisible(presetPanel);
-    addAndMakeVisible(irPanel);
-}
-
-void TopPanel::paint(juce::Graphics &g)
-{}
-
-void TopPanel::resized()
-{
-    auto area = getLocalBounds();
-    auto halfWidth = getWidth() / 2;
-
-    irPanel.setBounds(halfWidth, 0, halfWidth - 1, getHeight());
-    presetPanel.setBounds(0, 0, halfWidth, getHeight());
-}
-
 IrPanel::IrPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor), audioProcessor(inProcessor)
 {
     // set up save and load buttons
@@ -304,5 +284,25 @@ void PresetPanel::resized()
     presetComboBox.setBounds(area.reduced(border));
 
     savePreset.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 15));
+}
+
+TopPanel::TopPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor),
+                                                              presetPanel(inProcessor),
+                                                              irPanel(inProcessor)
+{
+    addAndMakeVisible(presetPanel);
+    addAndMakeVisible(irPanel);
+}
+
+void TopPanel::paint(juce::Graphics &g)
+{}
+
+void TopPanel::resized()
+{
+    auto area = getLocalBounds();
+    auto halfWidth = getWidth() / 2;
+
+    irPanel.setBounds(halfWidth, 0, halfWidth - 1, getHeight());
+    presetPanel.setBounds(0, 0, halfWidth, getHeight());
 }
 

@@ -6,13 +6,13 @@
 
 MiddlePanel::MiddlePanel(BassDivisionAudioProcessor &inProcessor) :
         PanelBase(inProcessor),
-        ioPanel(inProcessor),
-        fftPanel(inProcessor, inProcessor.getSpectrumProcessor()->getRepaintViewerValue(),
-                 inProcessor.getSpectrumProcessor()->getMagnitudesBuffer(),
-                 inProcessor.getSpectrumProcessor()->getDetectedFrequency())
+        ioPanel(inProcessor)//,
+        //fftPanel(inProcessor, inProcessor.getSpectrumProcessor()->getRepaintViewerValue(),
+        //         inProcessor.getSpectrumProcessor()->getMagnitudesBuffer(),
+        //         inProcessor.getSpectrumProcessor()->getDetectedFrequency())
 {
     addAndMakeVisible(ioPanel);
-    addAndMakeVisible(fftPanel);
+    //addAndMakeVisible(fftPanel);
 }
 
 void MiddlePanel::paint(juce::Graphics &g)
@@ -25,7 +25,7 @@ void MiddlePanel::resized()
     auto area = getLocalBounds();
 
     ioPanel.setBounds(area.removeFromRight(IO_PANEL_WIDTH));
-    fftPanel.setBounds(area);
+    //fftPanel.setBounds(area);
 }
 
 IoPanel::IoPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
@@ -79,7 +79,7 @@ void IoPanel::resized()
     }
 }
 
-FftPanel::FftPanel(BassDivisionAudioProcessor &inProcessor, juce::Value &repaintSpectrumViewer,
+/*FftPanel::FftPanel(BassDivisionAudioProcessor &inProcessor, juce::Value &repaintSpectrumViewer,
                    drow::Buffer &spectrumMagnitudeBuffer, juce::Value &detectedFrequency) :
                    PanelBase(inProcessor),
                    spectrumViewer(repaintSpectrumViewer, spectrumMagnitudeBuffer, detectedFrequency)
@@ -94,4 +94,4 @@ void FftPanel::paint(juce::Graphics &g)
 void FftPanel::resized()
 {
     spectrumViewer.setBounds(getLocalBounds());
-}
+}*/

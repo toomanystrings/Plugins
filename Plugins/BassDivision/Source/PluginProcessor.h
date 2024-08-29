@@ -13,7 +13,7 @@
 #include "Managers/PresetManager.h"
 #include "Managers/IrManager.h"
 
-#include "FFT/SpectrumProcessor.h"
+//#include "FFT/SpectrumProcessor.h"
 
 #include <array>
 //template<typename T>
@@ -71,13 +71,13 @@
 //    std::array<T, Capacity> buffers;
 //    juce::AbstractFifo fifo {Capacity};
 //};
-//
-//enum Channel
-//{
-//    Left,
-//    Right
-//};
-//
+
+enum Channel
+{
+    Left,
+    Right
+};
+
 //template<typename BlockType>
 //struct SingleChannelSampleFifo
 //{
@@ -229,16 +229,16 @@ public:
     
     
     using BlockType = juce::AudioBuffer<float>;
-    SingleChannelSampleFifo<BlockType> leftChannelFifo { Channel::Left };
-    SingleChannelSampleFifo<BlockType> rightChannelFifo { Channel::Right };
+    //SingleChannelSampleFifo<BlockType> leftChannelFifo { Channel::Left };
+    //SingleChannelSampleFifo<BlockType> rightChannelFifo { Channel::Right };
     
     juce::Value sampleRate;
 
-    SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
+    //SpectrumProcessor* getSpectrumProcessor() { return &spectrumProcessor; }
 
 private:
     juce::TimeSliceThread renderThread;
-    SpectrumProcessor spectrumProcessor;
+    //SpectrumProcessor spectrumProcessor;
     
     PresetManager presetManager;
     ImpulseResponseManager impulseResponseManager;

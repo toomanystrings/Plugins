@@ -6,7 +6,7 @@ juce_add_plugin("${BaseTargetName}"
         # VERSION ...                               # Set this if the plugin version is different to the project version
         #ICON_SMALL "../../Assets/LEVEL/LEVEL_app_icons/LEVEL_icon_32(28).png"
         #ICON_BIG   "../../Assets/LEVEL/LEVEL_app_icons/LEVEL_icon_64(52).png"
-        COMPANY_NAME "Division_Void"
+        COMPANY_NAME "DivisionVoid"
         IS_SYNTH FALSE
         NEEDS_MIDI_INPUT FALSE
         NEEDS_MIDI_OUTPUT FALSE
@@ -16,7 +16,7 @@ juce_add_plugin("${BaseTargetName}"
         PLUGIN_MANUFACTURER_CODE Divv
         PLUGIN_CODE Bsdv
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "Bass_Division")
+        PRODUCT_NAME "BassDivision")
 
 juce_generate_juce_header(${BaseTargetName})
 
@@ -27,8 +27,8 @@ target_sources(${BaseTargetName} PRIVATE
         Source/GUI/Panels/BottomPanel.cpp
         Source/GUI/Panels/MiddlePanel.cpp
         Source/GUI/Panels/TopPanel.cpp
-        Source/FFT/SpectrumViewer.cpp
-        Source/FFT/SpectrumProcessor.cpp
+        #Source/FFT/SpectrumViewer.cpp
+        #Source/FFT/SpectrumProcessor.cpp
         Source/Managers/IrManager.cpp
         Source/Managers/PresetManager.cpp)
 
@@ -48,8 +48,8 @@ target_link_libraries(${BaseTargetName} PRIVATE
         juce::juce_recommended_warning_flags
         juce::juce_opengl
         juce::juce_dsp
-        DivisionVoid
-        dRowAudio)
+        DivisionVoid)
+        #dRowAudio)
 if(APPLE)
     add_custom_command(TARGET ${BaseTargetName}_AU
             PRE_BUILD

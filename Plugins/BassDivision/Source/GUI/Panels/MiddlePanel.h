@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../PanelBase.h"
-#include "../../FFT/SpectrumViewer.h"
+//#include "../../FFT/SpectrumViewer.h"
 
 struct IoPanel : public PanelBase
 {
@@ -30,7 +30,7 @@ private:
     DivisionVoidFonts fonts;
 };
 
-struct FftPanel : public PanelBase
+/*struct FftPanel : public PanelBase
 {
     FftPanel (BassDivisionAudioProcessor& inProcessor,
             juce::Value& repaintSpectrumViewer,
@@ -48,7 +48,7 @@ private:
     juce::Label header;
 
     //BassDivisionAudioProcessor& audioProcessor;
-};
+};*/
 
 class MiddlePanel : public PanelBase
 {
@@ -62,5 +62,5 @@ public:
 
 private:
     IoPanel ioPanel;
-    FftPanel fftPanel;
+    //FftPanel fftPanel;
 };
