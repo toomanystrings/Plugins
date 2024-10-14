@@ -98,7 +98,7 @@ void NewProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 
     auto numChannels = getTotalNumInputChannels();
 
-    compressor.setSampleRate(sampleRate);
+    auto ratio = compressor.getRatio();
 }
 
 void NewProjectAudioProcessor::releaseResources()
@@ -147,8 +147,6 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
-
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout NewProjectAudioProcessor::createParameterLayout()

@@ -28,7 +28,7 @@ else ()
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
 endif ()
 
-option(UniversalBinary "Build universal binary for mac" OFF)
+option(UniversalBinary "Build universal binary for mac" ON)
 
 if (UniversalBinary)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "")
@@ -42,16 +42,17 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 find_package(juce REQUIRED)
 
 #By default, we are building the provided plugin/app examples:
-option(BUILD_JUCE_PROTOTYPE_EXAMPLES "Build JUCE prototype examples" ON)
+option(BUILD_JUCE_PROTOTYPE_EXAMPLES "Build JUCE prototype examples" OFF)
 
 #adding any custom modules you might have:
 add_subdirectory(Modules)
 add_subdirectory(Assets)
+add_subdirectory(Plugins)
 
 if (${BUILD_JUCE_PROTOTYPE_EXAMPLES})
     #adding project folders:
     #add_subdirectory(Apps)
-    add_subdirectory(Plugins)
+
 endif ()
 
 #optionally, we're also adding the unit tests:

@@ -29,7 +29,7 @@ namespace DivisionVoid
         // Destructor
         ~Compressor() = default;
 
-        T processSample(T x, int channel)
+        T processSample (T x, int channel)
         {
             // Initalise y
             float y = 0.0f;
@@ -50,13 +50,11 @@ namespace DivisionVoid
             {
                 // Compression. Above the knee
                 xSC = threshold + ((x_dB - threshold) / ratio);
-            }
-            else if (x_dB > (threshold - knee / 2.0f))
+            } else if (x_dB > (threshold - knee / 2.0f))
             {
                 // Compression. Below the knee
                 xSC = x_dB + ((1.0f / ratio - 1.0f) * powf(x_dB - threshold + knee / 2.0f, 2.0f)) / (2.0f * knee);
-            }
-            else
+            } else
             {
                 // No compression
                 xSC = x_dB;
@@ -77,8 +75,7 @@ namespace DivisionVoid
             {
                 // Attack
                 gainChangeSmooth = (1 - alphaA) * gainChange + alphaA * prevGainChange[channel];
-            }
-            else
+            } else
             {
                 // Release
                 gainChangeSmooth = (1 - alphaR) * gainChange + alphaR * prevGainChange[channel];
@@ -95,7 +92,7 @@ namespace DivisionVoid
             return y;
         }
 
-        void processChannel(T *x, int channel, const int &bufferSize)
+        void processChannel (T *x, int channel, const int &bufferSize)
         {
             for (auto i = 0; i < bufferSize; ++i)
             {
@@ -120,13 +117,11 @@ namespace DivisionVoid
                 {
                     // Compression. Above the knee
                     xSC = threshold + ((x_dB - threshold) / ratio);
-                }
-                else if (x_dB > (threshold - knee / 2.0f))
+                } else if (x_dB > (threshold - knee / 2.0f))
                 {
                     // Compression. Below the knee
                     xSC = x_dB + ((1.0f / ratio - 1.0f) * powf(x_dB - threshold + knee / 2.0f, 2.0f)) / (2.0f * knee);
-                }
-                else
+                } else
                 {
                     // No compression
                     xSC = x_dB;
@@ -147,8 +142,7 @@ namespace DivisionVoid
                 {
                     // Attack
                     gainChangeSmooth = (1 - alphaA) * gainChange + alphaA * prevGainChange[channel];
-                }
-                else
+                } else
                 {
                     // Release
                     gainChangeSmooth = (1 - alphaR) * gainChange + alphaR * prevGainChange[channel];
@@ -289,83 +283,70 @@ namespace DivisionVoid
             }
         }*/
 
-        T getGainReduction()
+        T getGainReduction ()
         {
             return gLin;
         }
 
-        void setThreshold(float threshold)
+        void setThreshold (T threshold)
         {
             if (threshold <= 0.0f && threshold >= -64.0f)
-            {
                 this->threshold = threshold;
-            }
         }
-
-        T getThreshold()
+        T getThreshold ()
         {
             return threshold;
         }
 
-        void setRatio(float ratio)
+        void setRatio (T ratio)
         {
             if (ratio <= 10.0f && ratio >= 1.0f)
-            {
                 this->ratio = ratio;
-            }
         }
-
-        T getRatio()
+        T getRatio ()
         {
             return ratio;
         }
 
-        void setKnee(float knee)
+        void setKnee (T knee)
         {
             if (knee <= 10.0f && knee >= 0.0f)
-            {
                 this->knee = knee;
-            }
         }
-
-        T getKnee()
+        T getKnee ()
         {
             return knee;
         }
 
-        void setAttack(float attackMs)
+        void setAttack (T attackMs)
         {
             attack = attackMs / 1000;
             if (attack <= 0.5f && attack >= 0.001f)
             {
                 this->attack = attack;
-
                 alphaA = expf(-logf(9.0f) / (Fs * attack));
             }
         }
-
-        T getAttack()
+        T getAttack ()
         {
             return attack;
         }
 
-        void setRelease(float releaseMs)
+        void setRelease (T releaseMs)
         {
             release = releaseMs / 1000;
             if (release <= 1.0f && release >= 0.01f)
             {
                 this->release = release;
-
                 alphaR = expf(-logf(9.0f) / (Fs * release));
             }
         }
-
-        T getRelease()
+        T getRelease ()
         {
             return release;
         }
 
-        void setHPFFreq(float hpfFreq)
+        void setHPFFreq (T hpfFreq)
         {
             if (hpfFreq <= 500.0f && hpfFreq >= 0.1f)
             {
@@ -374,56 +355,51 @@ namespace DivisionVoid
                 hpf[1].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
             }
         }
-
-        T getHPFFreq()
+        T getHPFFreq ()
         {
             return hpfFreq;
         }
 
-        void engageHPF(bool isEngaged)
+        void engageHPF (bool isEngaged)
         {
             hpfOn = isEngaged;
         }
 
-        void engageHarmonicContent(bool isEngaged)
+        void engageHarmonicContent (bool isEngaged)
         {
             harmonicContentOn = isEngaged;
         }
 
-        void setSampleRate(float Fs)
+        void setSampleRate (T Fs)
         {
             this->Fs = Fs;
             hpf[0].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
             hpf[1].setCoefficients(juce::IIRCoefficients::makeHighPass(Fs, hpfFreq, 0.7));
         }
-
-        T getSampleRate()
+        T getSampleRate ()
         {
             return Fs;
         }
 
-        void setProgDependOn(bool progDependOn)
+        void setProgDependOn (bool progDependOn)
         {
             this->progDependOn = progDependOn;
         }
-
-        bool getProgDependOn()
+        bool getProgDependOn ()
         {
             return progDependOn;
         }
 
-        T harmonicContent(T input)
+        T harmonicContent (T input)
         {
-            return input - (drive * (1 / 2) * powf(input, 2)) - (drive * (1/3) * powf(input, 3));
+            return input - (drive * (1 / 2) * powf(input, 2)) - (drive * (1 / 3) * powf(input, 3));
         }
 
-
-        void setDrive(float drive)
+        void setDrive (T drive)
         {
             if (drive >= 0.0f && drive <= 1.0f)
                 this->drive = drive;
         }
-
 
         //const float* getGainReductionValues();
 

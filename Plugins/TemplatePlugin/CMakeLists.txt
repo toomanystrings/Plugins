@@ -1,4 +1,4 @@
-project(TemplatePlugin VERSION 0.0.1)
+project(TemplatePlugin VERSION 0.0.2)
 
 set (BaseTargetName ${PROJECT_NAME})
 
@@ -33,9 +33,9 @@ target_compile_definitions(${BaseTargetName}
 
 target_link_libraries(${BaseTargetName} PRIVATE
         shared_resources
+        DivisionVoid
         juce::juce_audio_utils
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
-        juce::juce_dsp
-        DivisionVoid)
+        juce::juce_dsp)

@@ -22,7 +22,7 @@ BEGIN_JUCE_MODULE_DECLARATION
 #endif
 
 // JUCE Includes
-#include <JuceHeader.h>
+//#include <JuceHeader.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_core/juce_core.h>
 #include <juce_events/juce_events.h>
@@ -51,6 +51,12 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/Processors/FX/Compressor.h"
 #include "Source/Processors/FX/Distortion.h"
 #include "Source/Processors/LevelMeterProcessor.h"
+
+#include "Source/Processors/FX/Filters/AllPassFilter.h"
+#include "Source/Processors/FX/Filters/FractionalDelay.h"
+#include "Source/Processors/FX/Filters/FeedBackCombFilter.h"
+
+#include "Source/Processors/FX/Reverbs/FeedbackDelayNetwork.h"
 
 // Utility Audio classes
 
