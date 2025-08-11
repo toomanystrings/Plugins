@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-SynthForDaysAudioProcessor::SynthForDaysAudioProcessor()
+MPESynthAudioProcessor::MPESynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -24,17 +24,17 @@ SynthForDaysAudioProcessor::SynthForDaysAudioProcessor()
 {
 }
 
-SynthForDaysAudioProcessor::~SynthForDaysAudioProcessor()
+MPESynthAudioProcessor::~MPESynthAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String SynthForDaysAudioProcessor::getName() const
+const juce::String MPESynthAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool SynthForDaysAudioProcessor::acceptsMidi() const
+bool MPESynthAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -43,7 +43,7 @@ bool SynthForDaysAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool SynthForDaysAudioProcessor::producesMidi() const
+bool MPESynthAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -52,7 +52,7 @@ bool SynthForDaysAudioProcessor::producesMidi() const
    #endif
 }
 
-bool SynthForDaysAudioProcessor::isMidiEffect() const
+bool MPESynthAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -61,54 +61,50 @@ bool SynthForDaysAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double SynthForDaysAudioProcessor::getTailLengthSeconds() const
+double MPESynthAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int SynthForDaysAudioProcessor::getNumPrograms()
+int MPESynthAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int SynthForDaysAudioProcessor::getCurrentProgram()
+int MPESynthAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void SynthForDaysAudioProcessor::setCurrentProgram (int index)
+void MPESynthAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String SynthForDaysAudioProcessor::getProgramName (int index)
+const juce::String MPESynthAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void SynthForDaysAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void MPESynthAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void SynthForDaysAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void MPESynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need...
-
-    auto numChannels = getTotalNumInputChannels();
-
-    auto ratio = compressor.getRatio();
 }
 
-void SynthForDaysAudioProcessor::releaseResources()
+void MPESynthAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool SynthForDaysAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool MPESynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -133,7 +129,7 @@ bool SynthForDaysAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
-void SynthForDaysAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void MPESynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -149,38 +145,33 @@ void SynthForDaysAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear (i, 0, buffer.getNumSamples());
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout SynthForDaysAudioProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout MPESynthAudioProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-
-    auto doubleStackRange = juce::NormalisableRange<float>(0.0f, 2.0f, 0.01f);
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("INNER", "Inner", doubleStackRange, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("OUTER", "Outer", doubleStackRange, 1.0f));
 
     return { params.begin(), params.end() };
 }
 
 //==============================================================================
-bool SynthForDaysAudioProcessor::hasEditor() const
+bool MPESynthAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* SynthForDaysAudioProcessor::createEditor()
+juce::AudioProcessorEditor* MPESynthAudioProcessor::createEditor()
 {
-    return new NewProjectAudioProcessorEditor (*this);
+    return new MPESynthAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void SynthForDaysAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void MPESynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void SynthForDaysAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void MPESynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -190,5 +181,5 @@ void SynthForDaysAudioProcessor::setStateInformation (const void* data, int size
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new SynthForDaysAudioProcessor();
+    return new MPESynthAudioProcessor();
 }

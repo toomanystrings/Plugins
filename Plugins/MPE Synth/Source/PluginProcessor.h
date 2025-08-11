@@ -9,17 +9,16 @@
 #pragma once
 
 #include <JuceHeader.h>
-//#include "juce_dsp/processors/juce_Oversampling.h"
 
 //==============================================================================
 /**
 */
-class SynthForDaysAudioProcessor  : public juce::AudioProcessor
+class MPESynthAudioProcessor  : public juce::AudioProcessor
 {
 public:
     //==============================================================================
-    SynthForDaysAudioProcessor();
-    ~SynthForDaysAudioProcessor() override;
+    MPESynthAudioProcessor();
+    ~MPESynthAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -59,11 +58,7 @@ public:
 
 private:
 
-    DivisionVoid::Compressor<float> compressor;
-
-    float inner = 1.0f;
-    float outer = 1.0f;
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MPESynthAudioProcessor)
 };
