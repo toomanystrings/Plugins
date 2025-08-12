@@ -1,12 +1,5 @@
-/*
-  ==============================================================================
 
-    BDPanelBase.h
-    Created: 20 Feb 2021 8:52:32pm
-    Author:  Olorin
-
-  ==============================================================================
-*/
+// A base panel class for use with juce. Currently designed to fit my needs.
 
 #pragma once
 
@@ -32,4 +25,12 @@ public:
     
 protected:
     BassDivisionAudioProcessor& mProcessor;
+
+private:
+    void initaliseSliders(juce::Slider *sliders, juce::Label *labels, juce::Slider::SliderStyle style)
+    {
+
+    }
+
+
 };

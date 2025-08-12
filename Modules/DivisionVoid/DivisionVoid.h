@@ -41,6 +41,8 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/UI Components/DivisionVoidLookAndFeel/LookAndFeel.h"
 
 // Components
+#include "Source/UI Components/PanelBase.h"
+
 #include "Source/UI Components/AudioMeter.h"
 #include "Source/UI Components/SegmentedDisplayMeter.h"
 #include "Source/UI Components/DivisionVoidLookAndFeel/Button.h"
@@ -48,6 +50,8 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "DivisionVoid/Source/UI Components/DoubleStackKnob.h"
 
 // FX processors
+#include "Source/Processors/ProcessorBase.h"
+
 #include "Source/Processors/FX/Compressor.h"
 #include "Source/Processors/FX/Distortion.h"
 #include "Source/Processors/LevelMeterProcessor.h"

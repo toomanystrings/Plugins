@@ -5,4 +5,4 @@
 #include "DivisionVoid.h"
 
 #include "Source/Processors/FX/Reverbs/FeedbackDelayNetwork.cpp"
-//#include "Source/Processors/FX/Compressor.cpp"
+#include "Source/Processors/ProcessorBase.cpp"
