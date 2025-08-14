@@ -3,11 +3,11 @@
 
 namespace DivisionVoidProcessors
 {
-class ProcessorBase :  juce::AudioProcessor
+class ProcessorBase :  public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     ProcessorBase();
-    explicit ProcessorBase(const BusesProperties&& ioLayouts);
+    explicit ProcessorBase(const BusesProperties& ioLayouts);
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -36,6 +36,10 @@ public:
     void changeProgramName(int index, const juce::String& newName) override;
 
     static BusesProperties getDefaultProperties();
+
+    juce::AudioProcessorValueTreeState treeState;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 };
 } // DivisionVoidProcessors
 

@@ -64,8 +64,8 @@ private:
 
         for (int i = 0; i < numAttachments; ++i)
         {
-            attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-                    audioProcessor.treeState, names[i], sliders[i]);
+            //attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+            //        audioProcessor.treeState, names[i], sliders[i]);
         }
     }
 };

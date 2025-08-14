@@ -4,12 +4,14 @@
 namespace DivisionVoidProcessors
 {
     ProcessorBase::ProcessorBase ()
-        : juce::AudioProcessor (getDefaultProperties())
+        : juce::AudioProcessor (getDefaultProperties()),
+          treeState (*this, nullptr, "PARAMETERS", createParameterLayout())
     {
     }
 
     ProcessorBase::ProcessorBase (const BusesProperties& ioLayouts)
-        : AudioProcessor(ioLayouts)
+        : juce::AudioProcessor(ioLayouts),
+          treeState (*this, nullptr, "PARAMETERS", createParameterLayout())
     {
     }
 
@@ -20,29 +22,29 @@ namespace DivisionVoidProcessors
 
     bool ProcessorBase::acceptsMidi() const
     {
-#if JucePlugin_WantsMidiInput
+    #if JucePlugin_WantsMidiInput
         return true;
-#else
+    #else
         return false;
-#endif
+    #endif
     }
 
     bool ProcessorBase::producesMidi() const
     {
-#if JucePlugin_ProducesMidiOutput
+    #if JucePlugin_ProducesMidiOutput
         return true;
-#else
+    #else
         return false;
-#endif
+    #endif
     }
 
     bool ProcessorBase::isMidiEffect() const
     {
-#if JucePlugin_IsMidiEffect
+    #if JucePlugin_IsMidiEffect
         return true;
-#else
+    #else
         return false;
-#endif
+    #endif
     }
 
     double ProcessorBase::getTailLengthSeconds() const
@@ -92,12 +94,12 @@ namespace DivisionVoidProcessors
     juce::AudioProcessor::BusesProperties ProcessorBase::getDefaultProperties()
     {
         return BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
+    #if !JucePlugin_IsMidiEffect
+    #if !JucePlugin_IsSynth
                 .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
+    #endif
                 .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
+    #endif
                 ;
     }
 
@@ -117,15 +119,15 @@ namespace DivisionVoidProcessors
                 && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
                 return false;
         }
-
         // This checks if the input layout matches the output layout
-#if !JucePlugin_IsSynth
+        #if !JucePlugin_IsSynth
         if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
             return false;
-#endif
+        #endif
 
         return true;
     }
+
     void ProcessorBase::getStateInformation(juce::MemoryBlock& destData)
     {
         juce::ignoreUnused(destData);
@@ -134,5 +136,17 @@ namespace DivisionVoidProcessors
     void ProcessorBase::setStateInformation(const void* data, int sizeInBytes)
     {
         juce::ignoreUnused(data, sizeInBytes);
+    }
+
+    juce::AudioProcessorValueTreeState::ParameterLayout ProcessorBase::createParameterLayout()
+    {
+        std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+        return { params.begin(), params.end() };
+
+    }
+
+    void ProcessorBase::parameterChanged(const juce::String& parameterID, float newValue)
+    {
+
     }
 }
