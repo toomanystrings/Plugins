@@ -75,9 +75,9 @@ namespace DivisionVoid {
             int width = getWidth();
             int height = getHeight();
 
-            auto backgroundColour = DivisionVoidColours::black;
-            auto highlightColour = DivisionVoidColours::white;
-            auto foregroundColour = DivisionVoidColours::red;
+            auto backgroundColour = DivisionVoid::Colours::black;
+            auto highlightColour = DivisionVoid::Colours::white;
+            auto foregroundColour = DivisionVoid::Colours::red;
 
             juce::Path b;
             b.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);

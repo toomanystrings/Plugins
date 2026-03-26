@@ -62,7 +62,7 @@ public:
 
             g.setColour(juce::Colours::white);
             if (isMouseOver())
-                g.drawEllipse(getLocalBounds().toFloat(), 3);
+                g.drawEllipse(getLocalBounds().reduced(0.5).toFloat(), 2);
         }
 
     private:
@@ -104,7 +104,7 @@ public:
     {
         const auto bounds = getLocalBounds().toFloat();
 
-        g.setColour(DivisionVoidColours::black);
+        g.setColour(DivisionVoid::Colours::black);
         g.fillRect(bounds);
     }
 
@@ -121,6 +121,7 @@ public:
     void setSampleRate (double sampleRate)
     {
         this->sampleRate = sampleRate;
+        freqCaption.setSampleRate(sampleRate);
     }
 
 private:
@@ -162,10 +163,11 @@ private:
                 frequencyLabel->setText(frequencyString, juce::dontSendNotification);
 
                 // Figuring out the width and height of the text and setting the Label accordingly.
-                juce::Font labelFont = juce::Font(12);
+                juce::FontOptions fontOptions(12);
+                juce::Font labelFont = juce::Font(fontOptions);
                 frequencyLabel->setFont(labelFont);
                 frequencyLabel->setColour (juce::Label::textColourId, juce::Colours::whitesmoke);
-                const int textWidth = labelFont.getStringWidth (frequencyLabel->getText());
+                const int textWidth = juce::TextLayout::getStringWidth(frequencyLabel->getText());
                 const int textHeight = labelFont.getHeight();
                 frequencyLabel->setBorderSize (juce::BorderSize<int>(0,1,0,1));
                 frequencyLabel->setSize(textWidth + 2, textHeight);

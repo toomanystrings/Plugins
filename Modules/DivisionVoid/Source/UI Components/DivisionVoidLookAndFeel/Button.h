@@ -11,10 +11,10 @@ class Button : public juce::Button, private juce::Timer
 public:
     Button() : juce::Button("")
     {
-        setColour(DivisionVoidColours::backgroundColourId, DivisionVoidColours::black);
-        setColour(DivisionVoidColours::midgroundColourId, DivisionVoidColours::grey);
-        setColour(DivisionVoidColours::foregroundColourId, DivisionVoidColours::black);
-        setColour(DivisionVoidColours::highlightColourId, DivisionVoidColours::red);
+        setColour(DivisionVoid::Colours::backgroundColourId, DivisionVoid::Colours::black);
+        setColour(DivisionVoid::Colours::midgroundColourId, DivisionVoid::Colours::grey);
+        setColour(DivisionVoid::Colours::foregroundColourId, DivisionVoid::Colours::black);
+        setColour(DivisionVoid::Colours::highlightColourId, DivisionVoid::Colours::red);
 
         //setFont(DivisionVoid::Fonts::NowRegular.withHeight(DivisionVoid::FontHeights::Medium));
 
@@ -248,52 +248,52 @@ private:
             {
                 if (getToggleState())
                 {
-                    background = findColour(DivisionVoidColours::highlightColourId);
+                    background = findColour(DivisionVoid::Colours::highlightColourId);
 
                     if (hasKeyboardFocus(true) && wasFocusedByTab)
                     {
-                        foreground = findColour(DivisionVoidColours::foregroundColourId);
+                        foreground = findColour(DivisionVoid::Colours::foregroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                     else
                     {
-                        foreground = findColour(DivisionVoidColours::backgroundColourId);
+                        foreground = findColour(DivisionVoid::Colours::backgroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                 }
                 else
                 {
-                    background = findColour(DivisionVoidColours::foregroundColourId);
+                    background = findColour(DivisionVoid::Colours::foregroundColourId);
 
                     if (hasKeyboardFocus(true))
                     {
-                        foreground = findColour(DivisionVoidColours::highlightColourId);
+                        foreground = findColour(DivisionVoid::Colours::highlightColourId);
                         text = juce::Colours::antiquewhite;
                     }
                     else
                     {
-                        foreground = findColour(DivisionVoidColours::backgroundColourId);
+                        foreground = findColour(DivisionVoid::Colours::backgroundColourId);
                         text = juce::Colours::antiquewhite;
                     }
                 }
             }
             else
             {
-                background = findColour(DivisionVoidColours::foregroundColourId);
+                background = findColour(DivisionVoid::Colours::foregroundColourId);
 
                 if (hasKeyboardFocus(true) && wasFocusedByTab)
                 {
-                    foreground = findColour(DivisionVoidColours::highlightColourId);
+                    foreground = findColour(DivisionVoid::Colours::highlightColourId);
                     text = juce::Colours::antiquewhite;
                 }
                 else
                 {
-                    foreground = findColour(DivisionVoidColours::backgroundColourId);
+                    foreground = findColour(DivisionVoid::Colours::backgroundColourId);
                     text = juce::Colours::antiquewhite;
                 }
             }
 
-            g.setColour(background.interpolatedWith(findColour(DivisionVoidColours::midgroundColourId), colourInterpolation.getNextValue()));
+            g.setColour(background.interpolatedWith(findColour(DivisionVoid::Colours::midgroundColourId), colourInterpolation.getNextValue()));
             g.fillPath(p);
 
             //g.setColour(findColour(DivisionVoid::Colours::Black.getARGB()));
@@ -308,28 +308,28 @@ private:
         {
             juce::Path p;
             p.addRoundedRectangle(0, 0, width, height, CORNER_CONFIG);
-            g.setColour(findColour(DivisionVoidColours::midgroundColourId));
+            g.setColour(findColour(DivisionVoid::Colours::midgroundColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(trackArea.getX(), trackArea.getY(), trackArea.getWidth(), trackArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoidColours::backgroundColourId));
+            g.setColour(findColour(DivisionVoid::Colours::backgroundColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(indicatorArea.getX(), indicatorArea.getY(), indicatorArea.getWidth(), indicatorArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoidColours::highlightColourId));
+            g.setColour(findColour(DivisionVoid::Colours::highlightColourId));
             g.fillPath(p);
 
             p.clear();
 
             p.addRoundedRectangle(thumbArea.getX(), thumbArea.getY(), thumbArea.getWidth(), thumbArea.getHeight(), 8, 8, false, true, true, false);
-            g.setColour(findColour(DivisionVoidColours::foregroundColourId));
+            g.setColour(findColour(DivisionVoid::Colours::foregroundColourId));
             g.fillPath(p);
 
-            g.setColour(findColour(DivisionVoidColours::midgroundColourId));
+            g.setColour(findColour(DivisionVoid::Colours::midgroundColourId));
             int strokeWidth = std::min(thumbArea.getWidth(), thumbArea.getHeight()) / 4;
             g.strokePath(p, (juce::PathStrokeType) strokeWidth);
             //juce::PathStrokeType::PathStrokeType(strokeWidth));

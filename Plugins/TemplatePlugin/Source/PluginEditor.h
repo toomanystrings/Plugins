@@ -26,14 +26,7 @@ public:
 
 private:
 
-    //DivisionVoid::SegmentedDisplayMeter audioMeter;
 
-    float maxRmsLeft{}, maxRmsRight{};
-    int framesElapsed = 0;
-
-    DivisionVoid::DoubleStackKnob slider;
-
-    UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> attachments[2];
 
     //DivisionVoidFonts fonts;
     // This reference is provided as a quick way for your editor to

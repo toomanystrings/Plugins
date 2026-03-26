@@ -23,9 +23,9 @@ public:
 
 private:
 
-    struct EqPanel : public PanelBase
+struct EqPanel : public DivisionVoid::PanelBase
     {
-        EqPanel(BassDivisionAudioProcessor& inProcessor);
+        EqPanel (DivisionVoid::ProcessorBase &inProcessor1, BassDivisionAudioProcessor &inProcessor);
         ~EqPanel() = default;
 
         void paint(juce::Graphics& g) override;

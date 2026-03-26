@@ -4,7 +4,7 @@
 //#include "Parameters.h"
 #include <JuceHeader.h>
 
-class NewPluginTemplateAudioProcessor : public DivisionVoidProcessors::ProcessorBase
+class NewPluginTemplateAudioProcessor : public DivisionVoid::ProcessorBase
 {
 public:
     NewPluginTemplateAudioProcessor ();
@@ -16,7 +16,6 @@ public:
     void getStateInformation (juce::MemoryBlock &destData) override;
 
     void setStateInformation (const void *data, int sizeInBytes) override;
-
 
 private:
 };

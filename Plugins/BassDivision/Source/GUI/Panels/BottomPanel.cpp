@@ -12,7 +12,7 @@
 
 // Bottom Panel
 
-BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
+BottomPanel::BottomPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(<#initializer#>, inProcessor),
 processPanel(inProcessor), bandPanel(inProcessor)
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
@@ -88,7 +88,7 @@ void BottomPanel::resized()
 // Process Panel
 
 ProcessPanel::ProcessPanel(BassDivisionAudioProcessor& inProcessor) :
-    PanelBase(inProcessor), eqPanel(inProcessor), compressorPanel(inProcessor)
+        PanelBase(<#initializer#>, inProcessor), eqPanel(<#initializer#>, inProcessor), compressorPanel(inProcessor)
 {
     setSize(PROCESS_PANEL_WIDTH, PROCESS_PANEL_HEIGHT);
 
@@ -110,11 +110,12 @@ void ProcessPanel::resized()
     compressorPanel.setBounds(area);
 }
 
-ProcessPanel::EqPanel::EqPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
+ProcessPanel::EqPanel::EqPanel (DivisionVoid::ProcessorBase &inProcessor1, BassDivisionAudioProcessor &inProcessor)
+        : PanelBase(inProcessor1)
 {
     // "Low Shelf", "200 Hz", "500 Hz", "1 KHz", "1.5 KHz",
     // "2.5 KHz", "High Shelf"
-    for (int i = 0; i < 7; ++i)
+    /*for (int i = 0; i < 7; ++i)
     {
         sliders[i].setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
         sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
@@ -130,7 +131,10 @@ ProcessPanel::EqPanel::EqPanel(BassDivisionAudioProcessor &inProcessor) : PanelB
 
         attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
                 inProcessor.treeState, names[i], sliders[i]
-                );
+                );*/
+    initaliseSliders(sliders, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    initaliseLabels(labels, sliders, freqs, juce::Justification::centred);
+    attachSliders(attachments, inProcessor, names, sliders);
 
         for (auto i = 0; i < 2; ++i)
         {
@@ -176,7 +180,8 @@ void ProcessPanel::EqPanel::resized()
     }
 }
 
-ProcessPanel::CompressorPanel::CompressorPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
+ProcessPanel::CompressorPanel::CompressorPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(<#initializer#>,
+                                                                                                    inProcessor)
 {
     // "ATTACK", "RELEASE", "RATIO", "THRESHOLD",
     // "KNEE", "HPF", "INPUT", "OUTPUT"
@@ -269,7 +274,7 @@ void ProcessPanel::CompressorPanel::resized()
 
 
 // Band Panel
-BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor), subPanel(inProcessor, "sub"),
+BandPanel::BandPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(<#initializer#>, inProcessor), subPanel(inProcessor, "sub"),
                                                                 lowPanel(inProcessor, "low"), midPanel(inProcessor, "mid"),
                                                                 highPanel(inProcessor, "high"),
                                                                 lowCrossoverPanel(inProcessor, "low"),
@@ -307,7 +312,7 @@ void BandPanel::resized()
 }
 
 BandPanel::BandCompPanel::BandCompPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
-        PanelBase(inProcessor), band(bandName.toUpperCase())
+        PanelBase(<#initializer#>, inProcessor), band(bandName.toUpperCase())
 {
     // "ATTACK", "RELEASE", "RATIO", "THRESHOLD", "INPUT", "OUTPUT"
     for (int i = 0; i < 6; ++i)
@@ -407,7 +412,7 @@ void BandPanel::BandCompPanel::resized()
 }
 
 BandPanel::BandDistortionPanel::BandDistortionPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
-        PanelBase(inProcessor), band(bandName.toUpperCase())
+        PanelBase(<#initializer#>, inProcessor), band(bandName.toUpperCase())
 {
     // "GAIN", "MIX", "TYPE", "EDGE"
     for (int i = 0; i < 4; ++i)
@@ -502,7 +507,7 @@ void BandPanel::BandDistortionPanel::resized()
 }
 
 BandPanel::BandCrossoverPanel::BandCrossoverPanel(BassDivisionAudioProcessor &inProcessor, juce::String bandName) :
-        PanelBase(inProcessor), band(bandName.toUpperCase())
+        PanelBase(<#initializer#>, inProcessor), band(bandName.toUpperCase())
 {
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);

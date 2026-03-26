@@ -378,6 +378,8 @@ void BassDivisionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     // Profit
 
+    auto tmpBPM = getPlayHead()->getPosition()->getBpm();
+
 }
 
 //==============================================================================

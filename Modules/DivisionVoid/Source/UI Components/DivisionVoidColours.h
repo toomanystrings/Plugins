@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace DivisionVoidColours
+namespace DivisionVoid::Colours
 {
     const juce::Colour black = juce::Colours::black;
     const juce::Colour white = juce::Colours::whitesmoke;

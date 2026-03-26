@@ -1,7 +1,7 @@
 
 #include "ProcessorBase.h"
 
-namespace DivisionVoidProcessors
+namespace DivisionVoid
 {
     ProcessorBase::ProcessorBase ()
         : juce::AudioProcessor (getDefaultProperties()),

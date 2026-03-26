@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace DivisionVoidProcessors
+namespace DivisionVoid
 {
 class ProcessorBase :  public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
 {

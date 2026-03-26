@@ -1,30 +1,34 @@
 
 #pragma once
 
+#include "../processors/ProcessorBase.h"
+
 namespace DivisionVoid
 {
 class PanelBase : public juce::Component
 {
 public:
-    PanelBase(juce::AudioProcessor& inProcessor) : mProcessor(inProcessor) {}
+    PanelBase() = default;
+    PanelBase(ProcessorBase& inProcessor) : mProcessor(inProcessor) {}
 
     ~PanelBase() = default;
 
     void paint(juce::Graphics& g) override
     {
-        g.setColour(DivisionVoidColours::white);
+        g.setColour(DivisionVoid::Colours::white);
         g.fillAll();
 
-        g.setColour(DivisionVoidColours::black);
+        g.setColour(DivisionVoid::Colours::red);
+        g.setFont(13);
+        g.drawText("Default UI Panel", getBounds(), juce::Justification::centred);
+
+        g.setColour(DivisionVoid::Colours::black);
         g.drawRect(0, 0, getWidth(), getHeight(), 2);
     }
 
-protected:
-    juce::AudioProcessor& mProcessor;
-
-private:
     void initaliseSliders(juce::Slider *sliders,
-                          juce::Slider::SliderStyle style)
+                          juce::Slider::SliderStyle style,
+                          juce::String textValueSuffix)
     {
         int numSliders = sizeof (sliders);
 
@@ -32,7 +36,7 @@ private:
         {
             sliders[i].setSliderStyle(style);
             sliders[i].setTextBoxStyle(juce::Slider::TextBoxBelow, false, 55, 12);
-            sliders[i].setTextValueSuffix("dB");
+            sliders[i].setTextValueSuffix(textValueSuffix);
             //sliders[i].setLookAndFeel(&centreLAF);
             addAndMakeVisible(&sliders[i]);
         }
@@ -55,18 +59,22 @@ private:
         }
     }
 
-    void attachSliders(UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> *attachments,
-                       juce::AudioProcessor& audioProcessor,
+    void attachSliders(ProcessorBase& processor,
+                       UniquePtr<juce::AudioProcessorValueTreeState::SliderAttachment> *attachments,
                        juce::String *names,
                        juce::Slider *sliders)
     {
+        jassert(sizeof (attachments) == sizeof (names) == sizeof (sliders));
         int numAttachments = sizeof (attachments);
 
         for (int i = 0; i < numAttachments; ++i)
         {
-            //attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-            //        audioProcessor.treeState, names[i], sliders[i]);
+            attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+                    processor.treeState, names[i], sliders[i]);
         }
     }
+
+private:
+    ProcessorBase& mProcessor;
 };
 }

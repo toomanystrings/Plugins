@@ -4,7 +4,7 @@
 
 #include "TopPanel.h"
 
-IrPanel::IrPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor), audioProcessor(inProcessor)
+IrPanel::IrPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(<#initializer#>, inProcessor), audioProcessor(inProcessor)
 {
     // set up save and load buttons
     loadImpulseResponse.setButtonStyle(DivisionVoid::Button::ButtonStyle::Bar);
@@ -141,7 +141,7 @@ void IrPanel::updateImpulseResponseComboBox()
     impulseResponseComboBox.setText(impulseResponseManager->getCurrentImpulseResponseName());
 }
 
-PresetPanel::PresetPanel(BassDivisionAudioProcessor& inProcessor): PanelBase(inProcessor), audioProcessor(inProcessor)
+PresetPanel::PresetPanel(BassDivisionAudioProcessor& inProcessor): PanelBase(<#initializer#>, inProcessor), audioProcessor(inProcessor)
 {
     //setSize(525, 30);
 
@@ -286,7 +286,7 @@ void PresetPanel::resized()
     savePreset.setFont(fonts.getFont(DivisionVoidFonts::FontType::bold, 15));
 }
 
-TopPanel::TopPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor),
+TopPanel::TopPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(<#initializer#>, inProcessor),
                                                               presetPanel(inProcessor),
                                                               irPanel(inProcessor)
 {

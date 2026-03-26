@@ -2,6 +2,7 @@
 #pragma once
 
 #include "PluginProcessor.h"
+#include "UI/PanelBase.h"
 
 class NewPluginTemplateAudioProcessorEditor : public juce::AudioProcessorEditor
 {
@@ -12,5 +13,7 @@ private:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    juce::GenericAudioProcessorEditor editor {processor};
+    Panel panel;
+
+    NewPluginTemplateAudioProcessor& mProcessor;
 };

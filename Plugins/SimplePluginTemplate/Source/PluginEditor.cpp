@@ -4,10 +4,10 @@
 
 NewPluginTemplateAudioProcessorEditor::NewPluginTemplateAudioProcessorEditor(
         NewPluginTemplateAudioProcessor& p)
-        : AudioProcessorEditor(&p)
+        : juce::AudioProcessorEditor(&p), mProcessor(p), panel(p)
 {
-    addAndMakeVisible(editor);
-    setSize(400, 300);
+    addAndMakeVisible(panel);
+    setSize(1000, 600);
 }
 
 void NewPluginTemplateAudioProcessorEditor::paint(juce::Graphics& g)
@@ -17,5 +17,5 @@ void NewPluginTemplateAudioProcessorEditor::paint(juce::Graphics& g)
 
 void NewPluginTemplateAudioProcessorEditor::resized()
 {
-    editor.setBounds(getLocalBounds());
+    panel.setBounds(this->getBounds());
 }

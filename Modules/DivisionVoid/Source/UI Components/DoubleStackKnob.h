@@ -108,7 +108,7 @@ namespace DivisionVoid
         bool isCursorInInnerSlider = false;
     };
 
-    // This is a straight inhereitance from juce::Slider. This has been done purely to make objects in the double
+    // This is a straight inheritance from juce::Slider. This has been done purely to make objects in the double
     // stack class more readable. While the actual names you assign to the objects themselves would likely do the
     // job, for consistencies sake, I have chosen to do it this way. Nothing has been overridden as yet.
     class OuterSlider : public juce::Slider

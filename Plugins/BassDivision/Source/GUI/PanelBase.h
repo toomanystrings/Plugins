@@ -7,19 +7,21 @@
 #include "../PluginProcessor.h"
 #include "InterfaceDefines.h"
 
-class PanelBase : public juce::Component
+class PanelBase : public DivisionVoid::PanelBase
 {
 public:
-    PanelBase(BassDivisionAudioProcessor& inProcessor) : mProcessor(inProcessor) {}
+    PanelBase (DivisionVoid::ProcessorBase &inProcessor1, BassDivisionAudioProcessor &inProcessor) : PanelBase(
+            inProcessor1), mProcessor(inProcessor)
+    {}
 
 	~PanelBase() = default;
 
     void paint(juce::Graphics& g) override
     {
-        g.setColour(DivisionVoidColours::white);
+        g.setColour(DivisionVoid::Colours::white);
         g.fillAll();
 
-        g.setColour(DivisionVoidColours::black);
+        g.setColour(DivisionVoid::Colours::black);
         g.drawRect(0, 0, getWidth(), getHeight(), 2);
     }
     
@@ -27,10 +29,4 @@ protected:
     BassDivisionAudioProcessor& mProcessor;
 
 private:
-    void initaliseSliders(juce::Slider *sliders, juce::Label *labels, juce::Slider::SliderStyle style)
-    {
-
-    }
-
-
 };

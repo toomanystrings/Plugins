@@ -10,7 +10,7 @@
 
 #include "MainPanel.h"
 
-MainPanel::MainPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(inProcessor),
+MainPanel::MainPanel(BassDivisionAudioProcessor& inProcessor) : PanelBase(<#initializer#>, inProcessor),
 topPanel(inProcessor), middlePanel(inProcessor), bottomPanel(inProcessor)
 {
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);

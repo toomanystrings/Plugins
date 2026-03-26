@@ -61,7 +61,7 @@ inline double getNormalizedValueFromScaledRange(double input, double lowerBound,
 inline float logTransformInRange0to1 (const float between0and1)
 {
     const float minimum = 1.0f;
-    const float maximum = JUCE_LIVE_CONSTANT (1000.0f);
+    const float maximum = 10.0f; //JUCE_LIVE_CONSTANT (1000.0f);
     // return drow::logBase10Scale (frequency, 1.0f, maximum);
     return log10 (minimum + ((maximum - minimum) * between0and1)) / log10 (maximum);
 }

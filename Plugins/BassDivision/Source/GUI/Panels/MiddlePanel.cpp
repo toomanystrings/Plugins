@@ -5,7 +5,7 @@
 #include "MiddlePanel.h"
 
 MiddlePanel::MiddlePanel(BassDivisionAudioProcessor &inProcessor) :
-        PanelBase(inProcessor),
+        PanelBase(<#initializer#>, inProcessor),
         ioPanel(inProcessor)//,
         //fftPanel(inProcessor, inProcessor.getSpectrumProcessor()->getRepaintViewerValue(),
         //         inProcessor.getSpectrumProcessor()->getMagnitudesBuffer(),
@@ -28,7 +28,7 @@ void MiddlePanel::resized()
     //fftPanel.setBounds(area);
 }
 
-IoPanel::IoPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(inProcessor)
+IoPanel::IoPanel(BassDivisionAudioProcessor &inProcessor) : PanelBase(<#initializer#>, inProcessor)
 {
     //setSize(IO_PANEL_WIDTH, IO_PANEL_HEIGHT);
     for (int i = 0; i < 2; ++i)

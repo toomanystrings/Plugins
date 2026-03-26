@@ -27,6 +27,7 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include <juce_core/juce_core.h>
 #include <juce_events/juce_events.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_dsp/juce_dsp.h>
 
 // Binary files to include.
 #include <SharedBinaryResources.h>
@@ -46,8 +47,9 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/UI Components/AudioMeter.h"
 #include "Source/UI Components/SegmentedDisplayMeter.h"
 #include "Source/UI Components/DivisionVoidLookAndFeel/Button.h"
-#include "Source/UI Components/EqWidget.h"
-#include "DivisionVoid/Source/UI Components/DoubleStackKnob.h"
+//#include "Source/UI Components/EqWidget.h"
+#include "Source/UI Components/DoubleStackKnob.h"
+#include "Source/UI Components/SpectrumAnanlyser.h"
 
 // FX processors
 #include "Source/Processors/ProcessorBase.h"
@@ -63,6 +65,7 @@ BEGIN_JUCE_MODULE_DECLARATION
 #include "Source/Processors/FX/Reverbs/FeedbackDelayNetwork.h"
 
 // Utility Audio classes
+#include "Source/Processors/BeatSync.h"
 
 
 // FFT
