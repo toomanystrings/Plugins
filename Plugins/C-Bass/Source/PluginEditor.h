@@ -12,5 +12,8 @@ private:
     void paint(juce::Graphics&) override;
     void resized() override;
 
+    juce::Image seabass;
+    juce::ImageComponent imageComponent;
+
     CBassAudioProcessor& mProcessor;
 };

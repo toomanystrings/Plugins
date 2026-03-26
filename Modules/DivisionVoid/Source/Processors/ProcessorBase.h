@@ -3,7 +3,7 @@
 
 namespace DivisionVoid
 {
-class ProcessorBase :  public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
+class ProcessorBase :  public juce::AudioProcessor
 {
 public:
     ProcessorBase();
@@ -36,10 +36,6 @@ public:
     void changeProgramName(int index, const juce::String& newName) override;
 
     static BusesProperties getDefaultProperties();
-
-    juce::AudioProcessorValueTreeState treeState;
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-    void parameterChanged(const juce::String& parameterID, float newValue) override;
 };
 } // DivisionVoidProcessors
 

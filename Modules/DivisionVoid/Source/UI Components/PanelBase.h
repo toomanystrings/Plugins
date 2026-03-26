@@ -69,8 +69,8 @@ public:
 
         for (int i = 0; i < numAttachments; ++i)
         {
-            attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-                    processor.treeState, names[i], sliders[i]);
+            //attachments[i] = MakeUnique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+            //        processor.treeState, names[i], sliders[i]);
         }
     }
 
