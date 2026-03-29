@@ -18,6 +18,9 @@ void CBassAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 {
     juce::ignoreUnused(midiMessages);
 
+    auto numChannels = buffer.getNumChannels();
+    auto numSamples = buffer.getNumSamples();
+
     // Set up the processing for the dsp block
     juce::dsp::AudioBlock<float> block(buffer);
 
@@ -53,13 +56,13 @@ void CBassAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     os.processSamplesDown(tempBlock);
 
     // Isolate harmonics
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    for (int channel = 0; channel < numChannels; ++channel)
     {
         auto* shaped = tempBuffer.getWritePointer(channel);
-        auto* band   = bandBuffer.getReadPointer(channel);
+        auto* band= bandBuffer.getReadPointer(channel);
 
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-            shaped[i] = shaped[i] - band[i];
+        for (int sample = 0; sample < numSamples; ++sample)
+            shaped[sample] = shaped[sample] - band[sample];
     }
 
     // High and low filters pass to tame output
@@ -70,13 +73,13 @@ void CBassAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     highpassFilter.process(hpContext);
 
     // Recombine with original signal. Commented out so that just the wet path can be analysed.
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    for (int channel = 0; channel < numChannels; ++channel)
     {
         auto* dry = buffer.getWritePointer(channel);
         auto* wet = tempBuffer.getReadPointer(channel);
 
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-            dry[i] += wet[i];// * intensity;
+        for (int sample = 0; sample < numSamples; ++sample)
+            dry[sample] += wet[sample];// * intensity;
     }
 }
 
