@@ -23,4 +23,16 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
+    float gain = 1.0f;
+    float intensity = 1.0f;
+
+    // Filters
+    using Filter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>>;
+    Filter bandpassFilter, lowpassFilter, highpassFilter;
+
+    //Oversampling
+    juce::dsp::Oversampling<float> os;
+    size_t osFactor = 3;
+
+    juce::AudioBuffer<float> bandBuffer, tempBuffer;
 };

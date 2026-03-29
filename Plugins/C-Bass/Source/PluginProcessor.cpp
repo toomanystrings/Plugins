@@ -6,7 +6,8 @@
 #include "PluginEditor.h"
 
 CBassAudioProcessor::CBassAudioProcessor() :
-    apvts(*this, nullptr, "Parameters", createParameterLayout())
+    apvts(*this, nullptr, "Parameters", createParameterLayout()),
+    os(getTotalNumOutputChannels(), osFactor, juce::dsp::Oversampling<float>::FilterType::filterHalfBandFIREquiripple)
 {
     for (auto p : getParameters())
         apvts.addParameterListener(static_cast<juce::AudioProcessorParameterWithID*>(p)->paramID, this);
@@ -16,17 +17,103 @@ void CBassAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
                                        juce::MidiBuffer& midiMessages)
 {
     juce::ignoreUnused(midiMessages);
+
+    // Set up the processing for the dsp block
+    juce::dsp::AudioBlock<float> block(buffer);
+
+    bandBuffer.makeCopyOf(buffer);
+    tempBuffer.makeCopyOf(buffer);
+
+    juce::dsp::AudioBlock<float> bandBlock(bandBuffer);
+    juce::dsp::AudioBlock<float> tempBlock(tempBuffer);
+
+    juce::dsp::ProcessContextReplacing<float> bpContext(bandBlock);
+
+    // Band pass filter on wet path
+    bandpassFilter.process(bpContext);
+
+    tempBuffer.makeCopyOf(bandBuffer);
+
+    // Oversample up
+    auto upsampledBlock = os.processSamplesUp(tempBlock);
+    auto osNumSamples = upsampledBlock.getNumSamples();
+    auto osNumChannels = upsampledBlock.getNumChannels();
+
+    // Wave shaping to introduce harmonics
+    for (int channel = 0; channel < osNumChannels; ++channel)
+    {
+        auto* data = upsampledBlock.getChannelPointer(channel);
+        for (int sample = 0; sample < osNumSamples; ++sample)
+        {
+            data[sample] = std::tanh(data[sample]);
+        }
+    }
+
+    // Oversample down
+    os.processSamplesDown(tempBlock);
+
+    // Isolate harmonics
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    {
+        auto* shaped = tempBuffer.getWritePointer(channel);
+        auto* band   = bandBuffer.getReadPointer(channel);
+
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+            shaped[i] = shaped[i] - band[i];
+    }
+
+    // High and low filters pass to tame output
+    juce::dsp::ProcessContextReplacing<float> lpContext(tempBlock);
+    lowpassFilter.process(lpContext);
+
+    juce::dsp::ProcessContextReplacing<float> hpContext(tempBlock);
+    highpassFilter.process(hpContext);
+
+    // Recombine with original signal. Commented out so that just the wet path can be analysed.
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    {
+        auto* dry = buffer.getWritePointer(channel);
+        auto* wet = tempBuffer.getReadPointer(channel);
+
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+            dry[i] += wet[i];// * intensity;
+    }
 }
 
 void CBassAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    ProcessorBase::prepareToPlay(sampleRate, samplesPerBlock);
+    auto numChannels = getTotalNumOutputChannels();
+    juce::dsp::ProcessSpec spec;
+
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = numChannels;
+
+    bandBuffer.setSize(numChannels, samplesPerBlock);
+    bandBuffer.clear();
+
+    tempBuffer.setSize(numChannels, samplesPerBlock);
+    tempBuffer.clear();
+
+    bandpassFilter.state = juce::dsp::IIR::Coefficients<float>::makeBandPass(sampleRate, 120.0f, 0.8f);
+    bandpassFilter.prepare(spec);
+
+    highpassFilter.state = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate, 80.0f);
+    highpassFilter.prepare(spec);
+
+    lowpassFilter.state = juce::dsp::IIR::Coefficients<float>::makeFirstOrderLowPass(sampleRate, 200.0f);
+    lowpassFilter.prepare(spec);
+
+    os.reset();
+    os.initProcessing(samplesPerBlock);
+
+    setLatencySamples(os.getLatencyInSamples());
 }
 
 juce::AudioProcessorEditor* CBassAudioProcessor::createEditor()
 {
-    //return new CBassAudioProcessorEditor(*this);
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new CBassAudioProcessorEditor(*this);
+    //return new juce::GenericAudioProcessorEditor(*this);
 }
 
 void CBassAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
