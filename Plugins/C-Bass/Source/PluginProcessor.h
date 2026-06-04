@@ -25,6 +25,7 @@ private:
 
     float gain = 1.0f;
     float intensity = 1.0f;
+    float centreFreq = 120.0f;
 
     // Filters
     using Filter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>>;
@@ -34,5 +35,5 @@ private:
     juce::dsp::Oversampling<float> os;
     size_t osFactor = 3;
 
-    juce::AudioBuffer<float> bandBuffer, tempBuffer;
+    juce::AudioBuffer<float> dryBuffer, bandBuffer, tempBuffer;
 };
