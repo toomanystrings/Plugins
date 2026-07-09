@@ -14,7 +14,7 @@ juce_add_plugin("${BaseTargetName}"
         EDITOR_WANTS_KEYBOARD_FOCUS FALSE
         COPY_PLUGIN_AFTER_BUILD TRUE
         PLUGIN_MANUFACTURER_CODE Divd
-        PLUGIN_CODE cbass
+        PLUGIN_CODE cbas
         FORMATS AU VST3 Standalone
         PRODUCT_NAME "C-Bass")
 
@@ -22,7 +22,8 @@ juce_generate_juce_header(${BaseTargetName})
 
 target_sources(${BaseTargetName} PRIVATE
         Source/PluginProcessor.cpp
-        Source/PluginEditor.cpp)
+        Source/PluginEditor.cpp
+        Source/CircularBuffer.cpp)
 
 target_compile_definitions(${BaseTargetName}
         PUBLIC
